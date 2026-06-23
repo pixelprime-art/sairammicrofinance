@@ -60,6 +60,15 @@ h1, h2, h3, h4, h5, h6 {
   background: #94A3B8;
 }
 
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 /* Custom utilities */
 .glass-card {
   background: rgba(255, 255, 255, 0.85);
@@ -78,4 +87,54 @@ h1, h2, h3, h4, h5, h6 {
 .hero-gradient {
   background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.15), transparent 60%),
               linear-gradient(135deg, #002244 0%, #003366 100%);
+}
+
+/* Custom Styled Range Sliders */
+.custom-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 9999px;
+  outline: none;
+}
+
+.custom-slider::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 6px;
+}
+
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: #003366; /* matches primary */
+  border: none;
+  margin-top: -6px; /* (6px - 18px) / 2 */
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.custom-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.custom-slider::-moz-range-track {
+  background: transparent;
+  height: 6px;
+}
+
+.custom-slider::-moz-range-thumb {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: #003366;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.custom-slider::-moz-range-thumb:hover {
+  transform: scale(1.15);
 }

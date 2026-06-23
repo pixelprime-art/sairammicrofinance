@@ -91,6 +91,10 @@ export const CalculatorPage: React.FC = () => {
   const principalOffset = circumference - (principalPercent / 100) * circumference;
   const interestOffset = circumference - (interestPercent / 100) * circumference;
 
+  const loanAmountPercent = Math.max(0, Math.min(100, ((loanAmount - 10000) / (3000000 - 10000)) * 100));
+  const interestRatePercent = Math.max(0, Math.min(100, ((interestRate - 7.99) / (25 - 7.99)) * 100));
+  const loanTenurePercent = Math.max(0, Math.min(100, ((loanTenure - 6) / (120 - 6)) * 100));
+
   return (
     <div className="w-full flex flex-col font-sans">
       
@@ -142,7 +146,10 @@ export const CalculatorPage: React.FC = () => {
                   step="5000"
                   value={loanAmount}
                   onChange={(e) => setLoanAmount(Number(e.target.value))}
-                  className="w-full accent-primary h-2 bg-slate-200 rounded-lg cursor-pointer"
+                  className="w-full custom-slider bg-[#E2E8F0] cursor-pointer"
+                  style={{
+                    background: `linear-gradient(to right, #003366 0%, #003366 ${loanAmountPercent}%, #E2E8F0 ${loanAmountPercent}%, #E2E8F0 100%)`
+                  }}
                 />
               </div>
 
@@ -168,7 +175,10 @@ export const CalculatorPage: React.FC = () => {
                   step="0.05"
                   value={interestRate}
                   onChange={(e) => setInterestRate(Number(e.target.value))}
-                  className="w-full accent-primary h-2 bg-slate-200 rounded-lg cursor-pointer"
+                  className="w-full custom-slider bg-[#E2E8F0] cursor-pointer"
+                  style={{
+                    background: `linear-gradient(to right, #003366 0%, #003366 ${interestRatePercent}%, #E2E8F0 ${interestRatePercent}%, #E2E8F0 100%)`
+                  }}
                 />
               </div>
 
@@ -193,7 +203,10 @@ export const CalculatorPage: React.FC = () => {
                   step="6"
                   value={loanTenure}
                   onChange={(e) => setLoanTenure(Number(e.target.value))}
-                  className="w-full accent-primary h-2 bg-slate-200 rounded-lg cursor-pointer"
+                  className="w-full custom-slider bg-[#E2E8F0] cursor-pointer"
+                  style={{
+                    background: `linear-gradient(to right, #003366 0%, #003366 ${loanTenurePercent}%, #E2E8F0 ${loanTenurePercent}%, #E2E8F0 100%)`
+                  }}
                 />
               </div>
 

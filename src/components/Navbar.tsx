@@ -5,7 +5,8 @@ import { mockDb } from '../services/mockDb';
 import type { Notification } from '../services/mockDb';
 import { 
   Search, Bell, ChevronDown, Menu, X, User, Lock, Mail, 
-  HelpCircle, LogOut, Check, ArrowRight, Shield, PhoneCall
+  HelpCircle, LogOut, Check, ArrowRight, Shield, PhoneCall,
+  MoreVertical
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -39,8 +40,11 @@ export const Navbar: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+
   const notifRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
 
   // Monitor scroll for sticky navbar
   useEffect(() => {
@@ -65,7 +69,7 @@ export const Navbar: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle outside clicks to close notifications / search
+  // Handle outside clicks to close notifications / search / more menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
@@ -73,6 +77,9 @@ export const Navbar: React.FC = () => {
       }
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setSearchOpen(false);
+      }
+      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
+        setMoreMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -395,45 +402,72 @@ export const Navbar: React.FC = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Login State */}
-              {isAuthenticated ? (
-                <div className="flex items-center gap-2">
-                  {isAdmin ? (
-                    <Link 
-                      to="/admin" 
-                      className="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 font-semibold text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 transition-all shadow-sm"
-                    >
-                      <Shield className="w-3.5 h-3.5 text-primary" /> Admin Panel
-                    </Link>
-                  ) : (
-                    <span className="hidden sm:inline font-semibold text-xs text-primary bg-primary/5 border border-primary/20 py-2 px-3.5 rounded-lg">
-                      Hello, {user?.fullName.split(' ')[0]}
-                    </span>
-                  )}
-                  <button 
-                    onClick={logout}
-                    className="p-2 rounded-lg bg-slate-100 hover:bg-red-50 text-slate-500 hover:text-red-500 transition-colors cursor-pointer"
-                    title="Logout"
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </button>
-                </div>
-              ) : (
-                <button 
-                  onClick={() => setLoginModalOpen(true)}
-                  className="font-bold text-xs border border-primary/30 text-primary bg-primary/5 hover:bg-primary hover:text-white px-4 py-2 rounded-lg transition-all shadow-sm cursor-pointer"
-                >
-                  Login
-                </button>
-              )}
-
               {/* Apply Loan CTA Button */}
               <Link 
                 to="/apply" 
-                className="hidden sm:inline-flex bg-secondary hover:bg-gold-hover text-primary font-bold text-xs px-4 py-2 rounded-lg transition-all shadow-md items-center gap-1.5 pulse-gold"
+                className="hidden sm:inline-flex bg-secondary hover:bg-gold-hover text-primary font-bold text-xs px-4 py-2 rounded-lg transition-all shadow-md items-center gap-1.5 pulse-gold font-display"
               >
                 Apply Loan
               </Link>
+
+              {/* Three-dot Contextual Menu */}
+              <div className="relative hidden sm:block" ref={moreMenuRef}>
+                <button
+                  onClick={() => setMoreMenuOpen(!moreMenuOpen)}
+                  className="p-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-slate-700 transition-all duration-200 shadow-sm cursor-pointer flex items-center justify-center w-8 h-8"
+                  title="More Options"
+                >
+                  <MoreVertical className="w-4 h-4" />
+                </button>
+
+                <AnimatePresence>
+                  {moreMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 text-left"
+                    >
+                      {isAuthenticated ? (
+                        <div className="flex flex-col">
+                          {isAdmin ? (
+                            <Link 
+                              to="/admin" 
+                              onClick={() => setMoreMenuOpen(false)}
+                              className="px-4 py-2.5 hover:bg-slate-50 text-slate-700 hover:text-primary font-semibold text-xs flex items-center gap-2 transition-colors"
+                            >
+                              <Shield className="w-4 h-4 text-primary" /> Admin Panel
+                            </Link>
+                          ) : (
+                            <div className="px-4 py-2 border-b border-slate-100 font-semibold text-xs text-primary bg-primary/5 mb-1">
+                              Hello, {user?.fullName.split(' ')[0]}
+                            </div>
+                          )}
+                          <button 
+                            onClick={() => {
+                              logout();
+                              setMoreMenuOpen(false);
+                            }}
+                            className="w-full text-left px-4 py-2.5 hover:bg-red-50 text-slate-700 hover:text-red-600 font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer"
+                          >
+                            <LogOut className="w-4 h-4 text-slate-400 group-hover:text-red-500" /> Logout
+                          </button>
+                        </div>
+                      ) : (
+                        <button 
+                          onClick={() => {
+                            setLoginModalOpen(true);
+                            setMoreMenuOpen(false);
+                          }}
+                          className="w-full text-left px-4 py-2.5 hover:bg-slate-50 text-slate-700 hover:text-primary font-bold text-xs flex items-center gap-2 transition-colors cursor-pointer"
+                        >
+                          <Lock className="w-4 h-4 text-slate-400 group-hover:text-primary" /> Login
+                        </button>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           </div>
         </div>
