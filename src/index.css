@@ -138,3 +138,14 @@ h1, h2, h3, h4, h5, h6 {
 .custom-slider::-moz-range-thumb:hover {
   transform: scale(1.15);
 }
+/* index.css or app.css */
+
+@keyframes drawRing {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.group:focus-within .search-ring {
+  animation: drawRing 0.4s ease forwards;
+}

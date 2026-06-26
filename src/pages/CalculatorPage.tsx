@@ -266,31 +266,34 @@ export const CalculatorPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Stats Grid */}
-              <div className="w-full grid grid-cols-2 gap-4 border-t border-navy-light pt-6">
+              {/* Stats Row */}
+              <div className="w-full flex justify-between border-t border-navy-light pt-6">
                 <div className="text-left space-y-1">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-secondary" />
-                    <span className="text-[10px] font-bold text-slate-300 uppercase">Principal Loan</span>
+                    <span className="w-2 h-2 rounded-full bg-secondary flex-shrink-0" />
+                    <span className="text-[9px] font-bold text-slate-300 uppercase truncate">Principal</span>
                   </div>
-                  <div className="text-sm font-extrabold font-display">
+                  <div className="text-xs sm:text-sm font-extrabold font-display truncate">
                     ₹{loanAmount.toLocaleString('en-IN')}
                   </div>
                 </div>
                 
-                <div className="text-left space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-navy-light" />
-                    <span className="text-[10px] font-bold text-slate-300 uppercase">Total Interest</span>
+                <div className="text-center space-y-1 flex flex-col items-center">
+                  <div className="flex items-center gap-1.5 justify-center">
+                    <span className="w-2 h-2 rounded-full bg-navy-light flex-shrink-0" />
+                    <span className="text-[9px] font-bold text-slate-300 uppercase truncate">Interest</span>
                   </div>
-                  <div className="text-sm font-extrabold font-display">
+                  <div className="text-xs sm:text-sm font-extrabold font-display truncate">
                     ₹{outputs.totalInterest.toLocaleString('en-IN')}
                   </div>
                 </div>
                 
-                <div className="col-span-2 text-center pt-2 border-t border-navy-light/40">
-                  <div className="text-[10px] font-semibold text-slate-400">Total Payable Amount</div>
-                  <div className="text-base font-extrabold font-display text-secondary mt-0.5">
+                <div className="text-right space-y-1 flex flex-col items-end">
+                  <div className="flex items-center gap-1.5 justify-end">
+                    <span className="w-2 h-2 rounded-full bg-white flex-shrink-0" />
+                    <span className="text-[9px] font-bold text-slate-300 uppercase truncate">Payable</span>
+                  </div>
+                  <div className="text-xs sm:text-sm font-extrabold font-display text-secondary truncate">
                     ₹{outputs.totalPayable.toLocaleString('en-IN')}
                   </div>
                 </div>

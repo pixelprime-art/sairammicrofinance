@@ -3,8 +3,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { mockDb } from '../services/mockDb';
 import type { Notification } from '../services/mockDb';
-import { 
-  Search, Bell, ChevronDown, Menu, X, User, Lock, Mail, 
+import {
+  Search, Bell, ChevronDown, Menu, X, User, Lock, Mail,
   HelpCircle, LogOut, Check, ArrowRight, Shield, PhoneCall,
   MoreVertical
 } from 'lucide-react';
@@ -16,18 +16,19 @@ export const Navbar: React.FC = () => {
   const location = useLocation();
   const [isSticky, setIsSticky] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+  const [searchFocused, setSearchFocused] = useState(false);
+
   // Dropdowns
   const [helpDropdownOpen, setHelpDropdownOpen] = useState(false);
   const [discoverDropdownOpen, setDiscoverDropdownOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
-  
+
   // Modals & Search
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<{ label: string; path: string; desc: string }[]>([]);
-  
+
   // Auth Form State
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,16 +47,18 @@ export const Navbar: React.FC = () => {
   const searchRef = useRef<HTMLDivElement>(null);
   const moreMenuRef = useRef<HTMLDivElement>(null);
 
-  // Monitor scroll for sticky navbar
+  // Monitor scroll for fixed navbar
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 80) {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY > 40) {
         setIsSticky(true);
       } else {
         setIsSticky(false);
       }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -158,15 +161,15 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="w-full z-50 font-sans">
+      <header className="w-full z-50 font-sans sticky top-0 shadow-sm">
         {/* TOP NAVBAR */}
         <div className="bg-primary text-white py-3 px-4 sm:px-8 flex justify-between items-center border-b border-navy-light text-sm">
           {/* Left: Brand Logo & Name */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 bg-white rounded-xl p-1 flex items-center justify-center shadow-md border border-secondary/40 group-hover:scale-105 transition-transform duration-300">
-              <img 
-                src="/logo.png" 
-                alt="Nayak Sairam Logo" 
+              <img
+                src="/logo.png"
+                alt="Nayak Sairam Logo"
                 className="w-full h-full object-contain"
                 onError={(e) => {
                   // Fallback if logo fails to load
@@ -176,7 +179,7 @@ export const Navbar: React.FC = () => {
             </div>
             <div className="flex flex-col">
               <span className="font-display font-bold tracking-wide text-base leading-none text-white flex items-center gap-1">
-                NAYAK SAIRAM
+                SAIRAM
               </span>
               <span className="text-[10px] tracking-[0.15em] text-secondary font-semibold uppercase leading-none mt-1">
                 Micro Finance
@@ -189,10 +192,10 @@ export const Navbar: React.FC = () => {
             <Link to="/about" className="hover:text-secondary font-medium tracking-wide transition-colors">
               About Us
             </Link>
-            
+
             {/* Notification Bell */}
             <div className="relative" ref={notifRef}>
-              <button 
+              <button
                 onClick={toggleNotifDropdown}
                 className="relative p-1.5 rounded-lg bg-navy-dark hover:bg-navy-light transition-all flex items-center justify-center cursor-pointer"
                 aria-label="Notifications"
@@ -223,7 +226,7 @@ export const Navbar: React.FC = () => {
                         </span>
                       )}
                     </div>
-                    
+
                     <div className="max-h-80 overflow-y-auto divide-y divide-slate-100 custom-scrollbar">
                       {notifications.length === 0 ? (
                         <div className="p-8 text-center text-slate-400">
@@ -232,8 +235,8 @@ export const Navbar: React.FC = () => {
                         </div>
                       ) : (
                         notifications.map((notif) => (
-                          <div 
-                            key={notif.id} 
+                          <div
+                            key={notif.id}
                             className={`p-4 transition-colors hover:bg-slate-50 ${!notif.isRead ? 'bg-slate-50/70 border-l-4 border-secondary' : ''}`}
                           >
                             <div className="flex justify-between items-start gap-2 mb-1">
@@ -259,24 +262,22 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* MAIN NAVBAR */}
-        <div className={`w-full py-4 px-4 sm:px-8 transition-all duration-300 flex justify-between items-center z-40 ${
-          isSticky 
-            ? 'sticky top-0 bg-white/95 backdrop-blur-md shadow-md border-b border-slate-100 py-3' 
-            : 'bg-white border-b border-slate-200'
-        }`}>
+        <div className={`transition-all duration-300 flex justify-between items-center z-40 w-full ${isSticky
+          ? 'bg-white/95 backdrop-blur-md shadow-md border-b border-slate-100 py-3 px-4 sm:px-8'
+          : 'bg-white border-b border-slate-200 py-4 px-4 sm:px-8'
+          }`}>
           {/* Main Navigation Links */}
           <nav className="hidden lg:flex items-center gap-8">
-            <Link 
-              to="/" 
-              className={`font-semibold text-sm tracking-wide transition-colors ${
-                location.pathname === '/' ? 'text-primary' : 'text-slate-600 hover:text-primary'
-              }`}
+            <Link
+              to="/"
+              className={`font-semibold text-sm tracking-wide transition-colors ${location.pathname === '/' ? 'text-primary' : 'text-slate-600 hover:text-primary'
+                }`}
             >
               Home
             </Link>
 
             {/* Need Help Dropdown */}
-            <div 
+            <div
               className="relative"
               onMouseEnter={() => setHelpDropdownOpen(true)}
               onMouseLeave={() => setHelpDropdownOpen(false)}
@@ -304,17 +305,16 @@ export const Navbar: React.FC = () => {
             </div>
 
             {/* EMI Calculator */}
-            <Link 
-              to="/calculator" 
-              className={`font-semibold text-sm tracking-wide transition-colors ${
-                location.pathname === '/calculator' ? 'text-primary' : 'text-slate-600 hover:text-primary'
-              }`}
+            <Link
+              to="/calculator"
+              className={`font-semibold text-sm tracking-wide transition-colors ${location.pathname === '/calculator' ? 'text-primary' : 'text-slate-600 hover:text-primary'
+                }`}
             >
               EMI Calculator
             </Link>
 
             {/* Discover Services Dropdown */}
-            <div 
+            <div
               className="relative"
               onMouseEnter={() => setDiscoverDropdownOpen(true)}
               onMouseLeave={() => setDiscoverDropdownOpen(false)}
@@ -338,11 +338,10 @@ export const Navbar: React.FC = () => {
               </AnimatePresence>
             </div>
 
-            <Link 
-              to="/contact" 
-              className={`font-semibold text-sm tracking-wide transition-colors ${
-                location.pathname === '/contact' ? 'text-primary' : 'text-slate-600 hover:text-primary'
-              }`}
+            <Link
+              to="/contact"
+              className={`font-semibold text-sm tracking-wide transition-colors ${location.pathname === '/contact' ? 'text-primary' : 'text-slate-600 hover:text-primary'
+                }`}
             >
               Contact Us
             </Link>
@@ -350,9 +349,9 @@ export const Navbar: React.FC = () => {
 
           {/* Right Area: Search, Auth buttons, Apply Button */}
           <div className="flex items-center gap-4 w-full lg:w-auto justify-between lg:justify-end">
-            
+
             {/* Mobile Menu Toggle */}
-            <button 
+            <button
               className="lg:hidden p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer"
               onClick={() => setMobileMenuOpen(true)}
             >
@@ -360,16 +359,47 @@ export const Navbar: React.FC = () => {
             </button>
 
             <div className="flex items-center gap-3">
-              {/* Search Box */}
               <div className="relative" ref={searchRef}>
-                <div className="flex items-center bg-slate-100 border border-slate-200 rounded-lg py-1.5 px-3 w-40 sm:w-56 focus-within:w-64 focus-within:bg-white focus-within:border-primary/50 transition-all duration-300">
+                <div className="relative flex items-center bg-slate-100 border border-slate-200 rounded-lg py-1.5 px-3 w-40 sm:w-56 focus-within:w-64 focus-within:bg-white transition-all duration-300">
+
+                  {/* Animated blue stroke ring */}
+                  <svg
+                    className="pointer-events-none absolute inset-0 w-full h-full"
+                    style={{ overflow: 'visible', borderRadius: '8px' }}
+                  >
+                    <defs>
+                      <linearGradient id="search-blue-gradient" x1="0%" y1="0%" x2="100%" y2="100%" gradientUnits="objectBoundingBox">
+                        <stop offset="0%" stopColor="#3b82f6" />
+                        <stop offset="50%" stopColor="#60a5fa" />
+                        <stop offset="100%" stopColor="#bfdbfe" />
+                        <animateTransform
+                          attributeName="gradientTransform"
+                          type="rotate"
+                          from="0 0.5 0.5"
+                          to="360 0.5 0.5"
+                          dur="2s"
+                          repeatCount="indefinite"
+                        />
+                      </linearGradient>
+                    </defs>
+                    <rect
+                      x="0" y="0"
+                      width="100%" height="100%"
+                      rx="8" ry="8"
+                      fill="none"
+                      stroke="url(#search-blue-gradient)"
+                      strokeWidth="2"
+                    />
+                  </svg>
+
                   <Search className="w-4 h-4 text-slate-400 mr-2 flex-shrink-0" />
                   <input
                     type="text"
                     placeholder="Search services..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    onFocus={() => setSearchOpen(true)}
+                    onFocus={() => { setSearchOpen(true); setSearchFocused(true); }}
+                    onBlur={() => setSearchFocused(false)}
                     className="w-full bg-transparent text-sm focus:outline-none text-slate-800 placeholder-slate-400"
                   />
                   {searchQuery && (
@@ -403,8 +433,8 @@ export const Navbar: React.FC = () => {
               </div>
 
               {/* Apply Loan CTA Button */}
-              <Link 
-                to="/apply" 
+              <Link
+                to="/apply"
                 className="hidden sm:inline-flex bg-secondary hover:bg-gold-hover text-primary font-bold text-xs px-4 py-2 rounded-lg transition-all shadow-md items-center gap-1.5 pulse-gold font-display"
               >
                 Apply Loan
@@ -431,8 +461,8 @@ export const Navbar: React.FC = () => {
                       {isAuthenticated ? (
                         <div className="flex flex-col">
                           {isAdmin ? (
-                            <Link 
-                              to="/admin" 
+                            <Link
+                              to="/admin"
                               onClick={() => setMoreMenuOpen(false)}
                               className="px-4 py-2.5 hover:bg-slate-50 text-slate-700 hover:text-primary font-semibold text-xs flex items-center gap-2 transition-colors"
                             >
@@ -443,7 +473,7 @@ export const Navbar: React.FC = () => {
                               Hello, {user?.fullName.split(' ')[0]}
                             </div>
                           )}
-                          <button 
+                          <button
                             onClick={() => {
                               logout();
                               setMoreMenuOpen(false);
@@ -454,7 +484,7 @@ export const Navbar: React.FC = () => {
                           </button>
                         </div>
                       ) : (
-                        <button 
+                        <button
                           onClick={() => {
                             setLoginModalOpen(true);
                             setMoreMenuOpen(false);
@@ -478,7 +508,7 @@ export const Navbar: React.FC = () => {
         {mobileMenuOpen && (
           <div className="fixed inset-0 z-50 lg:hidden flex">
             {/* Backdrop */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
@@ -486,7 +516,7 @@ export const Navbar: React.FC = () => {
               onClick={() => setMobileMenuOpen(false)}
             />
             {/* Drawer Body */}
-            <motion.div 
+            <motion.div
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
@@ -500,7 +530,7 @@ export const Navbar: React.FC = () => {
                   </div>
                   <span className="font-display font-extrabold text-sm tracking-wide text-primary">NAYAK SAIRAM</span>
                 </Link>
-                <button 
+                <button
                   onClick={() => setMobileMenuOpen(false)}
                   className="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 cursor-pointer"
                 >
@@ -511,7 +541,7 @@ export const Navbar: React.FC = () => {
               {/* Nav links */}
               <div className="flex flex-col gap-6 text-sm">
                 <Link to="/" onClick={() => setMobileMenuOpen(false)} className="font-semibold text-slate-800 hover:text-primary">Home</Link>
-                
+
                 {/* Expandable Need Help */}
                 <div>
                   <div className="font-bold text-xs uppercase text-slate-400 tracking-wider mb-2">Need Help</div>
@@ -542,15 +572,15 @@ export const Navbar: React.FC = () => {
 
               {/* Mobile CTA */}
               <div className="mt-auto pt-8 flex flex-col gap-3">
-                <Link 
-                  to="/apply" 
+                <Link
+                  to="/apply"
                   onClick={() => setMobileMenuOpen(false)}
                   className="w-full bg-secondary hover:bg-gold-hover text-primary font-bold text-sm py-3 rounded-xl text-center shadow-md flex justify-center items-center gap-1.5"
                 >
                   Apply Loan <ArrowRight className="w-4 h-4" />
                 </Link>
                 {isAuthenticated ? (
-                  <button 
+                  <button
                     onClick={() => {
                       logout();
                       setMobileMenuOpen(false);
@@ -560,7 +590,7 @@ export const Navbar: React.FC = () => {
                     <LogOut className="w-4 h-4" /> Logout
                   </button>
                 ) : (
-                  <button 
+                  <button
                     onClick={() => {
                       setMobileMenuOpen(false);
                       setLoginModalOpen(true);
@@ -581,7 +611,7 @@ export const Navbar: React.FC = () => {
         {loginModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             {/* Overlay */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.6 }}
               exit={{ opacity: 0 }}
@@ -596,7 +626,7 @@ export const Navbar: React.FC = () => {
               className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden relative z-50 p-6 sm:p-8"
             >
               {/* Close Button */}
-              <button 
+              <button
                 onClick={() => setLoginModalOpen(false)}
                 className="absolute top-4 right-4 p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 cursor-pointer"
               >
@@ -611,8 +641,8 @@ export const Navbar: React.FC = () => {
                   {isRegistering ? 'Create Customer Account' : 'Welcome to Nayak Sairam'}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1">
-                  {isRegistering 
-                    ? 'Register to track loans and uploads' 
+                  {isRegistering
+                    ? 'Register to track loans and uploads'
                     : 'Log in to apply and manage applications'}
                 </p>
               </div>
@@ -717,12 +747,12 @@ export const Navbar: React.FC = () => {
                 >
                   {isRegistering ? 'Already have an account? Log In' : 'Create Customer Account'}
                 </button>
-                
+
                 {/* Admin Quick Credentials Tip */}
                 {!isRegistering && (
                   <div className="text-[10px] text-slate-400 bg-slate-50 p-1.5 rounded border border-slate-200 max-w-[150px] text-left leading-normal">
-                    <span className="font-bold text-slate-500">Admin Login:</span><br/>
-                    admin@nayaksairam.com<br/>
+                    <span className="font-bold text-slate-500">Admin Login:</span><br />
+                    admin@nayaksairam.com<br />
                     pw: admin123
                   </div>
                 )}
