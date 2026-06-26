@@ -16,7 +16,7 @@ export const Navbar: React.FC = () => {
   const location = useLocation();
   const [isSticky, setIsSticky] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchFocused, setSearchFocused] = useState(false);
+
 
   // Dropdowns
   const [helpDropdownOpen, setHelpDropdownOpen] = useState(false);
@@ -398,8 +398,8 @@ export const Navbar: React.FC = () => {
                     placeholder="Search services..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    onFocus={() => { setSearchOpen(true); setSearchFocused(true); }}
-                    onBlur={() => setSearchFocused(false)}
+                    onFocus={() => setSearchOpen(true)}
+                    onBlur={() => {}}
                     className="w-full bg-transparent text-sm focus:outline-none text-slate-800 placeholder-slate-400"
                   />
                   {searchQuery && (
