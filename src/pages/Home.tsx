@@ -401,6 +401,8 @@ export const Home: React.FC = () => {
                 src="/logo.png"
                 alt="Logo Concept Backdrop"
                 className="w-2/3 h-2/3 object-contain opacity-80"
+                fetchPriority="high"
+                decoding="async"
               />
 
               {/* Floating Stat Card */}
@@ -617,6 +619,8 @@ export const Home: React.FC = () => {
                           className={`absolute bottom-0 right-0 w-auto object-contain pointer-events-none z-0 transition-all duration-300 ${isCustomCard ? 'h-[112%] -mr-6 sm:-mr-8' : 'h-[96%]'
                             }`}
                           style={{ maxWidth: isCustomCard ? '56%' : '48%' }}
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     </motion.div>
@@ -1161,7 +1165,7 @@ export const Home: React.FC = () => {
                 className="group bg-white border border-slate-200/80 p-6 sm:p-8 rounded-[32px] flex flex-col justify-center items-center text-center space-y-4 shadow-sm hover:shadow-xl hover:border-primary/20 hover:-translate-y-1.5 hover:ring-1 hover:ring-primary/10 transition-all duration-300"
               >
                 <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white ring-4 ring-primary/10 shadow-lg mb-2 flex items-center justify-center bg-slate-50 shrink-0 transition-transform duration-300 group-hover:scale-105">
-                  <img src={benefit.image} alt={benefit.label} className="w-full h-full object-cover" />
+                  <img src={benefit.image} alt={benefit.label} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                 </div>
                 <h3 className="font-extrabold text-sm sm:text-base text-slate-900 tracking-tight">{benefit.label}</h3>
                 <span className="text-xs sm:text-sm text-slate-600 font-semibold leading-relaxed">{benefit.desc}</span>
@@ -1209,7 +1213,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col items-center text-center space-y-4 group transition-all duration-300 lg:translate-y-8 lg:-translate-x-30">
               {/* Circular Avatar */}
               <div className="w-36 h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-50 shrink-0 transform hover:scale-105 transition-transform duration-300">
-                <img src="/testimonial_ramesh.png" alt="Ramesh K. Kumar" className="w-full h-full object-cover" />
+                <img src="/testimonial_ramesh.png" alt="Ramesh K. Kumar" className="w-full h-full object-cover" loading="lazy" decoding="async" />
               </div>
 
               {/* Testimonial Quote */}
@@ -1238,7 +1242,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col items-center text-center space-y-4 group transition-all duration-300 lg:translate-y-25 lg:-translate-x-15">
               {/* Circular Avatar */}
               <div className="w-44 h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-50 shrink-0 transform hover:scale-105 transition-transform duration-300">
-                <img src="/testimonial_priyanka.png" alt="Priyanka Sen" className="w-full h-full object-cover" />
+                <img src="/testimonial_priyanka.png" alt="Priyanka Sen" className="w-full h-full object-cover" loading="lazy" decoding="async" />
               </div>
 
               {/* Testimonial Quote */}
@@ -1267,7 +1271,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col items-center text-center space-y-4 group transition-all duration-300 lg:translate-y-24 lg:translate-x-15">
               {/* Circular Avatar */}
               <div className="w-44 h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-50 shrink-0 transform hover:scale-105 transition-transform duration-300">
-                <img src="/testimonial_arun.png" alt="Arun Deshmukh" className="w-full h-full object-cover" />
+                <img src="/testimonial_arun.png" alt="Arun Deshmukh" className="w-full h-full object-cover" loading="lazy" decoding="async" />
               </div>
 
               {/* Testimonial Quote */}
@@ -1296,7 +1300,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col items-center text-center space-y-4 group transition-all duration-300 lg:translate-y-8 lg:translate-x-30">
               {/* Circular Avatar */}
               <div className="w-36 h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-50 shrink-0 transform hover:scale-105 transition-transform duration-300">
-                <img src="/testimonial_meenakshi.png" alt="Meenakshi Iyer" className="w-full h-full object-cover" />
+                <img src="/testimonial_meenakshi.png" alt="Meenakshi Iyer" className="w-full h-full object-cover" loading="lazy" decoding="async" />
               </div>
 
               {/* Testimonial Quote */}

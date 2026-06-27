@@ -171,6 +171,8 @@ export const Navbar: React.FC = () => {
                 src="/logo.png"
                 alt="Nayak Sairam Logo"
                 className="w-full h-full object-contain"
+                fetchPriority="high"
+                decoding="async"
                 onError={(e) => {
                   // Fallback if logo fails to load
                   (e.target as HTMLElement).style.display = 'none';
@@ -526,7 +528,7 @@ export const Navbar: React.FC = () => {
               <div className="flex justify-between items-center mb-8">
                 <Link to="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2">
                   <div className="w-8 h-8 bg-primary rounded-lg p-1 flex items-center justify-center">
-                    <img src="/logo.png" alt="" className="w-full h-full object-contain" />
+                    <img src="/logo.png" alt="" className="w-full h-full object-contain" decoding="async" />
                   </div>
                   <span className="font-display font-extrabold text-sm tracking-wide text-primary">NAYAK SAIRAM</span>
                 </Link>
@@ -635,7 +637,7 @@ export const Navbar: React.FC = () => {
 
               <div className="text-center mb-6">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <img src="/logo.png" alt="" className="w-8 h-8 object-contain" />
+                  <img src="/logo.png" alt="" className="w-8 h-8 object-contain" decoding="async" />
                 </div>
                 <h3 className="font-display font-bold text-xl text-primary">
                   {isRegistering ? 'Create Customer Account' : 'Welcome to Nayak Sairam'}
