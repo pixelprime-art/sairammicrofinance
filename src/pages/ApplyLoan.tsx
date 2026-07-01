@@ -151,8 +151,15 @@ export const ApplyLoan: React.FC = () => {
     <div className="w-full flex flex-col font-sans">
       
       {/* Header */}
-      <section className="bg-primary text-white py-12 px-4 sm:px-8 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-slate-950/20 z-0" />
+      <section 
+        className="bg-primary text-white py-12 px-4 sm:px-8 text-center relative overflow-hidden"
+        style={{
+          backgroundImage: "url('/applyloanbanner.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="absolute inset-0 bg-slate-950/60 z-0" />
         <div className="max-w-4xl mx-auto space-y-3 relative z-10">
           <span className="text-secondary text-xs font-bold uppercase tracking-widest bg-white/10 px-4 py-1 rounded-full">
             Application Portal
@@ -205,7 +212,7 @@ export const ApplyLoan: React.FC = () => {
                 </div>
                 <div>
                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Estimated EMI</span>
-                  <div className="text-xs font-bold text-slate-800 mt-0.5 text-secondary">₹{successApp.monthlyEMI.toLocaleString('en-IN')}/mo</div>
+                  <div className="text-xs font-bold mt-0.5 text-secondary">₹{successApp.monthlyEMI.toLocaleString('en-IN')}/mo</div>
                 </div>
               </div>
 
@@ -536,7 +543,7 @@ export const ApplyLoan: React.FC = () => {
                       </div>
 
                       <div className="p-4 bg-primary/5 rounded-xl border flex items-start gap-2.5">
-                        <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                        <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                         <p className="text-[10px] text-slate-500 leading-relaxed">
                           Your income data is cross-referenced with your bank statement uploads to determine the maximum credit threshold and eligible interest subsidies.
                         </p>

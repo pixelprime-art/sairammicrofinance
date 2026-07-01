@@ -277,7 +277,7 @@ export const CalculatorPage: React.FC = () => {
               <div className="w-full flex justify-between border-t border-navy-light pt-6">
                 <div className="text-left space-y-1">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-secondary flex-shrink-0" />
+                    <span className="w-2 h-2 rounded-full bg-secondary shrink-0" />
                     <span className="text-[9px] font-bold text-slate-300 uppercase truncate">Principal</span>
                   </div>
                   <div className="text-xs sm:text-sm font-extrabold font-display truncate">
@@ -287,7 +287,7 @@ export const CalculatorPage: React.FC = () => {
                 
                 <div className="text-center space-y-1 flex flex-col items-center">
                   <div className="flex items-center gap-1.5 justify-center">
-                    <span className="w-2 h-2 rounded-full bg-navy-light flex-shrink-0" />
+                    <span className="w-2 h-2 rounded-full bg-navy-light shrink-0" />
                     <span className="text-[9px] font-bold text-slate-300 uppercase truncate">Interest</span>
                   </div>
                   <div className="text-xs sm:text-sm font-extrabold font-display truncate">
@@ -297,7 +297,7 @@ export const CalculatorPage: React.FC = () => {
                 
                 <div className="text-right space-y-1 flex flex-col items-end">
                   <div className="flex items-center gap-1.5 justify-end">
-                    <span className="w-2 h-2 rounded-full bg-white flex-shrink-0" />
+                    <span className="w-2 h-2 rounded-full bg-white shrink-0" />
                     <span className="text-[9px] font-bold text-slate-300 uppercase truncate">Payable</span>
                   </div>
                   <div className="text-xs sm:text-sm font-extrabold font-display text-secondary truncate">
