@@ -18,7 +18,7 @@ export const Loans: React.FC = () => {
     <div className="w-full flex flex-col font-sans">
       
       {/* Header Banner */}
-      <section className="bg-[url('/loanbanner.png')] bg-cover bg-center bg-no-repeat text-white py-16 px-4 sm:px-8 text-center relative overflow-hidden">
+      <section className="bg-[url('/loanbanner.jpg')] bg-cover bg-center bg-no-repeat text-white py-16 px-4 sm:px-8 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-slate-950/20 z-0" />
         <div className="max-w-4xl mx-auto space-y-4 relative z-10">
           <span className="text-secondary text-xs font-bold uppercase tracking-widest bg-white/10 px-4 py-1.5 rounded-full">
