@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { FileText, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -26,7 +26,7 @@ export const TermsAndConditions: React.FC = () => {
 
         <div className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
           <p>
-            Welcome to the online application portals of <strong>Nayak Sairam Micro Finance</strong>. By applying for loans or using our EMI calculators, you agree to comply with the terms, conditions, and credit rules outlined below.
+            Welcome to the online application portals of <strong>Sairam Microfinance</strong>. By applying for loans or using our EMI calculators, you agree to comply with the terms, conditions, and credit rules outlined below.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">1. Credit Application Rules</h3>
@@ -46,7 +46,7 @@ export const TermsAndConditions: React.FC = () => {
 
           <h3 className="font-display font-bold text-base text-primary pt-4">4. Prepayment / Early Closure</h3>
           <p>
-            Borrowers reserve the right to close outstanding loans early after six successful EMI payments. Standard foreclosure guidelines apply as stated in the sanction letter. Nayak Sairam does not charge pre-payment penalties on selected subsidized schemes.
+            Borrowers reserve the right to close outstanding loans early after six successful EMI payments. Standard foreclosure guidelines apply as stated in the sanction letter. SAIRAM MICROFINANCE does not charge pre-payment penalties on selected subsidized schemes.
           </p>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { AlertTriangle, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -26,12 +26,12 @@ export const Disclaimer: React.FC = () => {
 
         <div className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
           <p>
-            The details and calculators hosted on <strong>Nayak Sairam Micro Finance</strong> website serve general informational and credit planning purposes. They do not constitute formal commercial loan commitments.
+            The details and calculators hosted on <strong>Sairam Microfinance</strong> website serve general informational and credit planning purposes. They do not constitute formal commercial loan commitments.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">1. Regulatory Registrations</h3>
           <p>
-            Nayak Sairam Micro Finance is registered as a Category-B Microfinance Institution under the Reserve Bank of India (RBI) guidelines. All credit schemes, subsidy structures, and group JLG loans strictly adhere to the operational guidelines issued by regulatory authorities.
+            Sairam Microfinance is registered as a Category-B Microfinance Institution under the Reserve Bank of India (RBI) guidelines. All credit schemes, subsidy structures, and group JLG loans strictly adhere to the operational guidelines issued by regulatory authorities.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">2. Calculator Outputs</h3>
@@ -46,7 +46,7 @@ export const Disclaimer: React.FC = () => {
 
           <h3 className="font-display font-bold text-base text-primary pt-4">4. No Administrative Charges Alert</h3>
           <p>
-            Nayak Sairam Micro Finance does not demand cash handouts, commissions, or advanced deposits to secure loan files or trigger document verification checks. Borrowers are warned to ignore fraudulent entities demanding money in the company's name.
+            Sairam Microfinance does not demand cash handouts, commissions, or advanced deposits to secure loan files or trigger document verification checks. Borrowers are warned to ignore fraudulent entities demanding money in the company's name.
           </p>
         </div>
       </div>

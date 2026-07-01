@@ -109,7 +109,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 18px;
   width: 18px;
   border-radius: 50%;
-  background: #003366; /* matches primary */
+  background: #CB9B36; /* gold accent */
   border: none;
   margin-top: -6px; /* (6px - 18px) / 2 */
   cursor: pointer;
@@ -129,7 +129,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 18px;
   width: 18px;
   border-radius: 50%;
-  background: #003366;
+  background: #CB9B36;
   border: none;
   cursor: pointer;
   transition: transform 0.1s ease;

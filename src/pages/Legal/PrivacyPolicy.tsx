@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { ShieldCheck, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -26,7 +26,7 @@ export const PrivacyPolicy: React.FC = () => {
 
         <div className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
           <p>
-            At <strong>Nayak Sairam Micro Finance</strong>, we prioritize the confidentiality and safety of your personal credentials and financial records. This Privacy Policy details our operational rules on collection, usage, and safeguarding of customer profiles.
+            At <strong>Sairam Microfinance</strong>, we prioritize the confidentiality and safety of your personal credentials and financial records. This Privacy Policy details our operational rules on collection, usage, and safeguarding of customer profiles.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">1. Information We Collect</h3>

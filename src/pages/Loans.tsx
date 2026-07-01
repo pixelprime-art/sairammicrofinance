@@ -18,7 +18,7 @@ export const Loans: React.FC = () => {
     <div className="w-full flex flex-col font-sans">
       
       {/* Header Banner */}
-      <section className="bg-primary text-white py-16 px-4 sm:px-8 text-center relative overflow-hidden">
+      <section className="bg-[url('/loanbanner.png')] bg-cover bg-center bg-no-repeat text-white py-16 px-4 sm:px-8 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-slate-950/20 z-0" />
         <div className="max-w-4xl mx-auto space-y-4 relative z-10">
           <span className="text-secondary text-xs font-bold uppercase tracking-widest bg-white/10 px-4 py-1.5 rounded-full">
@@ -82,7 +82,7 @@ export const Loans: React.FC = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {loan.features.map((feat, fIdx) => (
                         <div key={fIdx} className="flex items-center gap-2 text-xs text-slate-600">
-                          <Check className="w-4 h-4 text-secondary flex-shrink-0" />
+                          <Check className="w-4 h-4 text-secondary shrink-0" />
                           <span>{feat}</span>
                         </div>
                       ))}
@@ -111,11 +111,11 @@ export const Loans: React.FC = () => {
 
           {/* Audit Statement */}
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 flex items-start gap-4 text-left max-w-3xl mx-auto">
-            <AlertCircle className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
             <div>
               <h5 className="font-bold text-sm text-amber-800">Important Credit Notice</h5>
               <p className="text-xs text-amber-700 leading-relaxed mt-1">
-                Loan approvals are strictly subject to credit policy rules and basic verification checks on uploaded Aadhaar, PAN, and income details. Nayak Sairam Micro Finance does not demand prepayment commissions or cash handouts for file verification. Please report administrative issues to our audit helpline.
+                Loan approvals are strictly subject to credit policy rules and basic verification checks on uploaded Aadhaar, PAN, and income details. Sairam Microfinance does not demand prepayment commissions or cash handouts for file verification. Please report administrative issues to our audit helpline.
               </p>
             </div>
           </div>

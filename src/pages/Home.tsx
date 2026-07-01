@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { mockDb } from '../services/mockDb';
+import { FaWhatsapp } from "react-icons/fa";
 import type { LoanType } from '../services/mockDb';
 import {
   CheckCircle2, ArrowRight, ShieldCheck, Zap, Coins, Users2,
@@ -261,7 +262,14 @@ export const Home: React.FC = () => {
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!contactName || !contactPhone || !contactMessage) return;
-    mockDb.createContactMessage(contactName, contactPhone, contactSubject, contactMessage);
+
+    // Send to info@sairamfinance.com via mailto
+    const subject = encodeURIComponent(`Enquiry: ${contactSubject}`);
+    const body = encodeURIComponent(
+      `Name: ${contactName}\nPhone: ${contactPhone}\nSubject: ${contactSubject}\n\nMessage:\n${contactMessage}`
+    );
+    window.location.href = `mailto:info@sairamfinance.com?subject=${subject}&body=${body}`;
+
     setFormSubmitted(true);
     setTimeout(() => {
       setContactName('');
@@ -276,13 +284,13 @@ export const Home: React.FC = () => {
   const faqData = {
     loans: [
       { id: 1, q: "What is the maximum loan amount I can apply for?", a: "For personal loans, you can apply for up to ₹5 Lakhs. For MSME business loans, the maximum limit is ₹25 Lakhs, subject to eligibility check and verification." },
-      { id: 2, q: "Does Nayak Sairam Micro Finance require collateral for all loans?", a: "No. Our Personal Loans, Women's Empowerment Loans, and Emergency Loans are completely collateral-free. Only MSME Business Loans and Gold Loans require security/collateral." },
+      { id: 2, q: "Does Sairam Microfinance require collateral for all loans?", a: "No. Our Personal Loans, Women's Empowerment Loans, and Emergency Loans are completely collateral-free. Only MSME Business Loans and Gold Loans require security/collateral." },
       { id: 9, q: "How long does it take for a loan to get approved and disbursed?", a: "Once you submit your enquiry and KYC documents, initial approval takes 24-48 hours. Post final approval, the loan amount is disbursed directly into your bank account within 2 hours." },
       { id: 10, q: "Who is eligible to apply for a Women's Empowerment Loan?", a: "Any woman entrepreneur or self-help group of women aged 18 to 60 running a micro-enterprise or wishing to start a new business is eligible. No prior credit score is required for group-lending setups." }
     ],
     investments: [
       { id: 3, q: "What micro-investment options are available?", a: "We offer fixed deposits and recurring micro-investment schemes starting at just ₹1,000 per month with competitive interest yields. Fill out our Investment Enquiry Form to learn more." },
-      { id: 4, q: "Are my investments secure with Nayak Sairam?", a: "Yes. Our operations follow rigid regulatory guidelines, and our security models maintain institutional vault and backup architectures." },
+      { id: 4, q: "Are my investments secure with SAIRAM MICROFINANCE?", a: "Yes. Our operations follow rigid regulatory guidelines, and our security models maintain institutional vault and backup architectures." },
       { id: 11, q: "Can I withdraw my Fixed Deposit investment before maturity?", a: "Yes, premature withdrawal is permitted. The interest rate applicable will be based on the actual tenure the deposit remained with us, subject to a nominal penalty fee of 1%." },
       { id: 12, q: "Do you offer recurring deposit (RD) schemes for small savers?", a: "Yes! Our Recurring Micro-Investment scheme allows you to invest as little as ₹1,000 monthly, helping farmers and micro-business owners build savings systematically." }
     ],
@@ -308,17 +316,15 @@ export const Home: React.FC = () => {
   return (
     <div className="w-full flex flex-col">
       {/* 2. HERO SECTION */}
-      <section className="relative min-h-[85vh] flex items-center justify-center hero-gradient text-white overflow-hidden py-16 px-4 sm:px-8">
-        <div className="absolute inset-0 bg-slate-950/20 z-0" />
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-
-          {/* Left Text details */}
-          <div className="lg:col-span-7 space-y-6 text-left">
+      <section className="relative w-full min-h-[75vh] flex items-center justify-start bg-[url('/herobanner.png')] bg-cover bg-center bg-no-repeat overflow-hidden py-16 px-4 sm:px-8">
+        <div className="absolute inset-0 bg-slate-950/50 z-0" />
+        <div className="max-w-7xl mx-auto w-full relative z-10 text-left">
+          <div className="space-y-6 max-w-2xl mt-8">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 bg-secondary/15 border border-secondary/30 text-secondary text-xs font-bold px-3.5 py-1.5 rounded-full"
+              className="inline-flex items-center gap-2 bg-secondary/20 border border-secondary/40 text-secondary text-xs font-bold px-3.5 py-1.5 rounded-full backdrop-blur-sm"
             >
               <Award className="w-4 h-4" /> Trusted Banking Partner Since 2015
             </motion.div>
@@ -337,87 +343,11 @@ export const Home: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-slate-200 text-base sm:text-lg max-w-xl leading-relaxed"
+              className="text-slate-100 text-base sm:text-lg leading-relaxed"
             >
               Providing affordable loans and investment opportunities to help individuals, families, entrepreneurs, and farmers achieve financial growth.
             </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap gap-4 pt-4"
-            >
-              <Link
-                to="/apply"
-                className="bg-secondary hover:bg-gold-hover text-primary font-extrabold px-8 py-3.5 rounded-xl shadow-lg transition-all flex items-center gap-2 hover:-translate-y-0.5 duration-300"
-              >
-                Apply for Loan <ArrowRight className="w-4 h-4 text-primary" />
-              </Link>
-              <a
-                href="#services"
-                className="bg-transparent border border-slate-300 hover:border-white text-white font-bold px-8 py-3.5 rounded-xl hover:bg-white/5 transition-all duration-300"
-              >
-                Explore Services
-              </a>
-            </motion.div>
-
-            {/* Checkmarks Grid */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="grid grid-cols-2 gap-4 pt-8 border-t border-navy-light/40 max-w-lg"
-            >
-              <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-5 h-5 text-secondary" />
-                <span className="text-sm font-semibold text-slate-100">Quick Approval</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-5 h-5 text-secondary" />
-                <span className="text-sm font-semibold text-slate-100">Low Interest Rates</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-5 h-5 text-secondary" />
-                <span className="text-sm font-semibold text-slate-100">Secure Process</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <CheckCircle2 className="w-5 h-5 text-secondary" />
-                <span className="text-sm font-semibold text-slate-100">Trusted Microfinance Partner</span>
-              </div>
-            </motion.div>
           </div>
-
-          {/* Right Banner Image & Floating Card */}
-          <div className="lg:col-span-5 relative flex justify-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="relative w-full max-w-md aspect-square bg-gradient-to-tr from-primary/30 to-white/10 rounded-3xl border border-white/10 p-2 shadow-2xl overflow-hidden flex items-center justify-center animate-float"
-            >
-              <div className="absolute inset-0 bg-primary/20 backdrop-blur-[2px]" />
-              <img
-                src="/logo.png"
-                alt="Logo Concept Backdrop"
-                className="w-2/3 h-2/3 object-contain opacity-80"
-                fetchPriority="high"
-                decoding="async"
-              />
-
-              {/* Floating Stat Card */}
-              <div className="absolute bottom-6 left-6 right-6 glass-card-navy p-4 rounded-2xl flex items-center gap-4 text-left border border-white/20">
-                <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-[10px] text-secondary font-bold uppercase tracking-widest">Trust & Security</div>
-                  <div className="text-sm font-bold text-white">RBI Registered MFI Partner</div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
         </div>
       </section>
 
@@ -732,7 +662,7 @@ export const Home: React.FC = () => {
                         "Minimum net monthly income of Rs. 15,000"
                       ].map((item, idx) => (
                         <div key={idx} className="bg-[#e2f6ff] border border-[#E9D5FF] py-3.5 px-4 rounded-xl flex items-center gap-3 shadow-[0_1px_2px_rgba(0,0,0,0.01)] text-[#000000] font-semibold text-[11px] sm:text-xs">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#00a1fe] flex-shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#00a1fe] shrink-0" />
                           <span className="leading-normal">{item}</span>
                         </div>
                       ))}
@@ -769,7 +699,7 @@ export const Home: React.FC = () => {
                         "Aadhaar Card"
                       ].map((item, idx) => (
                         <div key={idx} className="bg-[#F0FDF4] border border-[#BBF7D0] py-3.5 px-4 rounded-xl flex items-center gap-3 shadow-[0_1px_2px_rgba(0,0,0,0.01)] text-[#14532D] font-semibold text-[11px] sm:text-xs">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] flex-shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] shrink-0" />
                           <span className="leading-normal">{item}</span>
                         </div>
                       ))}
@@ -909,13 +839,13 @@ export const Home: React.FC = () => {
 
       {/* 7. EMI CALCULATOR SECTION */}
       <section className="py-24 px-4 sm:px-8 bg-white text-slate-800 scroll-mt-20" id="emi-calculator">
-        <div className="max-w-7xl mx-auto space-y-12">
+        <div className="max-w-7xl mx-auto space-y-4 bg-[#f0f0f0] rounded-2xl p-8 shadow-lg">
 
-          <div className="space-y-4 text-center max-w-2xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/5 px-3 py-1 rounded-full">
+          <div className="space-y-4 text-center max-w-2xl mx-auto ">
+            <span className="text-xs font-bold uppercase tracking-widest text-black bg-primary/5 px-3 py-1 rounded-full ">
               EMI Calculator
             </span>
-            <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-primary">
+            <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-black mt-2">
               Calculate Your Monthly Installment
             </h2>
             <p className="text-slate-500 text-sm leading-relaxed">
@@ -927,9 +857,9 @@ export const Home: React.FC = () => {
           <div className="border-b border-slate-200 w-full overflow-x-auto no-scrollbar flex justify-start lg:justify-center">
             <div className="flex gap-8 px-4 pb-0.5 min-w-max">
               {[
-                { id: 'personal', label: 'Personal Loan', icon: User, color: 'text-[#E11D48]' },
-                { id: 'msme', label: 'MSME Loan', icon: Briefcase, color: 'text-[#E11D48]' },
-                { id: 'agri', label: 'Agri/Harvest Mode', icon: Sprout, color: 'text-slate-400' }
+                { id: 'personal', label: 'Personal Loan', icon: User, color: 'text-[#232d52]' },
+                { id: 'msme', label: 'MSME Loan', icon: Briefcase, color: 'text-[#232d52]' },
+                { id: 'agri', label: 'Agri/Harvest Mode', icon: Sprout, color: 'text-[#232d52]' }
               ].map((tab) => {
                 const IconComponent = tab.icon;
                 const isActive = calculatorTab === tab.id;
@@ -937,12 +867,12 @@ export const Home: React.FC = () => {
                   <button
                     key={tab.id}
                     onClick={() => handleTabChange(tab.id as any)}
-                    className={`flex items-center gap-2.5 py-4 px-1 border-b-2 text-sm font-semibold transition-all cursor-pointer ${isActive
+                    className={`flex items-center gap-2.5 py-4 px-1 border-b-2 text-md font-semibold transition-all cursor-pointer ${isActive
                       ? 'border-primary text-primary font-bold'
                       : 'border-transparent text-slate-500 hover:text-primary hover:border-slate-300'
                       }`}
                   >
-                    <IconComponent className={`w-4 h-4 ${isActive ? 'text-[#E11D48]' : tab.color}`} />
+                    <IconComponent className={`w-4 h-4 ${isActive ? 'text-[#CB9B36]' : tab.color}`} />
                     {tab.label}
                   </button>
                 );
@@ -953,7 +883,7 @@ export const Home: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
             {/* Sliders Input Panel */}
-            <div className="lg:col-span-7 bg-slate-50 border border-slate-200 p-8 rounded-3xl shadow-sm space-y-6">
+            <div className="lg:col-span-7  p-8 space-y-6">
 
               {/* Slider 1: Loan Amount / Deposit Amount */}
               <div className="space-y-2 text-left">
@@ -964,13 +894,22 @@ export const Home: React.FC = () => {
                   <div className="relative flex items-center">
                     <span className="absolute left-3 text-xs font-bold text-slate-400">₹</span>
                     <input
-                      type="number"
-                      value={loanAmount || ''}
+                      type="text"
+                      value={loanAmount.toLocaleString("en-IN")}
                       onChange={(e) => {
-                        const val = e.target.value === '' ? 0 : Number(e.target.value);
-                        setLoanAmount(Math.min(config.amount.max * 1.5, val));
+                        const value = e.target.value.replace(/,/g, "");
+                        const numericValue = Number(value);
+
+                        if (value === "") {
+                          setLoanAmount(0);
+                          return;
+                        }
+
+                        if (!Number.isNaN(numericValue)) {
+                          setLoanAmount(numericValue);
+                        }
                       }}
-                      className="bg-white border border-slate-200 rounded-lg py-1 px-3 pl-6 text-xs sm:text-sm text-primary font-bold focus:outline-none focus:border-primary/50 w-28 sm:w-32 text-right transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)] focus:ring-2 focus:ring-primary/5"
+                      className="bg-white border border-slate-200 rounded-lg py-1 px-3 pr-6 text-xs sm:text-sm text-primary font-bold focus:outline-none focus:border-primary/50 w-32 text-right transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.02)] focus:ring-2 focus:ring-primary/5"
                     />
                   </div>
                 </div>
@@ -983,7 +922,7 @@ export const Home: React.FC = () => {
                   onChange={(e) => setLoanAmount(Number(e.target.value))}
                   className="w-full custom-slider bg-[#E2E8F0] cursor-pointer"
                   style={{
-                    background: `linear-gradient(to right, #003366 0%, #003366 ${loanAmountPercent}%, #E2E8F0 ${loanAmountPercent}%, #E2E8F0 100%)`
+                    background: `linear-gradient(to right, #232d52 0%, #232d52 ${loanAmountPercent}%, #E2E8F0 ${loanAmountPercent}%, #E2E8F0 100%)`
                   }}
                 />
                 <div className="flex justify-between text-[10px] text-slate-400 font-semibold">
@@ -1019,7 +958,7 @@ export const Home: React.FC = () => {
                   onChange={(e) => setInterestRate(Number(e.target.value))}
                   className="w-full custom-slider bg-[#E2E8F0] cursor-pointer"
                   style={{
-                    background: `linear-gradient(to right, #003366 0%, #003366 ${interestRatePercent}%, #E2E8F0 ${interestRatePercent}%, #E2E8F0 100%)`
+                    background: `linear-gradient(to right, #232d52 0%, #232d52 ${interestRatePercent}%, #E2E8F0 ${interestRatePercent}%, #E2E8F0 100%)`
                   }}
                 />
                 <div className="flex justify-between text-[10px] text-slate-400 font-semibold">
@@ -1061,7 +1000,7 @@ export const Home: React.FC = () => {
                   onChange={(e) => setLoanTenure(Number(e.target.value))}
                   className="w-full custom-slider bg-[#E2E8F0] cursor-pointer"
                   style={{
-                    background: `linear-gradient(to right, #003366 0%, #003366 ${loanTenurePercent}%, #E2E8F0 ${loanTenurePercent}%, #E2E8F0 100%)`
+                    background: `linear-gradient(to right, #232d52 0%, #232d52 ${loanTenurePercent}%, #E2E8F0 ${loanTenurePercent}%, #E2E8F0 100%)`
                   }}
                 />
                 <div className="flex justify-between text-[10px] text-slate-400 font-semibold">
@@ -1077,7 +1016,7 @@ export const Home: React.FC = () => {
                 </span>
                 <div className="space-y-0.5">
                   <span className="text-xs font-bold text-slate-700 block">Illustrative Repayment T&C</span>
-                  <p className="text-[10px] text-slate-400 font-medium leading-relaxed uppercase tracking-wide">
+                  <p className="text-[12px] text-slate-400  tracking-wide">
                     Figures are indicative. Interest rates and tenures depend on custom verification and credit rating protocols.
                   </p>
                 </div>
@@ -1086,10 +1025,10 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Calculations Result Panel */}
-            <div className="lg:col-span-5 bg-gradient-to-br from-white to-[#F3F8FF] border border-blue-100/70 p-6 sm:p-8 rounded-[32px] shadow-[0_4px_30px_rgba(0,51,102,0.015)] flex flex-col justify-between min-h-[400px] text-left relative overflow-hidden">
+            <div className="lg:col-span-5 bg-linear-to-br from-white to-[#F3F8FF] border border-blue-100/70 p-6 sm:p-8 rounded-[32px] shadow-[0_4px_30px_rgba(0,51,102,0.015)] flex flex-col justify-between min-h-[400px] text-left relative overflow-hidden">
 
               {/* EMI Banner (Top Box) */}
-              <div className="bg-gradient-to-r from-[#DCEEFE]/70 to-[#EBF5FF]/50 border border-blue-100/50 p-6 rounded-2xl text-center space-y-1.5 shadow-[inset_0_1px_2px_rgba(255,255,255,0.6)]">
+              <div className="bg-linear-to-r from-[#DCEEFE]/70 to-[#EBF5FF]/50 border border-blue-100/50 p-6 rounded-2xl text-center space-y-1.5 shadow-[inset_0_1px_2px_rgba(255,255,255,0.6)]">
                 <span className="block text-xs sm:text-sm font-semibold text-[#003366]/80">
                   Your Monthly EMI will be
                 </span>
@@ -1121,15 +1060,15 @@ export const Home: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-3 mt-2">
                 <Link
                   to="/apply"
-                  className="flex-1 bg-primary hover:bg-navy-dark text-white font-bold text-xs py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="flex-1 bg-primary hover:bg-navy-dark text-white font-bold text-md py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   Apply Now <ChevronRight className="w-3.5 h-3.5 text-secondary" />
                 </Link>
                 <Link
                   to="/loans"
-                  className="flex-1 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs py-3.5 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="flex-1 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-md py-3.5 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  Know More <ChevronRight className="w-3.5 h-3.5 text-[#E11D48]" />
+                  Know More <ChevronRight className="w-3.5 h-3.5 text-[#4c4b4b]" />
                 </Link>
               </div>
 
@@ -1424,11 +1363,11 @@ export const Home: React.FC = () => {
               Our Networks
             </span>
             <h2 className="font-display font-extrabold text-3xl text-primary leading-tight">
-              Visit Nayak Sairam Offices Near You
+              Visit SAIRAM MICROFINANCE Offices Near You
             </h2>
 
             <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-              {mockDb.getBranches().map((branch) => (
+              {mockDb.getBranches().slice(0, 1).map((branch) => (
                 <div key={branch.id} className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2">
                   <div className="flex justify-between items-start">
                     <h4 className="font-display font-bold text-sm text-primary leading-snug">{branch.name}</h4>
@@ -1461,23 +1400,15 @@ export const Home: React.FC = () => {
               }} />
 
               {/* Floating pins */}
-              <div className="absolute top-1/4 left-1/3 text-center animate-bounce">
-                <Landmark className="w-8 h-8 text-primary fill-secondary shadow-md" />
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center animate-bounce">
+                <Landmark className="w-8 h-8 text-primary fill-secondary shadow-md mx-auto" />
                 <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded-full shadow border border-secondary block mt-1">Chennai Main</span>
-              </div>
-              <div className="absolute top-1/2 left-2/3 text-center opacity-75">
-                <Landmark className="w-6 h-6 text-primary fill-secondary" />
-                <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded-full shadow block mt-1">Bengaluru</span>
-              </div>
-              <div className="absolute bottom-1/4 left-1/2 text-center opacity-75">
-                <Landmark className="w-6 h-6 text-primary fill-secondary" />
-                <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded-full shadow block mt-1">Hyderabad</span>
               </div>
 
               {/* Location disclaimer tag */}
               <div className="mt-auto relative z-10 bg-white/90 backdrop-blur-sm border border-slate-200 p-4 rounded-2xl max-w-sm text-left">
                 <h5 className="font-bold text-xs text-primary mb-1">Corporate & Regional Geolocation</h5>
-                <p className="text-[10px] text-slate-500 leading-normal">
+                <p className="text-[10px] text-slate-500 leading-normal"> 
                   All branches are connected via centralized core banking interfaces. Use contact cards for exact walking coordinates.
                 </p>
               </div>
@@ -1510,18 +1441,18 @@ export const Home: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-xs text-slate-400 uppercase">Call Support</h4>
-                  <span className="text-sm font-extrabold text-primary">+91 44 2855 9000</span>
+                  <span className="text-sm font-extrabold text-primary">+91 82202 92135</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-3.5">
                 <div className="w-10 h-10 rounded-xl bg-green-500 text-white flex items-center justify-center shadow-md">
-                  <MessageSquare className="w-5 h-5 fill-current" />
+                  <FaWhatsapp className="w-5 h-5" />
                 </div>
                 <div>
                   <h4 className="font-bold text-xs text-slate-400 uppercase">WhatsApp Chat</h4>
                   <a href="https://wa.me/919840283741" target="_blank" rel="noopener noreferrer" className="text-sm font-extrabold text-green-600 hover:underline">
-                    +91 98402 83741
+                    +91 82202 92135
                   </a>
                 </div>
               </div>
@@ -1532,7 +1463,7 @@ export const Home: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-xs text-slate-400 uppercase">Email Support</h4>
-                  <span className="text-sm font-extrabold text-primary">corp.chennai@nayaksairam.com</span>
+                  <span className="text-sm font-extrabold text-primary">info@sairammicrofinance.com</span>
                 </div>
               </div>
             </div>
@@ -1621,112 +1552,112 @@ export const Home: React.FC = () => {
 
       {/* 4. WHY CHOOSE US */}
       {false && (
-      <section className="py-24 px-4 sm:px-8 bg-slate-50 text-slate-800 text-center">
-        <div className="max-w-7xl mx-auto space-y-16">
-          <div className="space-y-4 max-w-2xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/5 px-3 py-1 rounded-full">
-              Key Value Pillars
-            </span>
-            <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-primary">
-              Why Nayak Sairam is Trusted
-            </h2>
-            <p className="text-slate-500 text-sm leading-relaxed">
-              We connect the trust and governance of traditional banking with the agility, speed, and simplicity of modern financial technologies.
-            </p>
-          </div>
+        <section className="py-24 px-4 sm:px-8 bg-slate-50 text-slate-800 text-center">
+          <div className="max-w-7xl mx-auto space-y-16">
+            <div className="space-y-4 max-w-2xl mx-auto">
+              <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/5 px-3 py-1 rounded-full">
+                Key Value Pillars
+              </span>
+              <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-primary">
+                Why SAIRAM MICROFINANCE is Trusted
+              </h2>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                We connect the trust and governance of traditional banking with the agility, speed, and simplicity of modern financial technologies.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { title: 'Instant Approval', desc: 'Verify documents online and receive approvals within 24-48 hours.', icon: Zap, color: 'bg-amber-500/10 text-amber-500' },
-              { title: 'Low Interest Rates', desc: 'Starting from 10.99% p.a., with agricultural and group loans at special subsidised rates.', icon: Coins, color: 'bg-green-500/10 text-green-500' },
-              { title: 'Secure Transactions', desc: 'Bank-level cybersecurity protocols, secure vaults for gold, and encrypted databases.', icon: ShieldCheck, color: 'bg-blue-500/10 text-blue-500' },
-              { title: 'Flexible Repayment', desc: 'Choose paybacks from 12 to 120 months. Align payments with crop harvests or monthly paychecks.', icon: Clock, color: 'bg-indigo-500/10 text-indigo-500' },
-              { title: 'Dedicated Support', desc: '24/7 client helplines, custom WhatsApp query chats, and regional branch assistance.', icon: MessageSquare, color: 'bg-purple-500/10 text-purple-500' },
-              { title: 'Financial Inclusion', desc: 'Special loan setups and mentorship groups specifically structured to uplift rural communities.', icon: Users2, color: 'bg-pink-500/10 text-pink-500' }
-            ].map((feature, idx) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={idx}
-                  whileHover={{ y: -6, boxShadow: '0 20px 25px -5px rgba(0,0,0,0.06), 0 10px 10px -5px rgba(0,0,0,0.04)' }}
-                  className="bg-slate-50 border border-slate-200/60 p-8 rounded-2xl text-left space-y-4 group transition-all duration-300"
-                >
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${feature.color} group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-display font-bold text-lg text-primary">{feature.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">{feature.desc}</p>
-                </motion.div>
-              );
-            })}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { title: 'Instant Approval', desc: 'Verify documents online and receive approvals within 24-48 hours.', icon: Zap, color: 'bg-amber-500/10 text-amber-500' },
+                { title: 'Low Interest Rates', desc: 'Starting from 10.99% p.a., with agricultural and group loans at special subsidised rates.', icon: Coins, color: 'bg-green-500/10 text-green-500' },
+                { title: 'Secure Transactions', desc: 'Bank-level cybersecurity protocols, secure vaults for gold, and encrypted databases.', icon: ShieldCheck, color: 'bg-blue-500/10 text-blue-500' },
+                { title: 'Flexible Repayment', desc: 'Choose paybacks from 12 to 120 months. Align payments with crop harvests or monthly paychecks.', icon: Clock, color: 'bg-indigo-500/10 text-indigo-500' },
+                { title: 'Dedicated Support', desc: '24/7 client helplines, custom WhatsApp query chats, and regional branch assistance.', icon: MessageSquare, color: 'bg-purple-500/10 text-purple-500' },
+                { title: 'Financial Inclusion', desc: 'Special loan setups and mentorship groups specifically structured to uplift rural communities.', icon: Users2, color: 'bg-pink-500/10 text-pink-500' }
+              ].map((feature, idx) => {
+                const Icon = feature.icon;
+                return (
+                  <motion.div
+                    key={idx}
+                    whileHover={{ y: -6, boxShadow: '0 20px 25px -5px rgba(0,0,0,0.06), 0 10px 10px -5px rgba(0,0,0,0.04)' }}
+                    className="bg-slate-50 border border-slate-200/60 p-8 rounded-2xl text-left space-y-4 group transition-all duration-300"
+                  >
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${feature.color} group-hover:scale-110 transition-transform duration-300`}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-display font-bold text-lg text-primary">{feature.title}</h3>
+                    <p className="text-slate-500 text-sm leading-relaxed">{feature.desc}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
       )}
 
       {/* 5. LOAN SERVICES SECTION */}
       {false && (
-      <section id="services" className="py-24 px-4 sm:px-8 bg-white border-y border-slate-200/50 text-slate-800">
-        <div className="max-w-7xl mx-auto space-y-16">
-          <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6">
-            <div className="space-y-4 text-left max-w-xl">
-              <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/5 px-3 py-1 rounded-full">
-                Custom Loan Schemes
-              </span>
-              <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-primary">
-                Tailored Credit Solutions for Every Need
-              </h2>
+        <section id="services" className="py-24 px-4 sm:px-8 bg-white border-y border-slate-200/50 text-slate-800">
+          <div className="max-w-7xl mx-auto space-y-16">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6">
+              <div className="space-y-4 text-left max-w-xl">
+                <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/5 px-3 py-1 rounded-full">
+                  Custom Loan Schemes
+                </span>
+                <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-primary">
+                  Tailored Credit Solutions for Every Need
+                </h2>
+              </div>
+              <Link to="/loans" className="text-primary hover:text-secondary font-bold text-sm flex items-center gap-1 group self-start">
+                Compare all loan products <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
-            <Link to="/loans" className="text-primary hover:text-secondary font-bold text-sm flex items-center gap-1 group self-start">
-              Compare all loan products <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {loanTypes.map((loan) => (
-              <div
-                key={loan.id}
-                className="bg-white border border-slate-200/80 rounded-2xl p-6 flex flex-col justify-between hover:shadow-xl transition-all duration-300"
-              >
-                <div className="space-y-4">
-                  <div className="flex justify-between items-start">
-                    <div className="w-10 h-10 bg-primary/5 text-primary rounded-xl flex items-center justify-center font-bold">
-                      {loan.name[0]}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {loanTypes.map((loan) => (
+                <div
+                  key={loan.id}
+                  className="bg-white border border-slate-200/80 rounded-2xl p-6 flex flex-col justify-between hover:shadow-xl transition-all duration-300"
+                >
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-start">
+                      <div className="w-10 h-10 bg-primary/5 text-primary rounded-xl flex items-center justify-center font-bold">
+                        {loan.name[0]}
+                      </div>
+                      <span className="bg-green-50 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-green-200">
+                        Starting {loan.interestRate}%
+                      </span>
                     </div>
-                    <span className="bg-green-50 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-green-200">
-                      Starting {loan.interestRate}%
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="font-display font-bold text-base text-primary">{loan.name}</h3>
-                    <p className="text-[11px] text-slate-400 font-semibold mt-0.5 uppercase tracking-wide">
-                      Max: ₹{(loan.maxAmount / 100000).toFixed(1)} Lakhs
+                    <div>
+                      <h3 className="font-display font-bold text-base text-primary">{loan.name}</h3>
+                      <p className="text-[11px] text-slate-400 font-semibold mt-0.5 uppercase tracking-wide">
+                        Max: ₹{(loan.maxAmount / 100000).toFixed(1)} Lakhs
+                      </p>
+                    </div>
+                    <p className="text-slate-500 text-xs leading-relaxed line-clamp-3">
+                      {loan.description}
                     </p>
                   </div>
-                  <p className="text-slate-500 text-xs leading-relaxed line-clamp-3">
-                    {loan.description}
-                  </p>
-                </div>
 
-                <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between gap-3">
-                  <button
-                    onClick={() => navigate(`/calculator?amount=${loan.maxAmount / 2}&rate=${loan.interestRate}`)}
-                    className="text-xs text-slate-500 hover:text-primary font-bold flex items-center gap-1 cursor-pointer"
-                  >
-                    <Calculator className="w-3.5 h-3.5" /> EMI Cal
-                  </button>
-                  <Link
-                    to={`/apply?type=${loan.id}`}
-                    className="bg-primary hover:bg-navy-dark text-white font-bold text-xs px-4 py-2 rounded-lg transition-colors flex items-center gap-1 shadow-sm"
-                  >
-                    Apply Now <ChevronRight className="w-3 h-3" />
-                  </Link>
+                  <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-between gap-3">
+                    <button
+                      onClick={() => navigate(`/calculator?amount=${loan.maxAmount / 2}&rate=${loan.interestRate}`)}
+                      className="text-xs text-slate-500 hover:text-primary font-bold flex items-center gap-1 cursor-pointer"
+                    >
+                      <Calculator className="w-3.5 h-3.5" /> EMI Cal
+                    </button>
+                    <Link
+                      to={`/apply?type=${loan.id}`}
+                      className="bg-primary hover:bg-navy-dark text-white font-bold text-xs px-4 py-2 rounded-lg transition-colors flex items-center gap-1 shadow-sm"
+                    >
+                      Apply Now <ChevronRight className="w-3 h-3" />
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
       )}
 
     </div>

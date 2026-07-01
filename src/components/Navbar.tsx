@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { mockDb } from '../services/mockDb';
@@ -51,7 +51,7 @@ export const Navbar: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       if (currentScrollY > 40) {
         setIsSticky(true);
       } else {
@@ -169,7 +169,7 @@ export const Navbar: React.FC = () => {
             <div className="w-10 h-10 bg-white rounded-xl p-1 flex items-center justify-center shadow-md border border-secondary/40 group-hover:scale-105 transition-transform duration-300">
               <img
                 src="/logo.png"
-                alt="Nayak Sairam Logo"
+                alt="SAIRAM MICROFINANCE Logo"
                 className="w-full h-full object-contain"
                 fetchPriority="high"
                 decoding="async"
@@ -180,11 +180,11 @@ export const Navbar: React.FC = () => {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-display font-bold tracking-wide text-base leading-none text-white flex items-center gap-1">
+              <span className="font-display font-bold tracking-[0.28em] text-[20px] leading-none text-white block">
                 SAIRAM
               </span>
-              <span className="text-[10px] tracking-[0.15em] text-secondary font-semibold uppercase leading-none mt-1">
-                Micro Finance
+              <span className="text-[15px] tracking-[0.06em] text-secondary font-medium leading-none mt-1 block">
+                Microfinance
               </span>
             </div>
           </Link>
@@ -394,14 +394,14 @@ export const Navbar: React.FC = () => {
                     />
                   </svg>
 
-                  <Search className="w-4 h-4 text-slate-400 mr-2 flex-shrink-0" />
+                  <Search className="w-4 h-4 text-slate-400 mr-2 shrink-0" />
                   <input
                     type="text"
                     placeholder="Search services..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onFocus={() => setSearchOpen(true)}
-                    onBlur={() => {}}
+                    onBlur={() => { }}
                     className="w-full bg-transparent text-sm focus:outline-none text-slate-800 placeholder-slate-400"
                   />
                   {searchQuery && (
@@ -530,7 +530,7 @@ export const Navbar: React.FC = () => {
                   <div className="w-8 h-8 bg-primary rounded-lg p-1 flex items-center justify-center">
                     <img src="/logo.png" alt="" className="w-full h-full object-contain" decoding="async" />
                   </div>
-                  <span className="font-display font-extrabold text-sm tracking-wide text-primary">NAYAK SAIRAM</span>
+                  <span className="font-display font-extrabold text-sm tracking-wide text-primary">SAIRAM MICROFINANCE</span>
                 </Link>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
@@ -640,7 +640,7 @@ export const Navbar: React.FC = () => {
                   <img src="/logo.png" alt="" className="w-8 h-8 object-contain" decoding="async" />
                 </div>
                 <h3 className="font-display font-bold text-xl text-primary">
-                  {isRegistering ? 'Create Customer Account' : 'Welcome to Nayak Sairam'}
+                  {isRegistering ? 'Create Customer Account' : 'Welcome to SAIRAM MICROFINANCE'}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1">
                   {isRegistering
@@ -651,7 +651,7 @@ export const Navbar: React.FC = () => {
 
               {authError && (
                 <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-600 font-semibold flex items-center gap-2">
-                  <HelpCircle className="w-4 h-4 text-red-500 flex-shrink-0" />
+                  <HelpCircle className="w-4 h-4 text-red-500 shrink-0" />
                   {authError}
                 </div>
               )}

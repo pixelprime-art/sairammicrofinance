@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { mockDb } from '../../services/mockDb';
 import type { Testimonial } from '../../services/mockDb';
 import { Star, MessageSquare, Plus, ArrowLeft } from 'lucide-react';
@@ -138,7 +138,7 @@ export const TestimonialsPage: React.FC = () => {
                 <MessageSquare className="w-5 h-5 text-secondary" /> Share Your Experience
               </h3>
               <p className="text-xs text-slate-400 mb-6">
-                Tell us how Nayak Sairam helped you achieve your dreams.
+                Tell us how SAIRAM MICROFINANCE helped you achieve your dreams.
               </p>
 
               {submitted ? (

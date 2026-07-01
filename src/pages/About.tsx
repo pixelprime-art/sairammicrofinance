@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { mockDb } from '../services/mockDb';
 import { 
   ShieldCheck, Heart, Sparkles, Handshake, 
@@ -37,7 +37,7 @@ export const About: React.FC = () => {
   ];
 
   const leaders = [
-    { name: 'Nayak Sairam', role: 'Founder & Managing Director', bio: 'Former commercial banking veteran with 25+ years of experience in rural banking frameworks and financial inclusion models.', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop' },
+    { name: 'SAIRAM MICROFINANCE', role: 'Founder & Managing Director', bio: 'Former commercial banking veteran with 25+ years of experience in rural banking frameworks and financial inclusion models.', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop' },
     { name: 'Vijay Devendra', role: 'Co-Founder & Chief Executive Officer', bio: 'Fintech specialist with a background in digital payment integrations and micro-credit scoring systems development.', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop' },
     { name: 'Meera Subramanian', role: 'Head of Rural Development & Micro-Credit', bio: 'Dedicated community leader who has spent 15 years organizing self-help group programs and women empowerment collectives.', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop' },
     { name: 'Raghav Reddy', role: 'Chief Risk Officer & Compliance', bio: 'Oversees banking standards, credit policy evaluations, and absolute alignment with the Reserve Bank of India guidelines.', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop' }
@@ -63,7 +63,7 @@ export const About: React.FC = () => {
             Empowering Communities Since 2015
           </h1>
           <p className="text-slate-300 text-sm max-w-xl mx-auto leading-relaxed">
-            Nayak Sairam Micro Finance is committed to empowering individuals, entrepreneurs, women, and farmers through accessible, ethical, and affordable financial services.
+            Sairam Microfinance is committed to empowering individuals, entrepreneurs, women, and farmers through accessible, ethical, and affordable financial services.
           </p>
         </div>
       </section>
@@ -77,7 +77,7 @@ export const About: React.FC = () => {
               Company Overview & Commitment
             </h2>
             <p className="text-slate-600 text-sm leading-relaxed">
-              Founded in Chennai, Nayak Sairam Micro Finance was created to bridge the massive credit gap in rural and semi-urban India. We understand that local farmers, micro-merchants, and women entrepreneurs represent the engine of community growth, yet they are often left unserved by corporate banking requirements.
+              Founded in Chennai, Sairam Microfinance was created to bridge the massive credit gap in rural and semi-urban India. We understand that local farmers, micro-merchants, and women entrepreneurs represent the engine of community growth, yet they are often left unserved by corporate banking requirements.
             </p>
             <p className="text-slate-600 text-sm leading-relaxed">
               By combining strict RBI category guidelines with easy-to-use digital application pipelines, we have provided over ₹12 Crore in small loans, uplifting more than 15,000 active clients. We do not just dispense credit; we foster sustainable financial growth.
@@ -204,7 +204,7 @@ export const About: React.FC = () => {
               Invest Securely, Earn Competitive Yields
             </h2>
             <p className="text-slate-600 text-sm leading-relaxed">
-              We offer structured micro-investment deposits for general public placement. By investing with Nayak Sairam, you secure attractive returns while funding the growth of rural entrepreneurs.
+              We offer structured micro-investment deposits for general public placement. By investing with SAIRAM MICROFINANCE, you secure attractive returns while funding the growth of rural entrepreneurs.
             </p>
 
             <div className="space-y-4">
@@ -236,7 +236,7 @@ export const About: React.FC = () => {
                 </div>
                 <h4 className="font-bold text-green-800">Investment Request Lodged!</h4>
                 <p className="text-xs text-green-600">
-                  Thank you. An investment auditor from Nayak Sairam will contact you shortly with brochure documents.
+                  Thank you. An investment auditor from SAIRAM MICROFINANCE will contact you shortly with brochure documents.
                 </p>
               </div>
             ) : (
@@ -335,7 +335,7 @@ export const About: React.FC = () => {
             <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/5 px-3 py-1 rounded-full">
               Work With Us
             </span>
-            <h2 className="font-display font-extrabold text-3xl text-primary">Careers at Nayak Sairam</h2>
+            <h2 className="font-display font-extrabold text-3xl text-primary">Careers at SAIRAM MICROFINANCE</h2>
             <p className="text-slate-500 text-xs leading-relaxed">
               We are constantly seeking energetic microfinance officers, risk auditors, and customer managers. Check our open openings and apply by emailing your CV.
             </p>

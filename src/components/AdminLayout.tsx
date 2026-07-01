@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
@@ -131,7 +131,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
           </div>
           <div>
             <h4 className="font-display font-extrabold text-sm leading-none text-white tracking-wide">
-              NAYAK SAIRAM
+              SAIRAM MICROFINANCE
             </h4>
             <span className="text-[9px] text-secondary tracking-widest font-bold uppercase mt-1 block">
               Admin Portal

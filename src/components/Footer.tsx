@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   MapPin, Phone, Mail, ArrowRight, ShieldCheck 
@@ -17,7 +17,7 @@ export const Footer: React.FC = () => {
             </div>
             <div>
               <h3 className="font-display font-extrabold tracking-wide text-lg text-white leading-none">
-                NAYAK SAIRAM
+                SAIRAM MICROFINANCE
               </h3>
               <span className="text-[10px] tracking-[0.15em] text-secondary font-bold uppercase leading-none mt-1 block">
                 Micro Finance
@@ -181,7 +181,7 @@ export const Footer: React.FC = () => {
           <div>
             <h5 className="font-bold text-slate-200 mb-0.5">Corporate Headquarters</h5>
             <p className="text-xs leading-relaxed text-slate-400">
-              Nayak Sairam Towers, 4th Floor, Anna Salai, Chennai, Tamil Nadu 600002
+              SAIRAM MICROFINANCE Towers, 4th Floor, Anna Salai, Chennai, Tamil Nadu 600002
             </p>
           </div>
         </div>
@@ -209,7 +209,7 @@ export const Footer: React.FC = () => {
 
       {/* Copyright Row */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 mt-12 pt-6 border-t border-navy-light/30 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
-        <p>© 2026 Nayak Sairam Micro Finance. All Rights Reserved.</p>
+        <p>© 2026 Sairam Microfinance. All Rights Reserved.</p>
         <p className="text-slate-500">
           Designed with trust and security. Certified RBI Category-B Microfinance Institution.
         </p>

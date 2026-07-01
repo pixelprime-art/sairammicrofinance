@@ -1,4 +1,4 @@
-// Mock Database Service for Nayak Sairam Micro Finance
+// Mock Database Service for Sairam Microfinance
 // Simulates Supabase database operations using localStorage
 
 export interface User {
@@ -190,7 +190,7 @@ const DEFAULT_BRANCHES: Branch[] = [
   {
     id: 'b1',
     name: 'Corporate Head Office (Chennai)',
-    address: 'Nayak Sairam Towers, 4th Floor, Anna Salai, Chennai, Tamil Nadu 600002',
+    address: 'SAIRAM MICROFINANCE Towers, 4th Floor, Anna Salai, Chennai, Tamil Nadu 600002',
     phone: '+91 44 2855 9000',
     email: 'corp.chennai@nayaksairam.com',
     isMain: true
@@ -226,7 +226,7 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
     id: 't1',
     name: 'Ramesh K. Kumar',
     location: 'Coimbatore, TN',
-    review: 'The agricultural loan from Nayak Sairam helped me purchase a modern tractor. The crop-cycle-aligned repayment schedule is extremely farmer-friendly.',
+    review: 'The agricultural loan from SAIRAM MICROFINANCE helped me purchase a modern tractor. The crop-cycle-aligned repayment schedule is extremely farmer-friendly.',
     rating: 5,
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop'
   },
@@ -234,7 +234,7 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
     id: 't2',
     name: 'Priyanka Sen',
     location: 'Bengaluru, KA',
-    review: 'As a woman entrepreneur, getting credit was always a hassle. Nayak Sairams Women Empowerment loan program trusted my vision and funded my boutique within 3 days.',
+    review: 'As a woman entrepreneur, getting credit was always a hassle. Sairam Microfinance\'s Women Empowerment loan program trusted my vision and funded my boutique within 3 days.',
     rating: 5,
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop'
   },
@@ -371,7 +371,7 @@ const DEFAULT_LOAN_APPLICATIONS: LoanApplication[] = [
 const DEFAULT_NOTIFICATIONS: Notification[] = [
   {
     id: 'n1',
-    title: 'Welcome to Nayak Sairam Micro Finance',
+    title: 'Welcome to Sairam Microfinance',
     message: 'Explore our loan products, check your eligible EMI, and start applying today!',
     date: '2026-06-19',
     isRead: false,
