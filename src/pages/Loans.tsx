@@ -53,8 +53,7 @@ export const Loans: React.FC = () => {
                       {loan.name[0]}
                     </div>
                     <div className="text-right space-y-1">
-                      <span className="bg-primary/5 text-primary text-xs font-bold px-3 py-1 rounded-full border border-primary/20 block">
-                        Interest Rate: {loan.interestRate}% p.a.
+                      <span className="bg-green-500/5 text-green-600 text-xs font-bold px-3 py-1 rounded-full border border-green-500/20"> Interest Rate: {loan.interestRate}% p.a.
                       </span>
                       <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider block mr-1 mt-1">
                         Proc Fee: {loan.processingFee}

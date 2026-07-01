@@ -37,9 +37,9 @@ export const About: React.FC = () => {
   ];
 
   const leaders = [
-    { name: 'SAIRAM MICROFINANCE', role: 'Founder & Managing Director', bio: 'Former commercial banking veteran with 25+ years of experience in rural banking frameworks and financial inclusion models.', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&fit=crop' },
-    { name: 'Vijay Devendra', role: 'Co-Founder & Chief Executive Officer', bio: 'Fintech specialist with a background in digital payment integrations and micro-credit scoring systems development.', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop' },
-    { name: 'Meera Subramanian', role: 'Head of Rural Development & Micro-Credit', bio: 'Dedicated community leader who has spent 15 years organizing self-help group programs and women empowerment collectives.', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&h=300&fit=crop' },
+    { name: 'Muthu Ram A', role: 'Founder', bio: 'Former commercial banking veteran with 25+ years of experience in rural banking frameworks and financial inclusion models.', image: '/muthuram.png' },
+    { name: 'Sakthivel M', role: 'Managing Director', bio: 'Fintech specialist with a background in digital payment integrations and micro-credit scoring systems development.', image: '/sakthivel.jpeg' },
+    { name: 'Dr. Mohanraj M', role: 'Chief Executive Officer', bio: 'Dedicated community leader who has spent 15 years organizing self-help group programs and women empowerment collectives.', image: '/mohan.jpeg' },
     { name: 'Raghav Reddy', role: 'Chief Risk Officer & Compliance', bio: 'Oversees banking standards, credit policy evaluations, and absolute alignment with the Reserve Bank of India guidelines.', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop' }
   ];
 
@@ -84,10 +84,10 @@ export const About: React.FC = () => {
               Company Overview & Commitment
             </h2>
             <p className="text-slate-600 text-sm leading-relaxed">
-              Founded in Chennai, Sairam Microfinance was created to bridge the massive credit gap in rural and semi-urban India. We understand that local farmers, micro-merchants, and women entrepreneurs represent the engine of community growth, yet they are often left unserved by corporate banking requirements.
+              Founded in Bengaluru, Sairam Microfinance was created to bridge the massive credit gap in rural and semi-urban India. We understand that local farmers, micro-merchants, and women entrepreneurs represent the engine of community growth, yet they are often left unserved by corporate banking requirements.
             </p>
             <p className="text-slate-600 text-sm leading-relaxed">
-              By combining strict RBI category guidelines with easy-to-use digital application pipelines, we have provided over ₹12 Crore in small loans, uplifting more than 15,000 active clients. We do not just dispense credit; we foster sustainable financial growth.
+              By combining strict RBI category guidelines with easy-to-use digital application pipelines, we have provided over ₹25 Lakhs in small loans, uplifting more than 15,000 active clients. We do not just dispense credit; we foster sustainable financial growth.
             </p>
             
             <div className="grid grid-cols-3 gap-6 pt-4 border-t border-slate-100">
@@ -96,7 +96,7 @@ export const About: React.FC = () => {
                 <p className="text-[10px] text-slate-400 font-bold uppercase">Active Borrowers</p>
               </div>
               <div>
-                <h4 className="font-display font-extrabold text-2xl text-primary">₹12Cr+</h4>
+                <h4 className="font-display font-extrabold text-2xl text-primary">₹25lakhs+</h4>
                 <p className="text-[10px] text-slate-400 font-bold uppercase">Disbursed Funds</p>
               </div>
               <div>
@@ -132,36 +132,7 @@ export const About: React.FC = () => {
 
         </div>
       </section>
-
-      {/* Core Values */}
-      <section className="py-24 px-4 sm:px-8 bg-slate-50 text-slate-800 text-center">
-        <div className="max-w-7xl mx-auto space-y-16">
-          <div className="space-y-4 max-w-xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/5 px-3 py-1 rounded-full">
-              Moral Frameworks
-            </span>
-            <h2 className="font-display font-extrabold text-3xl text-primary">Our Core Values</h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            {values.map((val, idx) => {
-              const Icon = val.icon;
-              return (
-                <div key={idx} className="bg-white border border-slate-200/80 p-6 rounded-2xl text-left space-y-3 hover:shadow-md transition-shadow">
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${val.color}`}>
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-display font-bold text-sm text-primary">{val.title}</h3>
-                  <p className="text-slate-500 text-[11px] leading-relaxed">{val.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Leadership Team */}
-      <section className="py-24 px-4 sm:px-8 bg-white text-slate-800 text-center">
+  <section className="py-24 px-4 sm:px-8 bg-white text-slate-800 text-center">
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="space-y-4 max-w-xl mx-auto">
             <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/5 px-3 py-1 rounded-full">
@@ -198,142 +169,39 @@ export const About: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* 14. INVESTMENT PLACEMENT FORM SECTION */}
-      <section id="investment" className="py-24 px-4 sm:px-8 bg-slate-50 text-slate-800 border-t border-b border-slate-200 scroll-mt-20">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          <div className="lg:col-span-5 text-left space-y-6">
+      
+      {/* Core Values */}
+      <section className="py-24 px-4 sm:px-8 bg-slate-50 text-slate-800 text-center">
+        <div className="max-w-7xl mx-auto space-y-16">
+          <div className="space-y-4 max-w-xl mx-auto">
             <span className="text-xs font-bold uppercase tracking-widest text-primary bg-primary/5 px-3 py-1 rounded-full">
-              Growth Placements
+              Moral Frameworks
             </span>
-            <h2 className="font-display font-extrabold text-3xl text-primary leading-tight">
-              Invest Securely, Earn Competitive Yields
-            </h2>
-            <p className="text-slate-600 text-sm leading-relaxed">
-              We offer structured micro-investment deposits for general public placement. By investing with SAIRAM MICROFINANCE, you secure attractive returns while funding the growth of rural entrepreneurs.
-            </p>
-
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 bg-white p-4 rounded-xl border border-slate-200">
-                <Coins className="w-5 h-5 text-secondary flex-shrink-0" />
-                <div>
-                  <h4 className="font-bold text-xs text-primary">Micro Placement FD</h4>
-                  <p className="text-[10px] text-slate-500">Interest rates up to 8.5% p.a. starting from ₹5,000.</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 bg-white p-4 rounded-xl border border-slate-200">
-                <Plus className="w-5 h-5 text-secondary flex-shrink-0" />
-                <div>
-                  <h4 className="font-bold text-xs text-primary">Recurring Deposits</h4>
-                  <p className="text-[10px] text-slate-500">Save as low as ₹1,000 monthly for structured tenures.</p>
-                </div>
-              </div>
-            </div>
+            <h2 className="font-display font-extrabold text-3xl text-primary">Our Core Values</h2>
           </div>
 
-          {/* Investment Request Form */}
-          <div className="lg:col-span-7 bg-white border border-slate-200 p-8 sm:p-10 rounded-3xl shadow-sm scroll-mt-20" id="investment-form">
-            <h3 className="font-display font-extrabold text-xl text-primary mb-6 text-left">Investment Request Form</h3>
-            
-            {invSubmitted ? (
-              <div className="p-8 text-center bg-green-50 border border-green-200 rounded-2xl space-y-3">
-                <div className="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center mx-auto shadow-sm">
-                  ✓
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            {values.map((val, idx) => {
+              const Icon = val.icon;
+              return (
+                <div key={idx} className="bg-white border border-slate-200/80 p-6 rounded-2xl text-left space-y-3 hover:shadow-md transition-shadow">
+                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${val.color}`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-display font-bold text-sm text-primary">{val.title}</h3>
+                  <p className="text-slate-500 text-[11px] leading-relaxed">{val.desc}</p>
                 </div>
-                <h4 className="font-bold text-green-800">Investment Request Lodged!</h4>
-                <p className="text-xs text-green-600">
-                  Thank you. An investment auditor from SAIRAM MICROFINANCE will contact you shortly with brochure documents.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleInvestmentSubmit} className="space-y-4 text-left">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Full Name</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Ramesh Kumar"
-                      value={invName}
-                      onChange={(e) => setInvName(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 px-4 text-xs focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address</label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="e.g. name@example.com"
-                      value={invEmail}
-                      onChange={(e) => setInvEmail(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 px-4 text-xs focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Phone Number</label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="e.g. 98402XXXXX"
-                      value={invPhone}
-                      onChange={(e) => setInvPhone(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 px-4 text-xs focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Amount (INR)</label>
-                    <input
-                      type="number"
-                      required
-                      min="5000"
-                      value={invAmount}
-                      onChange={(e) => setInvAmount(Number(e.target.value))}
-                      className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 px-4 text-xs focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">FD Scheme</label>
-                    <select
-                      value={invScheme}
-                      onChange={(e) => setInvScheme(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 px-4 text-xs focus:outline-none cursor-pointer"
-                    >
-                      <option value="Fixed Deposit Plan">Fixed Deposit (FD)</option>
-                      <option value="Recurring Deposit Plan">Recurring Deposit (RD)</option>
-                      <option value="Group Empowerment Fund">Group Empowerment Placement</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Duration (Years)</label>
-                    <select
-                      value={invDuration}
-                      onChange={(e) => setInvDuration(Number(e.target.value))}
-                      className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 px-4 text-xs focus:outline-none cursor-pointer"
-                    >
-                      <option value={1}>1 Year</option>
-                      <option value={3}>3 Years</option>
-                      <option value={5}>5 Years</option>
-                    </select>
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-primary hover:bg-navy-dark text-white font-bold text-xs py-3.5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  Submit Placement Request <ArrowRight className="w-3.5 h-3.5 text-secondary" />
-                </button>
-              </form>
-            )}
+              );
+            })}
           </div>
-
         </div>
       </section>
+
+      {/* Leadership Team */}
+    
+
+      {/* 14. INVESTMENT PLACEMENT FORM SECTION */}
+      
 
       {/* Careers Section */}
       <section id="careers" className="py-24 px-4 sm:px-8 bg-white text-slate-800">
