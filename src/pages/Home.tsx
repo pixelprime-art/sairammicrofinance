@@ -1367,13 +1367,17 @@ export const Home: React.FC = () => {
             </h2>
 
             <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-              {mockDb.getBranches().slice(0, 1).map((branch) => (
+              {mockDb.getBranches().slice(0, 2).map((branch) => (
                 <div key={branch.id} className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2">
                   <div className="flex justify-between items-start">
                     <h4 className="font-display font-bold text-sm text-primary leading-snug">{branch.name}</h4>
-                    {branch.isMain && (
+                    {branch.isMain ? (
                       <span className="bg-secondary/15 text-primary font-bold text-[8px] tracking-wider uppercase px-2 py-0.5 rounded border border-secondary/30">
                         Main
+                      </span>
+                    ) : (
+                      <span className="bg-blue-50 text-blue-600 font-bold text-[8px] tracking-wider uppercase px-2 py-0.5 rounded border border-blue-200">
+                        Sub
                       </span>
                     )}
                   </div>
@@ -1400,9 +1404,14 @@ export const Home: React.FC = () => {
               }} />
 
               {/* Floating pins */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center animate-bounce">
+              <div className="absolute top-[30%] left-[30%] text-center animate-bounce">
                 <Landmark className="w-8 h-8 text-primary fill-secondary shadow-md mx-auto" />
-                <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded-full shadow border border-secondary block mt-1">Chennai Main</span>
+                <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded-full shadow border border-secondary block mt-1">Bengaluru</span>
+              </div>
+
+              <div className="absolute top-[60%] left-[65%] text-center animate-bounce [animation-delay:0.5s]">
+                <Landmark className="w-8 h-8 text-primary fill-secondary shadow-md mx-auto" />
+                <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded-full shadow border border-secondary block mt-1">Tiruchengodu</span>
               </div>
 
               {/* Location disclaimer tag */}

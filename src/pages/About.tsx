@@ -37,16 +37,15 @@ export const About: React.FC = () => {
   ];
 
   const leaders = [
-    { name: 'Muthu Ram A', role: 'Founder', bio: 'Former commercial banking veteran with 25+ years of experience in rural banking frameworks and financial inclusion models.', image: '/muthuram.png' },
-    { name: 'Sakthivel M', role: 'Managing Director', bio: 'Fintech specialist with a background in digital payment integrations and micro-credit scoring systems development.', image: '/sakthivel.jpeg' },
-    { name: 'Dr. Mohanraj M', role: 'Chief Executive Officer', bio: 'Dedicated community leader who has spent 15 years organizing self-help group programs and women empowerment collectives.', image: '/mohan.jpeg' },
-    { name: 'Raghav Reddy', role: 'Chief Risk Officer & Compliance', bio: 'Oversees banking standards, credit policy evaluations, and absolute alignment with the Reserve Bank of India guidelines.', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop' }
+    { name: 'Muthu Ram A', role: 'Founder', bio: 'Experienced founder focused on building a trusted microfinance institution through ethical lending, financial inclusion, and customer-first solutions.', image: '/muthuram.png' },
+    { name: 'Sakthivel M', role: 'Managing Director', bio: 'Managing Director driving business growth through strategic leadership, financial expertise, and digital innovation.', image: '/sakthivel.jpeg' },
+    { name: 'Dr. Mohanraj M', role: 'Chief Executive Officer', bio: 'Visionary CEO committed to financial inclusion, responsible lending, and empowering communities through innovative microfinance solutions.', image: '/mohan.jpeg' }
   ];
 
   const jobs = [
-    { title: 'Microfinance Credit Officer', location: 'Coimbatore, TN', type: 'Full-time / Field', exp: '1-3 Years experience' },
-    { title: 'Regional Operations Manager', location: 'Bengaluru, KA', type: 'Full-time / Office', exp: '5+ Years in banking' },
-    { title: 'KYC Verification Specialist', location: 'Chennai, TN', type: 'Full-time / Hybrid', exp: 'Entry Level / Trainee' }
+    { title: 'Microfinance Credit Officer', location: 'Tiruchengodu, TN', type: 'Full-time / Office', exp: '1-3 Years experience' },
+    { title: 'Regional Operations Manager', location: 'Tiruchengodu, TN', type: 'Full-time / Office', exp: '1-3 Years in banking' },
+    { title: 'KYC Verification Specialist', location: 'Tiruchengodu, TN', type: 'Full-time / Office', exp: 'Entry Level / Trainee' }
   ];
 
   return (
@@ -141,7 +140,7 @@ export const About: React.FC = () => {
             <h2 className="font-display font-extrabold text-3xl text-primary">Meet Our Leadership Team</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {leaders.map((leader, idx) => (
               <div key={idx} className="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="aspect-square bg-slate-200 overflow-hidden relative">

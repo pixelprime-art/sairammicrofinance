@@ -189,18 +189,18 @@ const DEFAULT_LOAN_TYPES: LoanType[] = [
 const DEFAULT_BRANCHES: Branch[] = [
   {
     id: 'b1',
-    name: 'Corporate Head Office (Chennai)',
-    address: 'SAIRAM MICROFINANCE Towers, 4th Floor, Anna Salai, Chennai, Tamil Nadu 600002',
+    name: 'Corporate Head Office (Bengaluru)',
+    address: 'SAIRAM MICROFINANCE, No.55, 1st L Main Road, Sajjepalaya, Nagarbhavi 2nd Stage, Bengaluru - 560072',
     phone: '+91 44 2855 9000',
-    email: 'corp.chennai@nayaksairam.com',
+    email: 'sairammicrofinance@gmail.com',
     isMain: true
   },
   {
     id: 'b2',
-    name: 'Regional Office (Bengaluru)',
-    address: 'No. 45, Residency Road, Opposite SBI Bank, Bengaluru, Karnataka 560025',
+    name: 'Regional Office (Tiruchengodu)',
+    address: 'No.5/152, Murasukuttai, Kuchipalayam, Thokkavadi Post, Tiruchengodu Tk, Namakkal dt - 637 215',
     phone: '+91 80 4112 3456',
-    email: 'reg.bengaluru@nayaksairam.com',
+    email: 'sairammicrofinance@gmail.com',
     isMain: false
   },
   {
@@ -405,6 +405,10 @@ export const mockDb = {
   // Init
   init() {
     loadTable<LoanType>('loan_types', DEFAULT_LOAN_TYPES);
+    const cachedBranches = localStorage.getItem('nsmf_branches');
+    if (cachedBranches && cachedBranches.includes('Anna Salai, Chennai')) {
+      localStorage.removeItem('nsmf_branches');
+    }
     loadTable<Branch>('branches', DEFAULT_BRANCHES);
     loadTable<Testimonial>('testimonials', DEFAULT_TESTIMONIALS);
     loadTable<LoanApplication>('loan_applications', DEFAULT_LOAN_APPLICATIONS);
@@ -607,16 +611,16 @@ export const mockDb = {
   getAdminStats() {
     const apps = this.getApplications();
     const users = this.getUsers();
-    
+
     const totalCustomers = users.filter(u => u.role === 'customer').length + 5; // Added offset for baseline look
     const activeLoans = apps.filter(app => app.status === 'Approved').length;
-    
+
     const loanAmountIssued = apps
       .filter(app => app.status === 'Approved')
       .reduce((sum, app) => sum + app.amount, 0);
 
     const pendingReview = apps.filter(app => app.status === 'Pending' || app.status === 'KYC_Verified').length;
-    
+
     // Repayment statistics (mock data)
     const repaymentRate = 98.7; // % repayment collection rate
 
