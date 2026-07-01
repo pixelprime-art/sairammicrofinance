@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { mockDb } from '../services/mockDb';
 import type { LoanApplication } from '../services/mockDb';
 import { 
-  User, Briefcase, IndianRupee, FileUp, ArrowLeft, 
+  User, Briefcase, IndianRupee, ArrowLeft, 
   ArrowRight, ShieldCheck, Check, Info
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -20,6 +20,7 @@ type FormInputs = {
   amount: number;
   tenureMonths: number;
   occupation: string;
+  customOccupation?: string;
   employerName: string;
   experienceYears: number;
   monthlyIncome: number;
@@ -34,19 +35,14 @@ export const ApplyLoan: React.FC = () => {
   // Step indicator state
   const [currentStep, setCurrentStep] = useState(1);
   const [successApp, setSuccessApp] = useState<LoanApplication | null>(null);
-  
-  // Files base64 mock storage
-  const [aadhaarFile, setAadhaarFile] = useState<{ name: string; data: string } | null>(null);
-  const [panFile, setPanFile] = useState<{ name: string; data: string } | null>(null);
-  const [photoFile, setPhotoFile] = useState<{ name: string; data: string } | null>(null);
-  const [incomeFile, setIncomeFile] = useState<{ name: string; data: string } | null>(null);
-  const [fileErrors, setFileErrors] = useState<string | null>(null);
+  const [shake, setShake] = useState(0);
 
   // Read preselected type from URL
   const selectedType = searchParams.get('type') || 'personal';
 
   // React Hook Form
-  const { register, handleSubmit, trigger } = useForm<FormInputs>({
+  const { register, handleSubmit, trigger, watch, formState: { errors } } = useForm<FormInputs>({
+    mode: 'onChange',
     defaultValues: {
       fullName: user?.fullName || '',
       email: user?.email || '',
@@ -56,34 +52,13 @@ export const ApplyLoan: React.FC = () => {
       tenureMonths: selectedType === 'personal' ? 36 : selectedType === 'gold' ? 12 : 60,
       gender: 'Male',
       occupation: 'Salaried Employee',
+      customOccupation: '',
       experienceYears: 2,
       otherIncome: 0
     }
   });
 
-  // Convert files to base64 utility
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    setter: React.Dispatch<React.SetStateAction<{ name: string; data: string } | null>>
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (file.size > 2 * 1024 * 1024) {
-      setFileErrors('File size must be under 2MB.');
-      return;
-    }
-
-    setFileErrors(null);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setter({
-        name: file.name,
-        data: reader.result as string
-      });
-    };
-    reader.readAsDataURL(file);
-  };
+  const selectedOccupation = watch('occupation');
 
   // Step Navigations with Validation
   const handleNextStep = async () => {
@@ -92,13 +67,16 @@ export const ApplyLoan: React.FC = () => {
       fieldsToValidate = ['fullName', 'dob', 'mobile', 'email', 'amount', 'tenureMonths'];
     } else if (currentStep === 2) {
       fieldsToValidate = ['occupation', 'employerName', 'experienceYears'];
-    } else if (currentStep === 3) {
-      fieldsToValidate = ['monthlyIncome', 'otherIncome'];
+      if (selectedOccupation === 'Others') {
+        fieldsToValidate.push('customOccupation');
+      }
     }
 
     const isValid = await trigger(fieldsToValidate);
     if (isValid) {
       setCurrentStep(prev => prev + 1);
+    } else {
+      setShake(prev => prev + 1);
     }
   };
 
@@ -108,11 +86,6 @@ export const ApplyLoan: React.FC = () => {
 
   // Submit Final
   const onSubmit = (data: FormInputs) => {
-    if (!aadhaarFile || !panFile || !photoFile || !incomeFile) {
-      setFileErrors('All four KYC documents are required for credit check verification.');
-      return;
-    }
-
     // Calculate monthly EMI mock
     const loanTypes = mockDb.getLoanTypes();
     const matched = loanTypes.find(t => t.id === data.loanType);
@@ -134,25 +107,44 @@ export const ApplyLoan: React.FC = () => {
       tenureMonths: Number(data.tenureMonths),
       interestRate: rate,
       monthlyEMI: Math.round(emi),
-      occupation: data.occupation,
+      occupation: data.occupation === 'Others' ? (data.customOccupation || 'Others') : data.occupation,
       employerName: data.employerName,
       experienceYears: Number(data.experienceYears),
       monthlyIncome: Number(data.monthlyIncome),
       otherIncome: Number(data.otherIncome),
       documents: {
-        aadhaarName: aadhaarFile.name,
-        aadhaarData: aadhaarFile.data,
-        panName: panFile.name,
-        panData: panFile.data,
-        photoName: photoFile.name,
-        photoData: photoFile.data,
-        incomeProofName: incomeFile.name,
-        incomeProofData: incomeFile.data
+        aadhaarName: 'Not Provided',
+        aadhaarData: '',
+        panName: 'Not Provided',
+        panData: '',
+        photoName: 'Not Provided',
+        photoData: '',
+        incomeProofName: 'Not Provided',
+        incomeProofData: ''
       }
     };
 
     const newApplication = mockDb.createApplication(submissionData);
     setSuccessApp(newApplication);
+  };
+
+  const onInvalidSubmit = () => {
+    setShake(prev => prev + 1);
+  };
+
+  const hasCurrentStepErrors = () => {
+    let currentFields: (keyof FormInputs)[] = [];
+    if (currentStep === 1) {
+      currentFields = ['fullName', 'dob', 'mobile', 'email', 'amount', 'tenureMonths'];
+    } else if (currentStep === 2) {
+      currentFields = ['occupation', 'employerName', 'experienceYears'];
+      if (selectedOccupation === 'Others') {
+        currentFields.push('customOccupation');
+      }
+    } else if (currentStep === 3) {
+      currentFields = ['monthlyIncome', 'otherIncome'];
+    }
+    return currentFields.some(field => errors[field]);
   };
 
   return (
@@ -218,32 +210,38 @@ export const ApplyLoan: React.FC = () => {
               </div>
 
               <p className="text-xs text-slate-500 leading-relaxed max-w-md mx-auto">
-                Our verification officers will review your uploaded Aadhaar and income sheets within 24-48 hours. You will receive SMS alerts and in-app dashboard notifications upon status updates.
+                Our verification officers will review your application details within 24-48 hours. You will receive SMS alerts and in-app dashboard notifications upon status updates.
               </p>
 
-              <div className="pt-6 flex justify-center gap-4">
+              <div className="pt-6 flex flex-col sm:flex-row justify-center gap-4">
                 <button 
-                  onClick={() => {
-                    // Force admin login to show dashboard verification workflow
-                    navigate('/admin');
-                  }}
-                  className="bg-primary hover:bg-navy-dark text-white font-bold text-xs px-6 py-3.5 rounded-xl shadow-md transition-colors flex items-center gap-1.5"
+                  onClick={() => navigate('/')}
+                  className="bg-primary hover:bg-navy-dark text-white font-bold text-xs px-6 py-3.5 rounded-xl shadow-md transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  Go to Admin Panel to Review <ArrowRight className="w-4 h-4 text-secondary" />
+                  <ArrowLeft className="w-4 h-4 text-secondary" /> Back to Home Page
+                </button>
+                <button 
+                  onClick={() => navigate('/loans')}
+                  className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-xs px-6 py-3.5 rounded-xl shadow-md transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  Explore Other Loans <ArrowRight className="w-4 h-4 text-primary" />
                 </button>
               </div>
             </motion.div>
           ) : (
             /* WIZARD CARD */
-            <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm">
+            <motion.div 
+              animate={shake ? { x: [0, -6, 6, -6, 6, -3, 3, 0] } : {}}
+              transition={{ duration: 0.4 }}
+              className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm"
+            >
               
               {/* Stepper Header */}
               <div className="flex justify-between items-center mb-8 border-b border-slate-200 pb-4">
                 {[
                   { step: 1, icon: User, label: 'Personal' },
                   { step: 2, icon: Briefcase, label: 'Employment' },
-                  { step: 3, icon: IndianRupee, label: 'Income' },
-                  { step: 4, icon: FileUp, label: 'KYC Docs' }
+                  { step: 3, icon: IndianRupee, label: 'Income' }
                 ].map((item) => {
                   const Icon = item.icon;
                   const active = currentStep >= item.step;
@@ -270,7 +268,13 @@ export const ApplyLoan: React.FC = () => {
               </div>
 
               {/* Form Content */}
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-left">
+              <form onSubmit={handleSubmit(onSubmit, onInvalidSubmit)} className="space-y-6 text-left">
+                {hasCurrentStepErrors() && (
+                  <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl text-xs font-semibold flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-red-500 inline-block animate-pulse"></span>
+                    Please correct the highlighted errors on this page before proceeding.
+                  </div>
+                )}
                 <AnimatePresence mode="wait">
                   
                   {/* STEP 1: PERSONAL DETAILS */}
@@ -289,19 +293,27 @@ export const ApplyLoan: React.FC = () => {
                           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Full Name (As in Aadhaar)</label>
                           <input 
                             type="text"
-                            required
                             {...register('fullName', { required: true })}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800"
+                            className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
+                              errors.fullName 
+                                ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
+                                : 'border-slate-200 focus:border-primary/50'
+                            }`}
                           />
+                          {errors.fullName && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Full name is required.</p>}
                         </div>
                         <div>
                           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Date of Birth</label>
                           <input 
                             type="date"
-                            required
                             {...register('dob', { required: true })}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800"
+                            className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
+                              errors.dob 
+                                ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
+                                : 'border-slate-200 focus:border-primary/50'
+                            }`}
                           />
+                          {errors.dob && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Date of birth is required.</p>}
                         </div>
                       </div>
 
@@ -321,20 +333,32 @@ export const ApplyLoan: React.FC = () => {
                           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Mobile Number</label>
                           <input 
                             type="tel"
-                            required
                             placeholder="10-digit number"
                             {...register('mobile', { required: true, pattern: /^[0-9]{10}$/ })}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800"
+                            className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
+                              errors.mobile 
+                                ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
+                                : 'border-slate-200 focus:border-primary/50'
+                            }`}
                           />
+                          {errors.mobile && (
+                            <p className="text-[10px] text-red-500 mt-1.5 font-semibold">
+                              {errors.mobile.type === 'pattern' ? 'Please enter a valid 10-digit mobile number.' : 'Mobile number is required.'}
+                            </p>
+                          )}
                         </div>
                         <div>
                           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address</label>
                           <input 
                             type="email"
-                            required
                             {...register('email', { required: true })}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800"
+                            className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
+                              errors.email 
+                                ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
+                                : 'border-slate-200 focus:border-primary/50'
+                            }`}
                           />
+                          {errors.email && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">A valid email address is required.</p>}
                         </div>
                       </div>
 
@@ -358,19 +382,35 @@ export const ApplyLoan: React.FC = () => {
                           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Loan Amount (INR)</label>
                           <input 
                             type="number"
-                            required
                             {...register('amount', { required: true, min: 10000 })}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800"
+                            className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
+                              errors.amount 
+                                ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
+                                : 'border-slate-200 focus:border-primary/50'
+                            }`}
                           />
+                          {errors.amount && (
+                            <p className="text-[10px] text-red-500 mt-1.5 font-semibold">
+                              {errors.amount.type === 'min' ? 'Loan amount must be at least ₹10,000.' : 'Loan amount is required.'}
+                            </p>
+                          )}
                         </div>
                         <div>
                           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Tenure (Months)</label>
                           <input 
                             type="number"
-                            required
                             {...register('tenureMonths', { required: true, min: 6 })}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800"
+                            className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
+                              errors.tenureMonths 
+                                ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
+                                : 'border-slate-200 focus:border-primary/50'
+                            }`}
                           />
+                          {errors.tenureMonths && (
+                            <p className="text-[10px] text-red-500 mt-1.5 font-semibold">
+                              {errors.tenureMonths.type === 'min' ? 'Tenure must be at least 6 months.' : 'Tenure is required.'}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </motion.div>
@@ -395,20 +435,44 @@ export const ApplyLoan: React.FC = () => {
                             className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800 cursor-pointer"
                           >
                             <option value="Salaried Employee">Salaried Employee</option>
-                            <option value="Self Employed Business">Self Employed (Business Owner)</option>
-                            <option value="Farmer / Agricultural Worker">Farmer / Agricultural Worker</option>
-                            <option value="Unemployed / Homemaker">Homemaker / Small Collective</option>
+                            <option value="Self Employed / Business">Self Employed / Business</option>
+                            <option value="Agriculture & Allied Activities">Agriculture & Allied Activities</option>
+                            <option value="Daily Wage / Labour">Daily Wage / Labour</option>
+                            <option value="Homemaker">Homemaker</option>
+                            <option value="Retired / Pensioner">Retired / Pensioner</option>
+                            <option value="Others">Others</option>
                           </select>
+
+                          {selectedOccupation === 'Others' && (
+                            <div className="mt-3">
+                              <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Specify Occupation</label>
+                              <input 
+                                type="text"
+                                {...register('customOccupation', { required: selectedOccupation === 'Others' })}
+                                placeholder="e.g. Freelance Designer"
+                                className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
+                                  errors.customOccupation 
+                                    ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
+                                    : 'border-slate-200 focus:border-primary/50'
+                                }`}
+                              />
+                              {errors.customOccupation && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Please specify your occupation.</p>}
+                            </div>
+                          )}
                         </div>
                         <div>
                           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Employer / Business Name</label>
                           <input 
                             type="text"
-                            required
                             placeholder="e.g. TCS or Self Store"
                             {...register('employerName', { required: true })}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800"
+                            className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
+                              errors.employerName 
+                                ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
+                                : 'border-slate-200 focus:border-primary/50'
+                            }`}
                           />
+                          {errors.employerName && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Employer / Business name is required.</p>}
                         </div>
                       </div>
 
@@ -416,10 +480,18 @@ export const ApplyLoan: React.FC = () => {
                         <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Work Experience (Years)</label>
                         <input 
                           type="number"
-                          required
                           {...register('experienceYears', { required: true, min: 0 })}
-                          className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800 w-44"
+                          className={`bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 w-44 ${
+                            errors.experienceYears 
+                              ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
+                              : 'border-slate-200 focus:border-primary/50'
+                          }`}
                         />
+                        {errors.experienceYears && (
+                          <p className="text-[10px] text-red-500 mt-1.5 font-semibold">
+                            {errors.experienceYears.type === 'min' ? 'Experience cannot be negative.' : 'Work experience is required.'}
+                          </p>
+                        )}
                       </div>
                     </motion.div>
                   )}
@@ -440,17 +512,25 @@ export const ApplyLoan: React.FC = () => {
                           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Monthly Net Income (INR)</label>
                           <input 
                             type="number"
-                            required
                             {...register('monthlyIncome', { required: true, min: 1000 })}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800"
+                            className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
+                              errors.monthlyIncome 
+                                ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
+                                : 'border-slate-200 focus:border-primary/50'
+                            }`}
                           />
+                          {errors.monthlyIncome && (
+                            <p className="text-[10px] text-red-500 mt-1.5 font-semibold">
+                              {errors.monthlyIncome.type === 'min' ? 'Monthly income must be at least ₹1,000.' : 'Monthly income is required.'}
+                            </p>
+                          )}
                         </div>
                         <div>
                           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Other Sources Income (Monthly / Optional)</label>
                           <input 
                             type="number"
                             {...register('otherIncome')}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800"
+                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 border-slate-200 text-slate-800"
                           />
                         </div>
                       </div>
@@ -464,100 +544,7 @@ export const ApplyLoan: React.FC = () => {
                     </motion.div>
                   )}
 
-                  {/* STEP 4: DOCUMENT UPLOAD */}
-                  {currentStep === 4 && (
-                    <motion.div
-                      key="step4"
-                      initial={{ opacity: 0, x: 12 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -12 }}
-                      className="space-y-4"
-                    >
-                      <h3 className="font-display font-extrabold text-base text-primary mb-4">Step 4: Upload KYC Documents</h3>
-                      
-                      {fileErrors && (
-                        <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-xs font-semibold">
-                          {fileErrors}
-                        </div>
-                      )}
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        
-                        {/* Aadhaar */}
-                        <div className="space-y-2">
-                          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Aadhaar Card (PDF / JPG)</label>
-                          <div className="relative border-2 border-dashed border-slate-200 rounded-2xl p-4 text-center hover:bg-slate-100/50 cursor-pointer">
-                            <input 
-                              type="file" 
-                              required
-                              accept=".pdf,.jpg,.jpeg,.png"
-                              onChange={(e) => handleFileChange(e, setAadhaarFile)}
-                              className="absolute inset-0 opacity-0 cursor-pointer"
-                            />
-                            <FileUp className="w-6 h-6 text-slate-400 mx-auto mb-2" />
-                            <span className="text-[10px] text-slate-500 block truncate">
-                              {aadhaarFile ? aadhaarFile.name : 'Upload Aadhaar front/back'}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* PAN */}
-                        <div className="space-y-2">
-                          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500">PAN Card (PDF / JPG)</label>
-                          <div className="relative border-2 border-dashed border-slate-200 rounded-2xl p-4 text-center hover:bg-slate-100/50 cursor-pointer">
-                            <input 
-                              type="file" 
-                              required
-                              accept=".pdf,.jpg,.jpeg,.png"
-                              onChange={(e) => handleFileChange(e, setPanFile)}
-                              className="absolute inset-0 opacity-0 cursor-pointer"
-                            />
-                            <FileUp className="w-6 h-6 text-slate-400 mx-auto mb-2" />
-                            <span className="text-[10px] text-slate-500 block truncate">
-                              {panFile ? panFile.name : 'Upload PAN Card photo'}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Passport Photo */}
-                        <div className="space-y-2">
-                          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Passport Photo (JPG / PNG)</label>
-                          <div className="relative border-2 border-dashed border-slate-200 rounded-2xl p-4 text-center hover:bg-slate-100/50 cursor-pointer">
-                            <input 
-                              type="file" 
-                              required
-                              accept=".jpg,.jpeg,.png"
-                              onChange={(e) => handleFileChange(e, setPhotoFile)}
-                              className="absolute inset-0 opacity-0 cursor-pointer"
-                            />
-                            <FileUp className="w-6 h-6 text-slate-400 mx-auto mb-2" />
-                            <span className="text-[10px] text-slate-500 block truncate">
-                              {photoFile ? photoFile.name : 'Upload profile picture'}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Income Proof */}
-                        <div className="space-y-2">
-                          <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Income Proof (Salary / Land Patta)</label>
-                          <div className="relative border-2 border-dashed border-slate-200 rounded-2xl p-4 text-center hover:bg-slate-100/50 cursor-pointer">
-                            <input 
-                              type="file" 
-                              required
-                              accept=".pdf,.jpg,.jpeg,.png"
-                              onChange={(e) => handleFileChange(e, setIncomeFile)}
-                              className="absolute inset-0 opacity-0 cursor-pointer"
-                            />
-                            <FileUp className="w-6 h-6 text-slate-400 mx-auto mb-2" />
-                            <span className="text-[10px] text-slate-500 block truncate">
-                              {incomeFile ? incomeFile.name : 'Upload 3 mos slips or Land title'}
-                            </span>
-                          </div>
-                        </div>
-
-                      </div>
-                    </motion.div>
-                  )}
 
                 </AnimatePresence>
 
@@ -575,7 +562,7 @@ export const ApplyLoan: React.FC = () => {
                     <div />
                   )}
 
-                  {currentStep < 4 ? (
+                  {currentStep < 3 ? (
                     <button
                       type="button"
                       onClick={handleNextStep}
@@ -594,7 +581,7 @@ export const ApplyLoan: React.FC = () => {
                 </div>
               </form>
 
-            </div>
+            </motion.div>
           )}
 
         </div>

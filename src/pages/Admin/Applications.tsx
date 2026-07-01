@@ -247,44 +247,57 @@ export const Applications: React.FC = () => {
                 </div>
 
                 {/* section: uploaded KYC files */}
-                <div className="space-y-3">
-                  <h4 className="font-display font-bold text-xs uppercase text-slate-400 tracking-wider">
-                    KYC Upload Previews
-                  </h4>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    {[
-                      { label: 'Aadhaar Card', file: selectedApp.documents.aadhaarName, data: selectedApp.documents.aadhaarData },
-                      { label: 'PAN Card', file: selectedApp.documents.panName, data: selectedApp.documents.panData },
-                      { label: 'Passport Photo', file: selectedApp.documents.photoName, data: selectedApp.documents.photoData },
-                      { label: 'Income Proof Sheet', file: selectedApp.documents.incomeProofName, data: selectedApp.documents.incomeProofData }
-                    ].map((doc, idx) => (
-                      <div key={idx} className="bg-slate-50 border p-3.5 rounded-xl space-y-3 text-left">
-                        <div className="flex justify-between items-start">
-                          <strong className="text-[11px] text-slate-800">{doc.label}</strong>
-                          <span className="text-[9px] text-slate-400 truncate max-w-[100px]" title={doc.file}>
-                            {doc.file}
-                          </span>
+                {selectedApp.documents && selectedApp.documents.aadhaarName !== 'Not Provided' ? (
+                  <div className="space-y-3">
+                    <h4 className="font-display font-bold text-xs uppercase text-slate-400 tracking-wider">
+                      KYC Upload Previews
+                    </h4>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      {[
+                        { label: 'Aadhaar Card', file: selectedApp.documents.aadhaarName, data: selectedApp.documents.aadhaarData },
+                        { label: 'PAN Card', file: selectedApp.documents.panName, data: selectedApp.documents.panData },
+                        { label: 'Passport Photo', file: selectedApp.documents.photoName, data: selectedApp.documents.photoData },
+                        { label: 'Income Proof Sheet', file: selectedApp.documents.incomeProofName, data: selectedApp.documents.incomeProofData }
+                      ].map((doc, idx) => (
+                        <div key={idx} className="bg-slate-50 border p-3.5 rounded-xl space-y-3 text-left">
+                          <div className="flex justify-between items-start">
+                            <strong className="text-[11px] text-slate-800">{doc.label}</strong>
+                            <span className="text-[9px] text-slate-400 truncate max-w-[100px]" title={doc.file}>
+                              {doc.file}
+                            </span>
+                          </div>
+                          {/* File base64 preview container */}
+                          <div className="h-28 bg-white border rounded-lg overflow-hidden flex items-center justify-center relative group">
+                            {doc.data ? (
+                              <img src={doc.data} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              <FileText className="w-8 h-8 text-slate-300" />
+                            )}
+                            {doc.data && (
+                              <a 
+                                href={doc.data} 
+                                download={doc.file}
+                                className="absolute inset-0 bg-primary/45 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity duration-300 font-bold text-[10px] gap-1 cursor-pointer"
+                              >
+                                <Download className="w-4.5 h-4.5" /> Download
+                              </a>
+                            )}
+                          </div>
                         </div>
-                        {/* File base64 preview container */}
-                        <div className="h-28 bg-white border rounded-lg overflow-hidden flex items-center justify-center relative group">
-                          {doc.data ? (
-                            <img src={doc.data} alt="" className="w-full h-full object-cover" />
-                          ) : (
-                            <FileText className="w-8 h-8 text-slate-300" />
-                          )}
-                          <a 
-                            href={doc.data} 
-                            download={doc.file}
-                            className="absolute inset-0 bg-primary/45 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity duration-300 font-bold text-[10px] gap-1 cursor-pointer"
-                          >
-                            <Download className="w-4.5 h-4.5" /> Download
-                          </a>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="space-y-3">
+                    <h4 className="font-display font-bold text-xs uppercase text-slate-400 tracking-wider">
+                      KYC Documents
+                    </h4>
+                    <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-500 font-medium">
+                      No KYC documents uploaded. Verification will be handled manually during processing.
+                    </div>
+                  </div>
+                )}
 
                 {/* section: comments history */}
                 {selectedApp.comments && (
