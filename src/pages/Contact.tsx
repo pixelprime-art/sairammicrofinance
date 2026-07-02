@@ -118,7 +118,7 @@ export const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-[10px] text-slate-400 uppercase">Email Inbox</h4>
-                  <span className="text-sm font-extrabold text-primary">corp.chennai@nayaksairam.com</span>
+                  <span className="text-sm font-extrabold text-primary">info@sairammicrofinance.com</span>
                 </div>
               </div>
             </div>
@@ -291,7 +291,7 @@ export const Contact: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
             {/* List */}
             <div className="lg:col-span-5 space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-              {mockDb.getBranches().map(b => (
+              {mockDb.getBranches().slice(0, 2).map((b) => (
                 <div key={b.id} className="bg-slate-50 border p-4 rounded-xl space-y-2 text-left">
                   <div className="flex justify-between items-start">
                     <h4 className="font-display font-bold text-sm text-primary leading-snug">{b.name}</h4>

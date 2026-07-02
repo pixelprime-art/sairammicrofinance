@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   MapPin, Phone, Mail, ArrowRight, ShieldCheck 
@@ -25,7 +25,7 @@ export const Footer: React.FC = () => {
             </div>
           </Link>
           <p className="text-slate-300 text-sm leading-relaxed max-w-sm">
-            Empowering entrepreneurs, farmers, women, and families through accessible, inclusive, and transparent financial solutions. Transforming communities since 2015.
+            Empowering entrepreneurs, farmers, women, and families through accessible, inclusive, and transparent financial solutions. Transforming communities since 2026.
           </p>
           <div className="flex items-center gap-4">
             <a 
@@ -177,31 +177,31 @@ export const Footer: React.FC = () => {
       {/* Corporate Info Row */}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 pt-8 border-t border-navy-light/50 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-300">
         <div className="flex items-start gap-3">
-          <MapPin className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
+          <MapPin className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
           <div>
             <h5 className="font-bold text-slate-200 mb-0.5">Corporate Headquarters</h5>
             <p className="text-xs leading-relaxed text-slate-400">
-              SAIRAM MICROFINANCE Towers, 4th Floor, Anna Salai, Chennai, Tamil Nadu 600002
+              SAIRAM MICROFINANCE, No.55, 1st L Main Road, Sajjepalaya, Nagarbhavi 2nd Stage, Bengaluru - 560072
             </p>
           </div>
         </div>
 
         <div className="flex items-start gap-3">
-          <Phone className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
+          <Phone className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
           <div>
             <h5 className="font-bold text-slate-200 mb-0.5">Helpline Support</h5>
             <p className="text-xs text-slate-400">
-              +91 44 2855 9000 (Mon - Sat, 9 AM - 6 PM)
+              +91 82202 92135 (Mon - Sat, 9 AM - 6 PM)
             </p>
           </div>
         </div>
 
         <div className="flex items-start gap-3">
-          <Mail className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
+          <Mail className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
           <div>
             <h5 className="font-bold text-slate-200 mb-0.5">Email Support</h5>
             <p className="text-xs text-slate-400">
-              corp.chennai@nayaksairam.com
+              info@sairammicrofinance.com
             </p>
           </div>
         </div>

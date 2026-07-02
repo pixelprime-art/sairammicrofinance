@@ -191,8 +191,8 @@ const DEFAULT_BRANCHES: Branch[] = [
     id: 'b1',
     name: 'Corporate Head Office (Bengaluru)',
     address: 'SAIRAM MICROFINANCE, No.55, 1st L Main Road, Sajjepalaya, Nagarbhavi 2nd Stage, Bengaluru - 560072',
-    phone: '+91 44 2855 9000',
-    email: 'sairammicrofinance@gmail.com',
+    phone: '+91 82202 92135',
+    email: 'info@sairammicrofinance.com',
     isMain: true
   },
   {
@@ -200,23 +200,7 @@ const DEFAULT_BRANCHES: Branch[] = [
     name: 'Regional Office (Tiruchengodu)',
     address: 'No.5/152, Murasukuttai, Kuchipalayam, Thokkavadi Post, Tiruchengodu Tk, Namakkal dt - 637 215',
     phone: '+91 80 4112 3456',
-    email: 'sairammicrofinance@gmail.com',
-    isMain: false
-  },
-  {
-    id: 'b3',
-    name: 'Hyderabad Branch Office',
-    address: 'D.No. 3-6-285, Himayatnagar Main Road, Hyderabad, Telangana 500029',
-    phone: '+91 40 6678 1234',
-    email: 'hyd@nayaksairam.com',
-    isMain: false
-  },
-  {
-    id: 'b4',
-    name: 'Coimbatore Branch Office',
-    address: '102, Avinashi Road, Near PSG College, Coimbatore, Tamil Nadu 641004',
-    phone: '+91 422 256 7890',
-    email: 'coimbatore@nayaksairam.com',
+    email: 'info@sairammicrofinance.com',
     isMain: false
   }
 ];

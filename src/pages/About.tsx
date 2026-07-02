@@ -144,7 +144,7 @@ export const About: React.FC = () => {
             {leaders.map((leader, idx) => (
               <div key={idx} className="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="aspect-square bg-slate-200 overflow-hidden relative">
-                  <img src={leader.image} alt={leader.name} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                  <img src={leader.image} alt={leader.name} className="w-full h-full object-cover transition-all duration-500" />
                 </div>
                 <div className="p-6 text-left space-y-2">
                   <div>
@@ -217,7 +217,7 @@ export const About: React.FC = () => {
               <Mail className="w-5 h-5 text-secondary mt-0.5" />
               <div>
                 <h4 className="font-bold text-xs text-primary">Submit CV</h4>
-                <p className="text-[10px] text-slate-400 mt-0.5">careers@nayaksairam.com</p>
+                <p className="text-[10px] text-slate-400 mt-0.5">careers@sairammicrofinance.com</p>
               </div>
             </div>
           </div>
@@ -235,7 +235,7 @@ export const About: React.FC = () => {
                     <span>{job.exp}</span>
                   </div>
                 </div>
-                <a href="mailto:careers@nayaksairam.com?subject=Application%20for%20Job" className="p-2 rounded-lg bg-white border hover:bg-primary hover:text-white text-slate-600 transition-all flex items-center justify-center">
+                <a href="mailto:careers@sairammicrofinance.com?subject=Application%20for%20Job" className="p-2 rounded-lg bg-white border hover:bg-primary hover:text-white text-slate-600 transition-all flex items-center justify-center">
                   <Plus className="w-4 h-4" />
                 </a>
               </div>

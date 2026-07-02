@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { mockDb } from '../services/mockDb';
@@ -1417,7 +1417,7 @@ export const Home: React.FC = () => {
               {/* Location disclaimer tag */}
               <div className="mt-auto relative z-10 bg-white/90 backdrop-blur-sm border border-slate-200 p-4 rounded-2xl max-w-sm text-left">
                 <h5 className="font-bold text-xs text-primary mb-1">Corporate & Regional Geolocation</h5>
-                <p className="text-[10px] text-slate-500 leading-normal"> 
+                <p className="text-[10px] text-slate-500 leading-normal">
                   All branches are connected via centralized core banking interfaces. Use contact cards for exact walking coordinates.
                 </p>
               </div>
