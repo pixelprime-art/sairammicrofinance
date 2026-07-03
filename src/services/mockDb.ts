@@ -403,7 +403,7 @@ export const mockDb = {
       return;
     }
     try {
-      const url = `${GOOGLE_SHEET_API_URL}?key=${encodeURIComponent(API_SECRET_KEY)}`;
+      const url = `${GOOGLE_SHEET_API_URL}?key=${encodeURIComponent(API_SECRET_KEY)}&_t=${Date.now()}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error("Network response was not ok");
       const data = await response.json();
@@ -472,7 +472,7 @@ export const mockDb = {
     loadTable<Branch>('branches', DEFAULT_BRANCHES);
     loadTable<Testimonial>('testimonials', DEFAULT_TESTIMONIALS);
     loadTable<LoanApplication>('loan_applications', []);
-    loadTable<Notification>('notifications', DEFAULT_NOTIFICATIONS);
+    loadTable<Notification>('notifications', GOOGLE_SHEET_API_URL ? [] : DEFAULT_NOTIFICATIONS);
     loadTable<ContactMessage>('contact_messages', []);
     loadTable<Investment>('investments', []);
 
@@ -687,7 +687,7 @@ export const mockDb = {
 
   // Notifications CRUD
   getNotifications(): Notification[] {
-    const list = loadTable<Notification>('notifications', DEFAULT_NOTIFICATIONS);
+    const list = loadTable<Notification>('notifications', GOOGLE_SHEET_API_URL ? [] : DEFAULT_NOTIFICATIONS);
     return list.map(n => ({
       ...n,
       isRead: readNotificationIds.has(n.id)
