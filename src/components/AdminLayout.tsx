@@ -301,7 +301,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
                 AD
               </div>
               <div className="hidden md:flex flex-col text-left">
-                <span className="text-xs font-bold text-slate-800">NSMF Administrator</span>
+                <span className="text-xs font-bold text-slate-800">Administrator</span>
                 <span className="text-[10px] text-slate-400 leading-none">admin@gmail.com</span>
               </div>
             </div>
