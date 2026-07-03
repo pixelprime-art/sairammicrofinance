@@ -36,12 +36,14 @@ export const ApplyLoan: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [successApp, setSuccessApp] = useState<LoanApplication | null>(null);
   const [shake, setShake] = useState(0);
+  const [stepAttempted, setStepAttempted] = useState<Record<number, boolean>>({});
+  const [isSubmittingApp, setIsSubmittingApp] = useState(false);
 
   // Read preselected type from URL
   const selectedType = searchParams.get('type') || 'personal';
 
   // React Hook Form
-  const { register, handleSubmit, trigger, watch, formState: { errors } } = useForm<FormInputs>({
+  const { register, handleSubmit, trigger, watch, formState: { errors, touchedFields, isSubmitted } } = useForm<FormInputs>({
     mode: 'onChange',
     defaultValues: {
       fullName: user?.fullName || '',
@@ -60,6 +62,10 @@ export const ApplyLoan: React.FC = () => {
 
   const selectedOccupation = watch('occupation');
 
+  const shouldShowError = (field: keyof FormInputs, step: number) => {
+    return !!errors[field] && (touchedFields[field] || stepAttempted[step] || isSubmitted);
+  };
+
   // Step Navigations with Validation
   const handleNextStep = async () => {
     let fieldsToValidate: (keyof FormInputs)[] = [];
@@ -76,6 +82,7 @@ export const ApplyLoan: React.FC = () => {
     if (isValid) {
       setCurrentStep(prev => prev + 1);
     } else {
+      setStepAttempted(prev => ({ ...prev, [currentStep]: true }));
       setShake(prev => prev + 1);
     }
   };
@@ -86,49 +93,54 @@ export const ApplyLoan: React.FC = () => {
 
   // Submit Final
   const onSubmit = (data: FormInputs) => {
-    // Calculate monthly EMI mock
-    const loanTypes = mockDb.getLoanTypes();
-    const matched = loanTypes.find(t => t.id === data.loanType);
-    const rate = matched ? matched.interestRate : 10.99;
-    
-    const monthlyRate = rate / 12 / 100;
-    const emi = (data.amount * monthlyRate * Math.pow(1 + monthlyRate, data.tenureMonths)) / 
-                (Math.pow(1 + monthlyRate, data.tenureMonths) - 1);
+    setIsSubmittingApp(true);
+    // Simulate a beautiful loading delay of 1.5 seconds for premium UX
+    setTimeout(() => {
+      const loanTypes = mockDb.getLoanTypes();
+      const matched = loanTypes.find(t => t.id === data.loanType);
+      const rate = matched ? matched.interestRate : 10.99;
+      
+      const monthlyRate = rate / 12 / 100;
+      const emi = (data.amount * monthlyRate * Math.pow(1 + monthlyRate, data.tenureMonths)) / 
+                  (Math.pow(1 + monthlyRate, data.tenureMonths) - 1);
 
-    const submissionData = {
-      userId: user?.id || 'guest',
-      fullName: data.fullName,
-      dob: data.dob,
-      gender: data.gender,
-      mobile: data.mobile,
-      email: data.email,
-      loanType: data.loanType,
-      amount: Number(data.amount),
-      tenureMonths: Number(data.tenureMonths),
-      interestRate: rate,
-      monthlyEMI: Math.round(emi),
-      occupation: data.occupation === 'Others' ? (data.customOccupation || 'Others') : data.occupation,
-      employerName: data.employerName,
-      experienceYears: Number(data.experienceYears),
-      monthlyIncome: Number(data.monthlyIncome),
-      otherIncome: Number(data.otherIncome),
-      documents: {
-        aadhaarName: 'Not Provided',
-        aadhaarData: '',
-        panName: 'Not Provided',
-        panData: '',
-        photoName: 'Not Provided',
-        photoData: '',
-        incomeProofName: 'Not Provided',
-        incomeProofData: ''
-      }
-    };
+      const submissionData = {
+        userId: user?.id || 'guest',
+        fullName: data.fullName,
+        dob: data.dob,
+        gender: data.gender,
+        mobile: data.mobile,
+        email: data.email,
+        loanType: data.loanType,
+        amount: Number(data.amount),
+        tenureMonths: Number(data.tenureMonths),
+        interestRate: rate,
+        monthlyEMI: Math.round(emi),
+        occupation: data.occupation === 'Others' ? (data.customOccupation || 'Others') : data.occupation,
+        employerName: data.employerName,
+        experienceYears: Number(data.experienceYears),
+        monthlyIncome: Number(data.monthlyIncome),
+        otherIncome: Number(data.otherIncome),
+        documents: {
+          aadhaarName: 'Not Provided',
+          aadhaarData: '',
+          panName: 'Not Provided',
+          panData: '',
+          photoName: 'Not Provided',
+          photoData: '',
+          incomeProofName: 'Not Provided',
+          incomeProofData: ''
+        }
+      };
 
-    const newApplication = mockDb.createApplication(submissionData);
-    setSuccessApp(newApplication);
+      const newApplication = mockDb.createApplication(submissionData);
+      setSuccessApp(newApplication);
+      setIsSubmittingApp(false);
+    }, 1500);
   };
 
   const onInvalidSubmit = () => {
+    setStepAttempted(prev => ({ ...prev, [currentStep]: true }));
     setShake(prev => prev + 1);
   };
 
@@ -144,7 +156,7 @@ export const ApplyLoan: React.FC = () => {
     } else if (currentStep === 3) {
       currentFields = ['monthlyIncome', 'otherIncome'];
     }
-    return currentFields.some(field => errors[field]);
+    return currentFields.some(field => shouldShowError(field, currentStep));
   };
 
   return (
@@ -302,12 +314,12 @@ export const ApplyLoan: React.FC = () => {
                             type="text"
                             {...register('fullName', { required: true })}
                             className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
-                              errors.fullName 
+                              shouldShowError('fullName', 1) 
                                 ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
                                 : 'border-slate-200 focus:border-primary/50'
                             }`}
                           />
-                          {errors.fullName && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Full name is required.</p>}
+                          {shouldShowError('fullName', 1) && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Full name is required.</p>}
                         </div>
                         <div>
                           <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Date of Birth</label>
@@ -315,12 +327,12 @@ export const ApplyLoan: React.FC = () => {
                             type="date"
                             {...register('dob', { required: true })}
                             className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
-                              errors.dob 
+                              shouldShowError('dob', 1) 
                                 ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
                                 : 'border-slate-200 focus:border-primary/50'
                             }`}
                           />
-                          {errors.dob && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Date of birth is required.</p>}
+                          {shouldShowError('dob', 1) && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Date of birth is required.</p>}
                         </div>
                       </div>
 
@@ -343,14 +355,14 @@ export const ApplyLoan: React.FC = () => {
                             placeholder="10-digit number"
                             {...register('mobile', { required: true, pattern: /^[0-9]{10}$/ })}
                             className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
-                              errors.mobile 
+                              shouldShowError('mobile', 1) 
                                 ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
                                 : 'border-slate-200 focus:border-primary/50'
                             }`}
                           />
-                          {errors.mobile && (
+                          {shouldShowError('mobile', 1) && (
                             <p className="text-[10px] text-red-500 mt-1.5 font-semibold">
-                              {errors.mobile.type === 'pattern' ? 'Please enter a valid 10-digit mobile number.' : 'Mobile number is required.'}
+                              {errors.mobile?.type === 'pattern' ? 'Please enter a valid 10-digit mobile number.' : 'Mobile number is required.'}
                             </p>
                           )}
                         </div>
@@ -360,12 +372,12 @@ export const ApplyLoan: React.FC = () => {
                             type="email"
                             {...register('email', { required: true })}
                             className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
-                              errors.email 
+                              shouldShowError('email', 1) 
                                 ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
                                 : 'border-slate-200 focus:border-primary/50'
                             }`}
                           />
-                          {errors.email && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">A valid email address is required.</p>}
+                          {shouldShowError('email', 1) && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">A valid email address is required.</p>}
                         </div>
                       </div>
 
@@ -391,14 +403,14 @@ export const ApplyLoan: React.FC = () => {
                             type="number"
                             {...register('amount', { required: true, min: 10000 })}
                             className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
-                              errors.amount 
+                              shouldShowError('amount', 1) 
                                 ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
                                 : 'border-slate-200 focus:border-primary/50'
                             }`}
                           />
-                          {errors.amount && (
+                          {shouldShowError('amount', 1) && (
                             <p className="text-[10px] text-red-500 mt-1.5 font-semibold">
-                              {errors.amount.type === 'min' ? 'Loan amount must be at least ₹10,000.' : 'Loan amount is required.'}
+                              {errors.amount?.type === 'min' ? 'Loan amount must be at least ₹10,000.' : 'Loan amount is required.'}
                             </p>
                           )}
                         </div>
@@ -408,14 +420,14 @@ export const ApplyLoan: React.FC = () => {
                             type="number"
                             {...register('tenureMonths', { required: true, min: 6 })}
                             className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
-                              errors.tenureMonths 
+                              shouldShowError('tenureMonths', 1) 
                                 ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
                                 : 'border-slate-200 focus:border-primary/50'
                             }`}
                           />
-                          {errors.tenureMonths && (
+                          {shouldShowError('tenureMonths', 1) && (
                             <p className="text-[10px] text-red-500 mt-1.5 font-semibold">
-                              {errors.tenureMonths.type === 'min' ? 'Tenure must be at least 6 months.' : 'Tenure is required.'}
+                              {errors.tenureMonths?.type === 'min' ? 'Tenure must be at least 6 months.' : 'Tenure is required.'}
                             </p>
                           )}
                         </div>
@@ -458,12 +470,12 @@ export const ApplyLoan: React.FC = () => {
                                 {...register('customOccupation', { required: selectedOccupation === 'Others' })}
                                 placeholder="e.g. Freelance Designer"
                                 className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
-                                  errors.customOccupation 
+                                  shouldShowError('customOccupation', 2) 
                                     ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
                                     : 'border-slate-200 focus:border-primary/50'
                                 }`}
                               />
-                              {errors.customOccupation && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Please specify your occupation.</p>}
+                              {shouldShowError('customOccupation', 2) && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Please specify your occupation.</p>}
                             </div>
                           )}
                         </div>
@@ -474,12 +486,12 @@ export const ApplyLoan: React.FC = () => {
                             placeholder="e.g. TCS or Self Store"
                             {...register('employerName', { required: true })}
                             className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
-                              errors.employerName 
+                              shouldShowError('employerName', 2) 
                                 ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
                                 : 'border-slate-200 focus:border-primary/50'
                             }`}
                           />
-                          {errors.employerName && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Employer / Business name is required.</p>}
+                          {shouldShowError('employerName', 2) && <p className="text-[10px] text-red-500 mt-1.5 font-semibold">Employer / Business name is required.</p>}
                         </div>
                       </div>
 
@@ -489,14 +501,14 @@ export const ApplyLoan: React.FC = () => {
                           type="number"
                           {...register('experienceYears', { required: true, min: 0 })}
                           className={`bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 w-44 ${
-                            errors.experienceYears 
+                            shouldShowError('experienceYears', 2) 
                               ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
                               : 'border-slate-200 focus:border-primary/50'
                           }`}
                         />
-                        {errors.experienceYears && (
+                        {shouldShowError('experienceYears', 2) && (
                           <p className="text-[10px] text-red-500 mt-1.5 font-semibold">
-                            {errors.experienceYears.type === 'min' ? 'Experience cannot be negative.' : 'Work experience is required.'}
+                            {errors.experienceYears?.type === 'min' ? 'Experience cannot be negative.' : 'Work experience is required.'}
                           </p>
                         )}
                       </div>
@@ -521,14 +533,14 @@ export const ApplyLoan: React.FC = () => {
                             type="number"
                             {...register('monthlyIncome', { required: true, min: 1000 })}
                             className={`w-full bg-white border rounded-xl py-3 px-4 text-xs focus:outline-none transition-all text-slate-800 ${
-                              errors.monthlyIncome 
+                              shouldShowError('monthlyIncome', 3) 
                                 ? 'border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500' 
                                 : 'border-slate-200 focus:border-primary/50'
                             }`}
                           />
-                          {errors.monthlyIncome && (
+                          {shouldShowError('monthlyIncome', 3) && (
                             <p className="text-[10px] text-red-500 mt-1.5 font-semibold">
-                              {errors.monthlyIncome.type === 'min' ? 'Monthly income must be at least ₹1,000.' : 'Monthly income is required.'}
+                              {errors.monthlyIncome?.type === 'min' ? 'Monthly income must be at least ₹1,000.' : 'Monthly income is required.'}
                             </p>
                           )}
                         </div>
@@ -580,9 +592,24 @@ export const ApplyLoan: React.FC = () => {
                   ) : (
                     <button
                       type="submit"
-                      className="bg-secondary hover:bg-gold-hover text-primary font-extrabold text-xs py-3.5 px-8 rounded-xl shadow-lg transition-all flex items-center gap-1.5 cursor-pointer"
+                      disabled={isSubmittingApp}
+                      className={`bg-secondary hover:bg-gold-hover text-primary font-extrabold text-xs py-3.5 px-8 rounded-xl shadow-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                        isSubmittingApp ? 'opacity-80 cursor-not-allowed' : ''
+                      }`}
                     >
-                      Submit Application <ShieldCheck className="w-4 h-4" />
+                      {isSubmittingApp ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          Submit Application <ShieldCheck className="w-4 h-4" />
+                        </>
+                      )}
                     </button>
                   )}
                 </div>

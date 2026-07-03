@@ -12,6 +12,7 @@ export const Contact: React.FC = () => {
   const [subject, setSubject] = useState('General Enquiry');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   // FAQ states
   const [faqCategory, setFaqCategory] = useState<'loans' | 'investments' | 'emi' | 'repayments'>('loans');
@@ -20,14 +21,19 @@ export const Contact: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !phone || !message) return;
-    mockDb.createContactMessage(name, phone, subject, message);
-    setSubmitted(true);
+    setIsSending(true);
+    // Simulate beautiful 1.5 seconds loading delay
     setTimeout(() => {
-      setName('');
-      setPhone('');
-      setMessage('');
-      setSubmitted(false);
-    }, 3000);
+      mockDb.createContactMessage(name, phone, subject, message);
+      setSubmitted(true);
+      setIsSending(false);
+      setTimeout(() => {
+        setName('');
+        setPhone('');
+        setMessage('');
+        setSubmitted(false);
+      }, 3000);
+    }, 1500);
   };
 
   const faqData = {
@@ -193,9 +199,24 @@ export const Contact: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-primary hover:bg-navy-dark text-white font-bold text-xs py-3.5 rounded-xl shadow-md transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  disabled={isSending}
+                  className={`w-full bg-primary hover:bg-navy-dark text-white font-bold text-xs py-3.5 rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    isSending ? 'opacity-85 cursor-not-allowed' : ''
+                  }`}
                 >
-                  Send Message <Send className="w-3.5 h-3.5 text-secondary" />
+                  {isSending ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message <Send className="w-3.5 h-3.5 text-secondary" />
+                    </>
+                  )}
                 </button>
               </form>
             )}

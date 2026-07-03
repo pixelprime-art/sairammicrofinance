@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { mockDb } from '../services/mockDb';
@@ -135,7 +135,7 @@ export const Navbar: React.FC = () => {
       setFullName('');
       setMobile('');
       // Route admin to dashboard automatically
-      if (email.toLowerCase() === 'admin@nayaksairam.com') {
+      if (email.toLowerCase() === 'admin@gmail.com') {
         navigate('/admin');
       }
     }
@@ -241,13 +241,10 @@ export const Navbar: React.FC = () => {
                             key={notif.id}
                             className={`p-4 transition-colors hover:bg-slate-50 ${!notif.isRead ? 'bg-slate-50/70 border-l-4 border-secondary' : ''}`}
                           >
-                            <div className="flex justify-between items-start gap-2 mb-1">
+                            <div className="mb-1">
                               <h5 className="font-semibold text-sm text-slate-900 leading-tight">
                                 {notif.title}
                               </h5>
-                              <span className="text-[10px] text-slate-400 font-medium whitespace-nowrap">
-                                {notif.date}
-                              </span>
                             </div>
                             <p className="text-xs text-slate-600 leading-relaxed">
                               {notif.message}
@@ -640,12 +637,10 @@ export const Navbar: React.FC = () => {
                   <img src="/logo.png" alt="" className="w-8 h-8 object-contain" decoding="async" />
                 </div>
                 <h3 className="font-display font-bold text-xl text-primary">
-                  {isRegistering ? 'Create Customer Account' : 'Welcome to SAIRAM MICROFINANCE'}
+                  Welcome to SAIRAM MICROFINANCE
                 </h3>
                 <p className="text-xs text-slate-500 mt-1">
-                  {isRegistering
-                    ? 'Register to track loans and uploads'
-                    : 'Log in to apply and manage applications'}
+                  Log in to apply and manage applications
                 </p>
               </div>
 
@@ -673,58 +668,22 @@ export const Navbar: React.FC = () => {
                 </div>
 
                 {/* Password only needed for admin check or mock security demonstration */}
-                {(!isRegistering || email.toLowerCase() === 'admin@nayaksairam.com') && (
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                      Password {email.toLowerCase() !== 'admin@nayaksairam.com' && <span className="text-[10px] text-slate-400 lowercase">(Optional for mock customer)</span>}
-                    </label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
-                      <input
-                        type="password"
-                        placeholder="••••••••"
-                        required={email.toLowerCase() === 'admin@nayaksairam.com'}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-primary/20"
-                      />
-                    </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                    Password {email.toLowerCase() !== 'admin@gmail.com' && <span className="text-[10px] text-slate-400 lowercase">(Optional for mock customer)</span>}
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
+                    <input
+                      type="password"
+                      placeholder="••••••••"
+                      required={email.toLowerCase() === 'admin@gmail.com'}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-primary/20"
+                    />
                   </div>
-                )}
-
-                {isRegistering && (
-                  <>
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Full Name</label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
-                        <input
-                          type="text"
-                          required
-                          placeholder="e.g. Ramesh Kumar"
-                          value={fullName}
-                          onChange={(e) => setFullName(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-primary/20"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Mobile Number</label>
-                      <div className="relative">
-                        <PhoneCall className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
-                        <input
-                          type="tel"
-                          required
-                          placeholder="e.g. 9840XXXXXX"
-                          value={mobile}
-                          onChange={(e) => setMobile(e.target.value)}
-                          className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-primary/20"
-                        />
-                      </div>
-                    </div>
-                  </>
-                )}
+                </div>
 
                 <button
                   type="submit"
@@ -735,30 +694,14 @@ export const Navbar: React.FC = () => {
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
-                      {isRegistering ? 'Register & Log In' : 'Log In'}
+                      Log In
                       <ArrowRight className="w-4 h-4 text-secondary" />
                     </>
                   )}
                 </button>
               </form>
 
-              <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                <button
-                  onClick={() => setIsRegistering(!isRegistering)}
-                  className="text-primary font-bold hover:underline cursor-pointer"
-                >
-                  {isRegistering ? 'Already have an account? Log In' : 'Create Customer Account'}
-                </button>
 
-                {/* Admin Quick Credentials Tip */}
-                {!isRegistering && (
-                  <div className="text-[10px] text-slate-400 bg-slate-50 p-1.5 rounded border border-slate-200 max-w-[150px] text-left leading-normal">
-                    <span className="font-bold text-slate-500">Admin Login:</span><br />
-                    admin@nayaksairam.com<br />
-                    pw: admin123
-                  </div>
-                )}
-              </div>
             </motion.div>
           </div>
         )}

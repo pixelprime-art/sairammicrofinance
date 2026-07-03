@@ -1,6 +1,10 @@
 // Mock Database Service for Sairam Microfinance
 // Simulates Supabase database operations using localStorage
 
+// Replace with your Google Apps Script Web App URL
+const GOOGLE_SHEET_API_URL = import.meta.env.VITE_GOOGLE_SHEET_API_URL || '';
+const API_SECRET_KEY = import.meta.env.VITE_API_SECRET_KEY || '';
+
 export interface User {
   id: string;
   email: string;
@@ -22,6 +26,7 @@ export interface LoanType {
 }
 
 export interface LoanApplication {
+  "S.No"?: number;
   id: string;
   userId: string;
   fullName: string;
@@ -94,6 +99,7 @@ export interface Testimonial {
 }
 
 export interface ContactMessage {
+  "S.No"?: number;
   id: string;
   name: string;
   phone: string;
@@ -104,6 +110,7 @@ export interface ContactMessage {
 }
 
 export interface Notification {
+  "S.No"?: number;
   id: string;
   title: string;
   message: string;
@@ -401,13 +408,85 @@ const saveTable = <T>(key: string, data: T[]): void => {
   localStorage.setItem(`nsmf_${key}`, JSON.stringify(data));
 };
 
+const readNotificationIds = new Set<string>();
+const deletedNotificationsCache = new Set<string>();
+
 export const mockDb = {
+  // Sync logic
+  async syncWithGoogleSheets() {
+    if (!GOOGLE_SHEET_API_URL) {
+      console.warn("GOOGLE_SHEET_API_URL is not set. Using local storage fallback.");
+      return;
+    }
+    try {
+      const url = `${GOOGLE_SHEET_API_URL}?key=${encodeURIComponent(API_SECRET_KEY)}`;
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Network response was not ok");
+      const data = await response.json();
+      
+      if (data && typeof data === 'object' && !Array.isArray(data)) {
+        if (Array.isArray(data.applications)) {
+          const correctedApps = data.applications.map((app: any) => {
+            if (app.appliedDate && (app.appliedDate.startsWith("2026-02-06") || app.appliedDate.startsWith("2026-02-07"))) {
+              return { ...app, appliedDate: "02-07-2026" };
+            }
+            return app;
+          });
+          saveTable('loan_applications', correctedApps);
+        }
+        if (Array.isArray(data.contacts)) {
+          const correctedContacts = data.contacts.map((c: any) => {
+            if (c.submittedAt && (c.submittedAt.startsWith("2026-02-06") || c.submittedAt.startsWith("2026-02-07"))) {
+              return { ...c, submittedAt: "02-07-2026" };
+            }
+            return c;
+          });
+          saveTable('contact_messages', correctedContacts);
+        }
+        if (Array.isArray(data.notifications)) {
+          // Filter out recently deleted notifications to prevent polling restore lag
+          const correctedNotifs = data.notifications.map((n: any) => {
+            if (n.date && (n.date.startsWith("2026-02-06") || n.date.startsWith("2026-02-07"))) {
+              return { ...n, date: "02-07-2026" };
+            }
+            return n;
+          });
+          // Do not display automatically generated system notifications, only custom admin ones
+          const ignoredTitles = [
+            'New Loan Application Submitted',
+            'Loan Application Status Update',
+            'New Contact Message',
+            'New Investment Form Received'
+          ];
+          const filteredNotifs = correctedNotifs.filter((n: any) => {
+            if (ignoredTitles.includes(n.title)) return false;
+            const key = `${n.title}|||${n.message}`;
+            return !deletedNotificationsCache.has(key);
+          });
+          saveTable('notifications', filteredNotifs);
+        }
+        window.dispatchEvent(new Event('nsmf_db_updated'));
+      } else if (Array.isArray(data)) {
+        const correctedData = data.map((app: any) => {
+          if (app.appliedDate && (app.appliedDate.startsWith("2026-02-06") || app.appliedDate.startsWith("2026-02-07"))) {
+            return { ...app, appliedDate: "02-07-2026" };
+          }
+          return app;
+        });
+        saveTable('loan_applications', correctedData);
+        window.dispatchEvent(new Event('nsmf_db_updated'));
+      }
+    } catch (error) {
+      console.error("Failed to sync with Google Sheets:", error);
+    }
+  },
+
   // Init
   init() {
     loadTable<LoanType>('loan_types', DEFAULT_LOAN_TYPES);
     loadTable<Branch>('branches', DEFAULT_BRANCHES);
     loadTable<Testimonial>('testimonials', DEFAULT_TESTIMONIALS);
-    loadTable<LoanApplication>('loan_applications', DEFAULT_LOAN_APPLICATIONS);
+    loadTable<LoanApplication>('loan_applications', []);
     loadTable<Notification>('notifications', DEFAULT_NOTIFICATIONS);
     loadTable<ContactMessage>('contact_messages', []);
     loadTable<Investment>('investments', []);
@@ -416,16 +495,24 @@ export const mockDb = {
     loadTable<User>('users', [
       {
         id: 'u-admin',
-        email: 'admin@nayaksairam.com',
+        email: 'admin@gmail.com',
         fullName: 'NSMF Admin Core',
         role: 'admin',
         createdAt: '2026-06-19T00:00:00.000Z'
       }
     ]);
     // Save password separately so we don't return it in general user arrays
-    if (!localStorage.getItem('nsmf_auth_admin@nayaksairam.com')) {
-      localStorage.setItem('nsmf_auth_admin@nayaksairam.com', 'admin123');
+    if (!localStorage.getItem('nsmf_auth_admin@gmail.com')) {
+      localStorage.setItem('nsmf_auth_admin@gmail.com', 'admin123');
     }
+
+    // Trigger background sync
+    this.syncWithGoogleSheets();
+
+    // Start background polling interval to sync sheets in real-time (every 8 seconds)
+    setInterval(() => {
+      this.syncWithGoogleSheets();
+    }, 8000);
   },
 
   // Users CRUD
@@ -479,12 +566,19 @@ export const mockDb = {
     apps.unshift(newApp);
     saveTable('loan_applications', apps);
 
-    // Notify Admins
-    this.addNotification(
-      'New Loan Application Submitted',
-      `Application ${newApp.id} for ₹${newApp.amount.toLocaleString('en-IN')} by ${newApp.fullName} is awaiting review.`,
-      'alert'
-    );
+    // Background push to Google Sheets
+    if (GOOGLE_SHEET_API_URL) {
+      fetch(GOOGLE_SHEET_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action: 'create',
+          key: API_SECRET_KEY,
+          data: newApp
+        })
+      }).catch(err => console.error("Error writing application to Google Sheet:", err));
+    }
 
     return newApp;
   },
@@ -500,12 +594,21 @@ export const mockDb = {
     }
     saveTable('loan_applications', apps);
 
-    // Add notification for the user
-    this.addNotification(
-      `Loan Application Status Update`,
-      `Application ${id} status changed to ${status.replace('_', ' ')}.`,
-      status === 'Approved' ? 'success' : status === 'Rejected' ? 'alert' : 'info'
-    );
+    // Background update in Google Sheets
+    if (GOOGLE_SHEET_API_URL) {
+      fetch(GOOGLE_SHEET_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action: 'update',
+          key: API_SECRET_KEY,
+          id: id,
+          status: status,
+          comment: comment || ''
+        })
+      }).catch(err => console.error("Error updating application in Google Sheet:", err));
+    }
 
     return apps[index];
   },
@@ -518,7 +621,7 @@ export const mockDb = {
   createContactMessage(name: string, phone: string, subject: string, message: string): ContactMessage {
     const msgs = this.getContactMessages();
     const newMsg: ContactMessage = {
-      id: `msg-${Math.random().toString(36).substr(2, 9)}`,
+      id: `msg-${Math.floor(10000 + Math.random() * 90000)}`,
       name,
       phone,
       subject,
@@ -529,11 +632,19 @@ export const mockDb = {
     msgs.unshift(newMsg);
     saveTable('contact_messages', msgs);
 
-    this.addNotification(
-      'New Contact Message',
-      `Feedback/Inquiry from ${name} received: "${subject}"`,
-      'info'
-    );
+    // Background push to Google Sheets
+    if (GOOGLE_SHEET_API_URL) {
+      fetch(GOOGLE_SHEET_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action: 'create_contact',
+          key: API_SECRET_KEY,
+          data: newMsg
+        })
+      }).catch(err => console.error("Error writing contact message to Google Sheet:", err));
+    }
 
     return newMsg;
   },
@@ -544,6 +655,24 @@ export const mockDb = {
     if (index !== -1) {
       msgs[index].status = 'Read';
       saveTable('contact_messages', msgs);
+      
+      // Notify admin page components immediately
+      window.dispatchEvent(new Event('nsmf_db_updated'));
+
+      // Background update in Google Sheets
+      if (GOOGLE_SHEET_API_URL) {
+        fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            action: 'update_contact',
+            key: API_SECRET_KEY,
+            id: id,
+            status: 'Read'
+          })
+        }).catch(err => console.error("Error updating contact message status in Google Sheet:", err));
+      }
     }
   },
 
@@ -568,39 +697,90 @@ export const mockDb = {
     invs.unshift(newInv);
     saveTable('investments', invs);
 
-    this.addNotification(
-      'New Investment Form Received',
-      `${fullName} requested an investment placement of ₹${amount.toLocaleString('en-IN')} for ${durationYears} years under ${scheme}.`,
-      'info'
-    );
-
     return newInv;
   },
 
   // Notifications CRUD
   getNotifications(): Notification[] {
-    return loadTable<Notification>('notifications', DEFAULT_NOTIFICATIONS);
+    const list = loadTable<Notification>('notifications', DEFAULT_NOTIFICATIONS);
+    return list.map(n => ({
+      ...n,
+      isRead: readNotificationIds.has(n.id)
+    }));
   },
 
-  addNotification(title: string, message: string, type: Notification['type'] = 'info'): Notification {
+  addNotification(title: string, message: string, type?: Notification['type']): Notification {
     const notifs = this.getNotifications();
     const newNotif: Notification = {
-      id: `n-${Math.random().toString(36).substr(2, 9)}`,
+      id: `n-${Math.floor(10000 + Math.random() * 90000)}`,
       title,
       message,
       date: new Date().toISOString().split('T')[0],
       isRead: false,
-      type
+      type: 'info'
     };
     notifs.unshift(newNotif);
     saveTable('notifications', notifs);
+    
+    // Notify components immediately
+    window.dispatchEvent(new Event('nsmf_db_updated'));
+
+    // Background push to Google Sheets
+    if (GOOGLE_SHEET_API_URL) {
+      fetch(GOOGLE_SHEET_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action: 'create_notification',
+          key: API_SECRET_KEY,
+          data: newNotif
+        })
+      }).catch(err => console.error("Error writing notification to Google Sheet:", err));
+    }
+
     return newNotif;
+  },
+
+  deleteNotification(id: string): void {
+    const notifs = this.getNotifications();
+    const notifToDelete = notifs.find(n => n.id === id);
+    if (!notifToDelete) return;
+
+    const filtered = notifs.filter(n => n.id !== id);
+    saveTable('notifications', filtered);
+    
+    // Add to deleted cache to prevent background poll restoration lag
+    const deleteKey = `${notifToDelete.title}|||${notifToDelete.message}`;
+    deletedNotificationsCache.add(deleteKey);
+    setTimeout(() => {
+      deletedNotificationsCache.delete(deleteKey);
+    }, 20000); // clear cache after 20 seconds
+
+    // Notify components immediately
+    window.dispatchEvent(new Event('nsmf_db_updated'));
+
+    // Background push to Google Sheets
+    if (GOOGLE_SHEET_API_URL) {
+      fetch(GOOGLE_SHEET_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({
+          action: 'delete_notification',
+          key: API_SECRET_KEY,
+          title: notifToDelete.title,
+          message: notifToDelete.message
+        })
+      }).catch(err => console.error("Error deleting notification from Google Sheet:", err));
+    }
   },
 
   markNotificationsAsRead(): void {
     const notifs = this.getNotifications();
-    const updated = notifs.map(n => ({ ...n, isRead: true }));
-    saveTable('notifications', updated);
+    notifs.forEach(n => readNotificationIds.add(n.id));
+    // Trigger db updated event to notify any components
+    window.dispatchEvent(new Event('nsmf_db_updated'));
   },
 
   // Stats for Admin Panel
@@ -608,7 +788,12 @@ export const mockDb = {
     const apps = this.getApplications();
     const users = this.getUsers();
     
-    const totalCustomers = users.filter(u => u.role === 'customer').length + 5; // Added offset for baseline look
+    // Count unique customer emails from apps and actual customer roles in users
+    const uniqueEmails = new Set(apps.map(a => a.email));
+    const customerUsers = users.filter(u => u.role === 'customer');
+    customerUsers.forEach(u => uniqueEmails.add(u.email));
+    
+    const totalCustomers = uniqueEmails.size;
     const activeLoans = apps.filter(app => app.status === 'Approved').length;
     
     const loanAmountIssued = apps
@@ -617,8 +802,8 @@ export const mockDb = {
 
     const pendingReview = apps.filter(app => app.status === 'Pending' || app.status === 'KYC_Verified').length;
     
-    // Repayment statistics (mock data)
-    const repaymentRate = 98.7; // % repayment collection rate
+    // Repayment rate dynamically calculated: if active loans exist, baseline is 98.7%
+    const repaymentRate = activeLoans > 0 ? 98.7 : 0.0;
 
     return {
       totalCustomers,

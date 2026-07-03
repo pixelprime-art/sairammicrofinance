@@ -45,11 +45,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const emailLower = email.toLowerCase().trim();
 
       // 1. Admin login verification
-      if (emailLower === 'admin@nayaksairam.com') {
+      if (emailLower === 'admin@gmail.com') {
         if (password === 'admin123') {
           const adminUser: User = {
             id: 'u-admin',
-            email: 'admin@nayaksairam.com',
+            email: 'admin@gmail.com',
             fullName: 'NSMF Admin Core',
             role: 'admin',
             createdAt: new Date().toISOString(),

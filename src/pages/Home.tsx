@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { mockDb } from '../services/mockDb';
@@ -230,6 +230,7 @@ export const Home: React.FC = () => {
   const [contactSubject, setContactSubject] = useState('General Enquiry');
   const [contactMessage, setContactMessage] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSendingContact, setIsSendingContact] = useState(false);
 
   useEffect(() => {
     setLoanTypes(mockDb.getLoanTypes());
@@ -263,20 +264,19 @@ export const Home: React.FC = () => {
     e.preventDefault();
     if (!contactName || !contactPhone || !contactMessage) return;
 
-    // Send to info@sairamfinance.com via mailto
-    const subject = encodeURIComponent(`Enquiry: ${contactSubject}`);
-    const body = encodeURIComponent(
-      `Name: ${contactName}\nPhone: ${contactPhone}\nSubject: ${contactSubject}\n\nMessage:\n${contactMessage}`
-    );
-    window.location.href = `mailto:info@sairamfinance.com?subject=${subject}&body=${body}`;
-
-    setFormSubmitted(true);
+    setIsSendingContact(true);
+    // Simulate beautiful 1.5 seconds loading delay
     setTimeout(() => {
-      setContactName('');
-      setContactPhone('');
-      setContactMessage('');
-      setFormSubmitted(false);
-    }, 3000);
+      mockDb.createContactMessage(contactName, contactPhone, contactSubject, contactMessage);
+      setFormSubmitted(true);
+      setIsSendingContact(false);
+      setTimeout(() => {
+        setContactName('');
+        setContactPhone('');
+        setContactMessage('');
+        setFormSubmitted(false);
+      }, 3000);
+    }, 1500);
   };
 
 
@@ -1529,7 +1529,7 @@ export const Home: React.FC = () => {
                   <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1.5">Message / Inquiry</label>
                   <textarea
                     required
-                    rows={4}
+                        rows={4}
                     placeholder="Tell us what you would like to clarify..."
                     value={contactMessage}
                     onChange={(e) => setContactMessage(e.target.value)}
@@ -1539,9 +1539,24 @@ export const Home: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-primary hover:bg-navy-dark text-white font-bold text-xs py-3.5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={isSendingContact}
+                  className={`w-full bg-primary hover:bg-navy-dark text-white font-bold text-xs py-3.5 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                    isSendingContact ? 'opacity-85 cursor-not-allowed' : ''
+                  }`}
                 >
-                  Send Enquiry <Send className="w-3.5 h-3.5 text-secondary" />
+                  {isSendingContact ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Enquiry <Send className="w-3.5 h-3.5 text-secondary" />
+                    </>
+                  )}
                 </button>
               </form>
             )}

@@ -1,9 +1,9 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
   LayoutDashboard, FileText, Users, LogOut, Home, 
-  Menu, X, ShieldAlert, ArrowRight, UserCheck
+  Menu, X, ShieldAlert, ArrowRight, UserCheck, Mail, Bell
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -12,6 +12,8 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   
   // Quick credentials login for testing the Admin page
   const [adminEmail, setAdminEmail] = useState('');
@@ -26,12 +28,19 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
     const success = await login(adminEmail, adminPassword);
     setLoading(false);
     if (!success) {
-      setAdminError('Invalid credentials. Hint: use admin@nayaksairam.com / admin123');
+      setAdminError('Invalid credentials. Hint: use admin@gmail.com / admin123');
     }
   };
 
   // Guard: If not admin, show login gate
   if (!isAdmin) {
+    if (isLoggingOut) {
+      return (
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center text-slate-500 font-medium">
+          Logging out...
+        </div>
+      );
+    }
     return (
       <div className="min-h-screen bg-slate-900 text-white flex flex-col justify-center items-center px-4 py-12">
         <motion.div 
@@ -63,7 +72,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
               <input
                 type="email"
                 required
-                placeholder="admin@nayaksairam.com"
+                placeholder="admin@gmail.com"
                 value={adminEmail}
                 onChange={(e) => setAdminEmail(e.target.value)}
                 className="w-full bg-slate-900 border border-slate-700 focus:border-secondary text-white rounded-xl py-3 px-4 text-sm focus:outline-none"
@@ -111,10 +120,12 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
   const sidebarLinks = [
     { label: 'Overview', path: '/admin', icon: LayoutDashboard },
     { label: 'Loan Requests', path: '/admin/applications', icon: FileText },
-    { label: 'KYC & Customers', path: '/admin/customers', icon: Users },
+    { label: 'Contact Messages', path: '/admin/customers', icon: Mail },
+    { label: 'Notifications', path: '/admin/notifications', icon: Bell },
   ];
 
   const handleLogout = () => {
+    setIsLoggingOut(true);
     logout();
     navigate('/');
   };
@@ -123,7 +134,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
     <div className="min-h-screen bg-slate-50 flex font-sans">
       
       {/* SIDEBAR - DESKTOP */}
-      <aside className="hidden lg:flex flex-col w-64 bg-[#001F42] text-white border-r border-slate-800 flex-shrink-0">
+      <aside className="hidden lg:flex flex-col w-64 bg-[#001F42] text-white border-r border-slate-800 flex-shrink-0 h-screen sticky top-0">
         {/* Header */}
         <div className="p-6 border-b border-slate-800 flex items-center gap-3">
           <div className="w-8 h-8 bg-white rounded-lg p-1 flex items-center justify-center">
@@ -171,7 +182,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
             View Website
           </Link>
           <button
-            onClick={handleLogout}
+            onClick={() => setShowLogoutConfirm(true)}
             className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-red-300 hover:bg-red-950/30 hover:text-red-200 transition-all text-left cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
@@ -245,7 +256,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
                   View Website
                 </Link>
                 <button
-                  onClick={handleLogout}
+                  onClick={() => setShowLogoutConfirm(true)}
                   className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold text-red-300 hover:bg-red-950/20 text-left cursor-pointer"
                 >
                   <LogOut className="w-4 h-4" />
@@ -272,7 +283,8 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
             <h2 className="font-display font-bold text-lg text-slate-800">
               {location.pathname === '/admin' ? 'Dashboard Overview' :
                location.pathname === '/admin/applications' ? 'Loan Application Registry' :
-               location.pathname === '/admin/customers' ? 'Customer Profile Verification' :
+               location.pathname === '/admin/customers' ? 'Contact Messages Registry' :
+               location.pathname === '/admin/notifications' ? 'Website Notification Center' :
                'Admin Dashboard'}
             </h2>
           </div>
@@ -290,7 +302,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
               </div>
               <div className="hidden md:flex flex-col text-left">
                 <span className="text-xs font-bold text-slate-800">NSMF Administrator</span>
-                <span className="text-[10px] text-slate-400 leading-none">admin@nayaksairam.com</span>
+                <span className="text-[10px] text-slate-400 leading-none">admin@gmail.com</span>
               </div>
             </div>
           </div>
@@ -301,6 +313,64 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
           {children}
         </main>
       </div>
+ 
+      {/* Logout Confirmation Modal */}
+      <AnimatePresence>
+        {showLogoutConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+              onClick={() => setShowLogoutConfirm(false)}
+            />
+            
+            {/* Modal Body */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="relative w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 z-10 space-y-5 text-center overflow-hidden"
+            >
+              {/* Close Button */}
+              <button 
+                onClick={() => setShowLogoutConfirm(false)}
+                className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+ 
+              <div className="mx-auto w-12 h-12 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center border border-red-100 shadow-sm mt-2">
+                <LogOut className="w-5 h-5" />
+              </div>
+ 
+              <div className="space-y-1.5">
+                <h3 className="font-display font-extrabold text-base text-slate-800">Confirm Logout</h3>
+                <p className="text-slate-500 text-xs leading-relaxed max-w-xs mx-auto">
+                  Are you sure you want to end your active administrator session and return to the main website?
+                </p>
+              </div>
+ 
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={() => setShowLogoutConfirm(false)}
+                  className="flex-1 bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 font-bold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-md shadow-red-600/10 hover:shadow-red-600/20 transition-all cursor-pointer"
+                >
+                  Logout Session
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

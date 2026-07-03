@@ -23,6 +23,7 @@ import { TestimonialsPage } from './pages/Legal/TestimonialsPage';
 import { Dashboard as AdminDashboard } from './pages/Admin/Dashboard';
 import { Applications as AdminApplications } from './pages/Admin/Applications';
 import { Customers as AdminCustomers } from './pages/Admin/Customers';
+import { Notifications as AdminNotifications } from './pages/Admin/Notifications';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
           <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
           <Route path="/admin/applications" element={<AdminLayout><AdminApplications /></AdminLayout>} />
           <Route path="/admin/customers" element={<AdminLayout><AdminCustomers /></AdminLayout>} />
+          <Route path="/admin/notifications" element={<AdminLayout><AdminNotifications /></AdminLayout>} />
 
           {/* Fallback Route */}
           <Route path="*" element={<Navigate to="/" replace />} />

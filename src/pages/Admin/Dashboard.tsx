@@ -11,19 +11,133 @@ export const Dashboard: React.FC = () => {
   const [stats, setStats] = useState<any>(null);
   const [recentApps, setRecentApps] = useState<LoanApplication[]>([]);
   const [recentMsgs, setRecentMsgs] = useState<ContactMessage[]>([]);
+  const [allApplications, setAllApplications] = useState<LoanApplication[]>([]);
 
   useEffect(() => {
     // Force db check
     mockDb.init();
-    setStats(mockDb.getAdminStats());
-    setRecentApps(mockDb.getApplications().slice(0, 4));
-    setRecentMsgs(mockDb.getContactMessages().slice(0, 3));
+    const loadData = () => {
+      setStats(mockDb.getAdminStats());
+      setRecentApps(mockDb.getApplications().slice(0, 4));
+      setRecentMsgs(mockDb.getContactMessages().slice(0, 3));
+      setAllApplications(mockDb.getApplications());
+    };
+    loadData();
+    window.addEventListener('nsmf_db_updated', loadData);
+    return () => window.removeEventListener('nsmf_db_updated', loadData);
   }, []);
 
   if (!stats) return <div className="text-slate-500">Loading admin metrics...</div>;
 
-  // Custom Chart Coordinates for SVG line graph (Customer growth)
-  const linePoints = "0,80 50,75 100,55 150,60 200,30 250,15 300,5";
+  // Get last 6 months dynamically (Jan, Feb, etc.)
+  const getLast6Months = () => {
+    const months = [];
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const d = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const targetDate = new Date(d.getFullYear(), d.getMonth() - i, 1);
+      months.push({
+        year: targetDate.getFullYear(),
+        monthIndex: targetDate.getMonth(),
+        name: monthNames[targetDate.getMonth()]
+      });
+    }
+    return months;
+  };
+
+  const parsedMonths = getLast6Months();
+
+  // Helper to parse dates like "02-07-2026", "2026-07-02" or ISO strings
+  const parseAppDate = (dateStr: string) => {
+    if (!dateStr) return null;
+    let cleanStr = dateStr.toString().trim();
+    if (cleanStr.includes('T')) {
+      cleanStr = cleanStr.split('T')[0];
+    }
+    // Replace slashes with hyphens to handle both 02/07/2026 and 02-07-2026
+    cleanStr = cleanStr.replace(/\//g, '-');
+    
+    const parts = cleanStr.split('-');
+    if (parts.length === 3) {
+      if (parts[0].length === 4) { // yyyy-mm-dd
+        return {
+          year: parseInt(parts[0]),
+          month: parseInt(parts[1]) - 1
+        };
+      } else { // dd-mm-yyyy (standard text-formatted spreadsheet dates)
+        return {
+          year: parseInt(parts[2]),
+          month: parseInt(parts[1]) - 1
+        };
+      }
+    }
+    return null;
+  };
+
+  // 1. Group ALL applied loan amounts by month in real time (Strictly database-driven)
+  const disbursalsData = parsedMonths.map(m => {
+    const monthlyApps = allApplications.filter(app => {
+      const parsed = parseAppDate(app.appliedDate);
+      return parsed ? (parsed.year === m.year && parsed.month === m.monthIndex) : false;
+    });
+    const totalAmount = monthlyApps.reduce((sum, app) => sum + app.amount, 0);
+    
+    // Format display string: e.g. "₹2.5L" or "₹50K" or "₹0"
+    let display = '₹0';
+    if (totalAmount >= 100000) {
+      display = `₹${(totalAmount / 100000).toFixed(1)}L`;
+    } else if (totalAmount > 0) {
+      display = `₹${(totalAmount / 1000).toFixed(0)}K`;
+    }
+
+    return {
+      month: m.name,
+      amount: totalAmount,
+      display
+    };
+  });
+
+  const maxDisbursal = Math.max(...disbursalsData.map(d => d.amount), 1);
+
+  // 2. Group onboarded customers by month (Strictly database-driven)
+  const customerTrendData = parsedMonths.map(m => {
+    const monthlyApps = allApplications.filter(app => {
+      const parsed = parseAppDate(app.appliedDate);
+      return parsed ? (parsed.year === m.year && parsed.month === m.monthIndex) : false;
+    });
+    const uniqueEmails = new Set(monthlyApps.map(app => app.email));
+    const liveCount = uniqueEmails.size;
+
+    return {
+      month: m.name,
+      count: liveCount
+    };
+  });
+
+  // Calculate cumulative trend count
+  let cumulativeCount = 0;
+  const cumulativeTrend = customerTrendData.map(d => {
+    cumulativeCount += d.count;
+    return {
+      month: d.month,
+      cumulative: cumulativeCount
+    };
+  });
+
+  const maxOnboarded = Math.max(...cumulativeTrend.map(t => t.cumulative), 1);
+
+  // Generate SVG points for 300x100 viewport
+  const getLinePoints = () => {
+    return cumulativeTrend.map((p, idx) => {
+      const x = idx * 60;
+      // Map Y from 90 (if 0) to 10 (if maxOnboarded)
+      const ratio = p.cumulative / maxOnboarded;
+      const y = 90 - (ratio * 80);
+      return `${x},${y}`;
+    }).join(' ');
+  };
+
+  const linePoints = getLinePoints();
 
   return (
     <div className="space-y-8 font-sans">
@@ -31,67 +145,79 @@ export const Dashboard: React.FC = () => {
       {/* 4 STATS CARDS GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         
-        {/* Metric 1 */}
-        <div className="bg-white border border-slate-200 p-6 rounded-2xl flex items-center justify-between shadow-sm">
-          <div className="space-y-1">
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Total Customers</span>
-            <h3 className="font-display font-extrabold text-2xl text-slate-800">
+        {/* Metric 1: Total Customers */}
+        <div className="bg-white border border-slate-100 p-6 rounded-3xl flex items-center justify-between shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-indigo-500 to-purple-600"></div>
+          <div className="space-y-1 relative z-10 text-left">
+            <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block">Total Customers</span>
+            <h3 className="font-display font-black text-3xl text-slate-800 tracking-tight block mt-1">
               {stats.totalCustomers}
             </h3>
-            <span className="text-[10px] text-green-500 font-bold flex items-center gap-0.5">
-              +12% <ArrowUpRight className="w-3 h-3" /> this month
+            <span className={`text-[9px] px-2.5 py-0.5 rounded-full font-bold inline-flex items-center gap-0.5 mt-2 ${
+              stats.totalCustomers > 0 ? 'bg-indigo-50 text-indigo-700' : 'bg-slate-100 text-slate-500'
+            }`}>
+              {stats.totalCustomers > 0 ? 'Registered active profiles' : 'No customer files'}
             </span>
           </div>
-          <div className="w-12 h-12 bg-primary/5 text-primary rounded-xl flex items-center justify-center">
-            <Users className="w-5 h-5" />
+          <div className="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner relative z-10 shrink-0">
+            <Users className="w-6 h-6" />
           </div>
         </div>
 
-        {/* Metric 2 */}
-        <div className="bg-white border border-slate-200 p-6 rounded-2xl flex items-center justify-between shadow-sm">
-          <div className="space-y-1">
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Active Loans</span>
-            <h3 className="font-display font-extrabold text-2xl text-slate-800">
-              {stats.activeLoans + 24} {/* Baseline + current app count */}
+        {/* Metric 2: Active Loans */}
+        <div className="bg-white border border-slate-100 p-6 rounded-3xl flex items-center justify-between shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-emerald-500 to-teal-600"></div>
+          <div className="space-y-1 relative z-10 text-left">
+            <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block">Active Loans</span>
+            <h3 className="font-display font-black text-3xl text-slate-800 tracking-tight block mt-1">
+              {stats.activeLoans}
             </h3>
-            <span className="text-[10px] text-slate-400 font-medium">
-              Verified & approved schemes
+            <span className={`text-[9px] px-2.5 py-0.5 rounded-full font-bold inline-flex items-center gap-0.5 mt-2 ${
+              stats.activeLoans > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'
+            }`}>
+              {stats.activeLoans > 0 ? 'Approved loan files' : 'No approved active loans'}
             </span>
           </div>
-          <div className="w-12 h-12 bg-primary/5 text-primary rounded-xl flex items-center justify-center">
-            <Landmark className="w-5 h-5" />
+          <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner relative z-10 shrink-0">
+            <Landmark className="w-6 h-6" />
           </div>
         </div>
 
-        {/* Metric 3 */}
-        <div className="bg-white border border-slate-200 p-6 rounded-2xl flex items-center justify-between shadow-sm">
-          <div className="space-y-1">
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Total Disbursed</span>
-            <h3 className="font-display font-extrabold text-xl text-slate-800 truncate max-w-[140px]">
-              ₹{(stats.loanAmountIssued + 4500000).toLocaleString('en-IN')}
+        {/* Metric 3: Total Disbursed */}
+        <div className="bg-white border border-slate-100 p-6 rounded-3xl flex items-center justify-between shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-amber-500 to-orange-600"></div>
+          <div className="space-y-1 relative z-10 text-left">
+            <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block">Total Disbursed</span>
+            <h3 className="font-display font-black text-2xl text-slate-800 tracking-tight block mt-1 truncate max-w-[130px]" title={`₹${stats.loanAmountIssued.toLocaleString('en-IN')}`}>
+              ₹{stats.loanAmountIssued.toLocaleString('en-IN')}
             </h3>
-            <span className="text-[10px] text-green-500 font-bold flex items-center gap-0.5">
-              +₹3.2L <ArrowUpRight className="w-3 h-3" /> this week
+            <span className={`text-[9px] px-2.5 py-0.5 rounded-full font-bold inline-flex items-center gap-0.5 mt-2 ${
+              stats.loanAmountIssued > 0 ? 'bg-amber-50 text-amber-700' : 'bg-slate-100 text-slate-500'
+            }`}>
+              {stats.loanAmountIssued > 0 ? 'Disbursed capital funds' : 'No capital disbursed'}
             </span>
           </div>
-          <div className="w-12 h-12 bg-primary/5 text-primary rounded-xl flex items-center justify-center">
-            <IndianRupee className="w-5 h-5" />
+          <div className="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner relative z-10 shrink-0">
+            <IndianRupee className="w-6 h-6" />
           </div>
         </div>
 
-        {/* Metric 4 */}
-        <div className="bg-white border border-slate-200 p-6 rounded-2xl flex items-center justify-between shadow-sm">
-          <div className="space-y-1">
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Repayment rate</span>
-            <h3 className="font-display font-extrabold text-2xl text-slate-800">
+        {/* Metric 4: Repayment Rate */}
+        <div className="bg-white border border-slate-100 p-6 rounded-3xl flex items-center justify-between shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
+          <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-sky-500 to-blue-600"></div>
+          <div className="space-y-1 relative z-10 text-left">
+            <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider block">Repayment Rate</span>
+            <h3 className="font-display font-black text-3xl text-slate-800 tracking-tight block mt-1">
               {stats.repaymentRate}%
             </h3>
-            <span className="text-[10px] text-green-500 font-bold">
-              Collections on-schedule
+            <span className={`text-[9px] px-2.5 py-0.5 rounded-full font-bold inline-flex items-center gap-0.5 mt-2 ${
+              stats.repaymentRate > 0 ? 'bg-sky-50 text-sky-700' : 'bg-slate-100 text-slate-500'
+            }`}>
+              {stats.repaymentRate > 0 ? 'On-schedule returns' : 'No active repayment cycles'}
             </span>
           </div>
-          <div className="w-12 h-12 bg-primary/5 text-primary rounded-xl flex items-center justify-center">
-            <RotateCcw className="w-5 h-5" />
+          <div className="w-14 h-14 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner relative z-10 shrink-0">
+            <RotateCcw className="w-6 h-6" />
           </div>
         </div>
 
@@ -103,33 +229,35 @@ export const Dashboard: React.FC = () => {
         {/* Chart 1: Bar chart representing Monthly Loan Issuances */}
         <div className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-6 text-left">
           <div>
-            <h4 className="font-display font-extrabold text-base text-slate-800">Monthly Disbursals Overview</h4>
-            <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Amount issued in Lakhs (₹)</span>
+            <h4 className="font-display font-extrabold text-base text-slate-800">Monthly Applications Overview</h4>
+            <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Total loan value applied (₹)</span>
           </div>
           
-          <div className="h-48 flex items-end justify-between pt-6 border-b border-slate-100 pb-2 relative">
+          <div className="h-48 flex items-end justify-between pt-6 border-b border-slate-100 pb-2 relative" style={{ height: '192px' }}>
             {/* Guide grid lines */}
             <div className="absolute inset-x-0 bottom-12 border-b border-dashed border-slate-100 w-full" />
             <div className="absolute inset-x-0 bottom-24 border-b border-dashed border-slate-100 w-full" />
             <div className="absolute inset-x-0 bottom-36 border-b border-dashed border-slate-100 w-full" />
 
-            {[
-              { month: 'Jan', val: 'h-1/4', display: '₹2.5L' },
-              { month: 'Feb', val: 'h-2/5', display: '₹4.0L' },
-              { month: 'Mar', val: 'h-1/3', display: '₹3.2L' },
-              { month: 'Apr', val: 'h-3/5', display: '₹6.0L' },
-              { month: 'May', val: 'h-4/5', display: '₹8.5L' },
-              { month: 'Jun', val: 'h-full', display: '₹10L' }
-            ].map((bar, idx) => (
-              <div key={idx} className="flex flex-col items-center w-12 group relative z-10">
-                {/* Tooltip */}
-                <div className="absolute -top-7 scale-0 group-hover:scale-100 bg-slate-800 text-white text-[9px] font-bold py-1 px-2 rounded transition-transform pointer-events-none whitespace-nowrap shadow">
-                  {bar.display}
+            {disbursalsData.map((bar, idx) => {
+              const heightPct = (bar.amount / maxDisbursal) * 100;
+              // Render bar only if amount > 0, otherwise keep height at 0 (empty)
+              const displayHeight = bar.amount > 0 ? Math.max(heightPct, 6) : 0;
+              return (
+                <div key={idx} className="flex flex-col items-center w-12 h-full justify-end group relative z-10">
+                  {/* Tooltip */}
+                  <div className="absolute -top-8 scale-0 group-hover:scale-100 bg-slate-800 text-white text-[9px] font-bold py-1 px-2.5 rounded-lg transition-transform pointer-events-none whitespace-nowrap shadow-md z-20">
+                    {bar.display}
+                  </div>
+                  {/* Premium gradient using the same navy blue `#003366` */}
+                  <div 
+                    style={{ height: `${displayHeight}%` }}
+                    className="w-7 bg-gradient-to-t from-[#003366]/85 to-[#003366] rounded-t-lg hover:from-[#003366] hover:to-[#002244] transition-all duration-300 shadow-sm cursor-pointer" 
+                  />
+                  <span className="text-[10px] text-slate-400 font-bold mt-2 uppercase">{bar.month}</span>
                 </div>
-                <div className={`w-6 bg-primary rounded-t-md hover:bg-secondary transition-all duration-300 ${bar.val}`} />
-                <span className="text-[10px] text-slate-400 font-bold mt-2 uppercase">{bar.month}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -140,7 +268,7 @@ export const Dashboard: React.FC = () => {
             <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Registration growth curve</span>
           </div>
 
-          <div className="h-48 flex flex-col justify-end pt-6 relative border-b border-slate-100 pb-2">
+          <div className="h-48 flex flex-col justify-end pt-6 relative border-b border-slate-100 pb-2" style={{ height: '192px' }}>
             <svg className="w-full h-32" viewBox="0 0 300 100" preserveAspectRatio="none">
               {/* Fill under line */}
               <path
@@ -167,12 +295,9 @@ export const Dashboard: React.FC = () => {
               </defs>
             </svg>
             <div className="flex justify-between text-[10px] text-slate-400 font-bold uppercase mt-2">
-              <span>Jan</span>
-              <span>Feb</span>
-              <span>Mar</span>
-              <span>Apr</span>
-              <span>May</span>
-              <span>Jun</span>
+              {parsedMonths.map((m, idx) => (
+                <span key={idx}>{m.name}</span>
+              ))}
             </div>
           </div>
         </div>
