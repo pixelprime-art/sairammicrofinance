@@ -65,24 +65,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       }
 
-      // 2. Customer login / registration
-      const existingUsers = mockDb.getUsers();
-      const existingUser = existingUsers.find((u) => u.email.toLowerCase() === emailLower);
-
-      if (existingUser) {
-        setUser(existingUser);
-        localStorage.setItem('nsmf_active_user', JSON.stringify(existingUser));
-        setIsLoading(false);
-        return true;
-      } else {
-        // If user doesn't exist, we register them as a new customer
-        const nameToUse = fullName || email.split('@')[0];
-        const registered = mockDb.registerUser(emailLower, nameToUse, mobile || '', 'customer');
-        setUser(registered);
-        localStorage.setItem('nsmf_active_user', JSON.stringify(registered));
-        setIsLoading(false);
-        return true;
-      }
+      // 2. Reject other login attempts
+      setAuthError('Invalid email or password.');
+      setIsLoading(false);
+      return false;
     } catch (err) {
       setAuthError('An authentication error occurred. Please try again.');
       setIsLoading(false);

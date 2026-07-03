@@ -639,7 +639,7 @@ export const Navbar: React.FC = () => {
                   Welcome to SAIRAM MICROFINANCE
                 </h3>
                 <p className="text-xs text-slate-500 mt-1">
-                  Log in to apply and manage applications
+                  Log in to access the Administrator Panel
                 </p>
               </div>
 
@@ -658,7 +658,7 @@ export const Navbar: React.FC = () => {
                     <input
                       type="email"
                       required
-                      placeholder="e.g. customer@example.com"
+                      placeholder="e.g. admin@gmail.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-primary/20"
@@ -666,17 +666,16 @@ export const Navbar: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Password only needed for admin check or mock security demonstration */}
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
-                    Password {email.toLowerCase() !== 'admin@gmail.com' && <span className="text-[10px] text-slate-400 lowercase">(Optional for mock customer)</span>}
+                    Password
                   </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
                     <input
                       type="password"
                       placeholder="••••••••"
-                      required={email.toLowerCase() === 'admin@gmail.com'}
+                      required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-primary/50 text-slate-800 rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-primary/20"
