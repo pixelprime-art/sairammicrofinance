@@ -316,7 +316,7 @@ export const Home: React.FC = () => {
   return (
     <div className="w-full flex flex-col">
       {/* 2. HERO SECTION */}
-      <section className="relative w-full min-h-[75vh] flex items-center justify-start bg-[url('/herobanner.png')] bg-cover bg-center bg-no-repeat overflow-hidden py-16 px-4 sm:px-8">
+      <section className="relative w-full min-h-[75vh] flex items-center justify-start bg-[url('/herobanner.png')] bg-cover bg-position-[80%_center] bg-no-repeat overflow-hidden py-16 px-4 sm:px-8">
         <div className="absolute inset-0 bg-slate-950/50 z-0" />
         <div className="max-w-7xl mx-auto w-full relative z-10 text-left">
           <div className="space-y-6 max-w-2xl mt-8">
@@ -361,7 +361,7 @@ export const Home: React.FC = () => {
           </div>
 
           {/* Tabs header */}
-          <div className="flex justify-center border-b border-slate-200 overflow-x-auto scrollbar-none max-w-4xl mx-auto">
+          <div className="flex justify-start md:justify-center border-b border-slate-200 overflow-x-auto scrollbar-none max-w-4xl mx-auto">
             <div className="flex space-x-2 sm:space-x-4 md:space-x-6 px-2">
               {tabs.map((tab) => {
                 const isActive = activeSolutionTab === tab.id;
@@ -406,6 +406,17 @@ export const Home: React.FC = () => {
                 style={{
                   gap: `${gap}px`,
                   width: 'max-content',
+                }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={(e, info) => {
+                  const swipeThreshold = 50;
+                  if (info.offset.x < -swipeThreshold) {
+                    setCurrentSolutionCard(prev => prev + 1);
+                  } else if (info.offset.x > swipeThreshold) {
+                    setCurrentSolutionCard(prev => prev - 1);
+                  }
                 }}
                 animate={{
                   x: -(currentSolutionCard - 10) * (cardWidth + gap)
@@ -1367,13 +1378,17 @@ export const Home: React.FC = () => {
             </h2>
 
             <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-              {mockDb.getBranches().slice(0, 1).map((branch) => (
+              {mockDb.getBranches().slice(0, 2).map((branch) => (
                 <div key={branch.id} className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2">
                   <div className="flex justify-between items-start">
                     <h4 className="font-display font-bold text-sm text-primary leading-snug">{branch.name}</h4>
-                    {branch.isMain && (
+                    {branch.isMain ? (
                       <span className="bg-secondary/15 text-primary font-bold text-[8px] tracking-wider uppercase px-2 py-0.5 rounded border border-secondary/30">
                         Main
+                      </span>
+                    ) : (
+                      <span className="bg-blue-50 text-blue-600 font-bold text-[8px] tracking-wider uppercase px-2 py-0.5 rounded border border-blue-200">
+                        Sub
                       </span>
                     )}
                   </div>
@@ -1400,15 +1415,20 @@ export const Home: React.FC = () => {
               }} />
 
               {/* Floating pins */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center animate-bounce">
+              <div className="absolute top-[30%] left-[30%] text-center animate-bounce">
                 <Landmark className="w-8 h-8 text-primary fill-secondary shadow-md mx-auto" />
-                <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded-full shadow border border-secondary block mt-1">Chennai Main</span>
+                <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded-full shadow border border-secondary block mt-1">Bengaluru</span>
+              </div>
+
+              <div className="absolute top-[60%] left-[65%] text-center animate-bounce [animation-delay:0.5s]">
+                <Landmark className="w-8 h-8 text-primary fill-secondary shadow-md mx-auto" />
+                <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded-full shadow border border-secondary block mt-1">Tiruchengodu</span>
               </div>
 
               {/* Location disclaimer tag */}
               <div className="mt-auto relative z-10 bg-white/90 backdrop-blur-sm border border-slate-200 p-4 rounded-2xl max-w-sm text-left">
                 <h5 className="font-bold text-xs text-primary mb-1">Corporate & Regional Geolocation</h5>
-                <p className="text-[10px] text-slate-500 leading-normal"> 
+                <p className="text-[10px] text-slate-500 leading-normal">
                   All branches are connected via centralized core banking interfaces. Use contact cards for exact walking coordinates.
                 </p>
               </div>

@@ -549,7 +549,7 @@ export const ApplyLoan: React.FC = () => {
                           <input 
                             type="number"
                             {...register('otherIncome')}
-                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 border-slate-200 text-slate-800"
+                            className="w-full bg-white border border-slate-200 rounded-xl py-3 px-4 text-xs focus:outline-none focus:border-primary/50 text-slate-800"
                           />
                         </div>
                       </div>

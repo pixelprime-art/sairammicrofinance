@@ -6,28 +6,6 @@ import {
 } from 'lucide-react';
 
 export const About: React.FC = () => {
-  // Investment Form State
-  const [invName, setInvName] = useState('');
-  const [invEmail, setInvEmail] = useState('');
-  const [invPhone, setInvPhone] = useState('');
-  const [invAmount, setInvAmount] = useState(50000);
-  const [invScheme, setInvScheme] = useState('Fixed Deposit Plan');
-  const [invDuration, setInvDuration] = useState(3);
-  const [invSubmitted, setInvSubmitted] = useState(false);
-
-  const handleInvestmentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!invName || !invEmail || !invPhone) return;
-    mockDb.createInvestment(invName, invEmail, invPhone, invAmount, invScheme, invDuration);
-    setInvSubmitted(true);
-    setTimeout(() => {
-      setInvName('');
-      setInvEmail('');
-      setInvPhone('');
-      setInvSubmitted(false);
-    }, 3000);
-  };
-
   const values = [
     { title: 'Integrity', desc: 'Operating with absolute honesty and compliance in all microfinance audits.', icon: ShieldCheck, color: 'text-blue-600 bg-blue-50' },
     { title: 'Transparency', desc: 'Zero hidden charges, clear interest calculations, and straightforward repayment terms.', icon: Landmark, color: 'text-green-600 bg-green-50' },
@@ -37,16 +15,15 @@ export const About: React.FC = () => {
   ];
 
   const leaders = [
-    { name: 'Muthu Ram A', role: 'Founder', bio: 'Former commercial banking veteran with 25+ years of experience in rural banking frameworks and financial inclusion models.', image: '/muthuram.png' },
-    { name: 'Sakthivel M', role: 'Managing Director', bio: 'Fintech specialist with a background in digital payment integrations and micro-credit scoring systems development.', image: '/sakthivel.jpeg' },
-    { name: 'Dr. Mohanraj M', role: 'Chief Executive Officer', bio: 'Dedicated community leader who has spent 15 years organizing self-help group programs and women empowerment collectives.', image: '/mohan.jpeg' },
-    { name: 'Raghav Reddy', role: 'Chief Risk Officer & Compliance', bio: 'Oversees banking standards, credit policy evaluations, and absolute alignment with the Reserve Bank of India guidelines.', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&h=300&fit=crop' }
+    { name: 'Muthu Ram A', role: 'Founder', bio: 'Experienced founder focused on building a trusted microfinance institution through ethical lending, financial inclusion, and customer-first solutions.', image: '/muthuram.png' },
+    { name: 'Sakthivel M', role: 'Managing Director', bio: 'Managing Director driving business growth through strategic leadership, financial expertise, and digital innovation.', image: '/sakthivel.jpeg' },
+    { name: 'Dr. Mohanraj M', role: 'Chief Executive Officer', bio: 'Visionary CEO committed to financial inclusion, responsible lending, and empowering communities through innovative microfinance solutions.', image: '/mohan.jpeg' }
   ];
 
   const jobs = [
-    { title: 'Microfinance Credit Officer', location: 'Coimbatore, TN', type: 'Full-time / Field', exp: '1-3 Years experience' },
-    { title: 'Regional Operations Manager', location: 'Bengaluru, KA', type: 'Full-time / Office', exp: '5+ Years in banking' },
-    { title: 'KYC Verification Specialist', location: 'Chennai, TN', type: 'Full-time / Hybrid', exp: 'Entry Level / Trainee' }
+    { title: 'Microfinance Credit Officer', location: 'Tiruchengodu, TN', type: 'Full-time / Office', exp: '1-3 Years experience' },
+    { title: 'Regional Operations Manager', location: 'Tiruchengodu, TN', type: 'Full-time / Office', exp: '1-3 Years in banking' },
+    { title: 'KYC Verification Specialist', location: 'Tiruchengodu, TN', type: 'Full-time / Office', exp: 'Entry Level / Trainee' }
   ];
 
   return (
@@ -141,11 +118,11 @@ export const About: React.FC = () => {
             <h2 className="font-display font-extrabold text-3xl text-primary">Meet Our Leadership Team</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {leaders.map((leader, idx) => (
               <div key={idx} className="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="aspect-square bg-slate-200 overflow-hidden relative">
-                  <img src={leader.image} alt={leader.name} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                  <img src={leader.image} alt={leader.name} className="w-full h-full object-cover transition-all duration-500" />
                 </div>
                 <div className="p-6 text-left space-y-2">
                   <div>
@@ -218,7 +195,7 @@ export const About: React.FC = () => {
               <Mail className="w-5 h-5 text-secondary mt-0.5" />
               <div>
                 <h4 className="font-bold text-xs text-primary">Submit CV</h4>
-                <p className="text-[10px] text-slate-400 mt-0.5">careers@nayaksairam.com</p>
+                <p className="text-[10px] text-slate-400 mt-0.5">careers@sairammicrofinance.com</p>
               </div>
             </div>
           </div>
@@ -236,7 +213,7 @@ export const About: React.FC = () => {
                     <span>{job.exp}</span>
                   </div>
                 </div>
-                <a href="mailto:careers@nayaksairam.com?subject=Application%20for%20Job" className="p-2 rounded-lg bg-white border hover:bg-primary hover:text-white text-slate-600 transition-all flex items-center justify-center">
+                <a href="mailto:careers@sairammicrofinance.com?subject=Application%20for%20Job" className="p-2 rounded-lg bg-white border hover:bg-primary hover:text-white text-slate-600 transition-all flex items-center justify-center">
                   <Plus className="w-4 h-4" />
                 </a>
               </div>

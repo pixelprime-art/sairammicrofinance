@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { mockDb } from '../services/mockDb';
 import type { LoanType } from '../services/mockDb';
-import { 
-  ArrowRight, Calculator, Check, AlertCircle 
+import {
+  ArrowRight, Calculator, Check, AlertCircle
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -16,7 +16,7 @@ export const Loans: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col font-sans">
-      
+
       {/* Header Banner */}
       <section className="bg-[url('/loanbanner.jpg')] bg-cover bg-center bg-no-repeat text-white py-16 px-4 sm:px-8 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-slate-950/20 z-0" />
@@ -38,7 +38,7 @@ export const Loans: React.FC = () => {
         <div className="max-w-7xl mx-auto space-y-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {loanTypes.map((loan, idx) => (
-              <motion.div 
+              <motion.div
                 key={loan.id}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -91,13 +91,13 @@ export const Loans: React.FC = () => {
 
                 {/* Bottom Redirection Panel */}
                 <div className="pt-8 mt-8 border-t border-slate-200/50 grid grid-cols-2 gap-4">
-                  <Link 
+                  <Link
                     to={`/calculator?amount=${loan.maxAmount / 2}&rate=${loan.interestRate}&tenure=${loan.tenureMonths}`}
                     className="bg-white hover:bg-slate-100 text-primary border border-slate-200 font-bold text-xs py-3 rounded-xl shadow-sm text-center flex items-center justify-center gap-1.5 transition-colors"
                   >
                     <Calculator className="w-4 h-4" /> Calculate EMI
                   </Link>
-                  <Link 
+                  <Link
                     to={`/apply?type=${loan.id}`}
                     className="bg-primary hover:bg-navy-dark text-white font-bold text-xs py-3 rounded-xl shadow-md text-center flex items-center justify-center gap-1.5 transition-colors"
                   >

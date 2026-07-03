@@ -102,7 +102,7 @@ export const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-[10px] text-slate-400 uppercase">Call Support Line</h4>
-                  <span className="text-sm font-extrabold text-primary">+91 44 2855 9000</span>
+                  <span className="text-sm font-extrabold text-primary">+91 82202 92135</span>
                 </div>
               </div>
 
@@ -112,8 +112,8 @@ export const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-[10px] text-slate-400 uppercase">WhatsApp Helpdesk</h4>
-                  <a href="https://wa.me/919840283741" target="_blank" rel="noopener noreferrer" className="text-sm font-extrabold text-green-600 hover:underline">
-                    +91 98402 83741
+                  <a href="https://wa.me/918220292135" target="_blank" rel="noopener noreferrer" className="text-sm font-extrabold text-green-600 hover:underline">
+                    +91 82202 92135
                   </a>
                 </div>
               </div>
@@ -124,7 +124,7 @@ export const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-[10px] text-slate-400 uppercase">Email Inbox</h4>
-                  <span className="text-sm font-extrabold text-primary">corp.chennai@nayaksairam.com</span>
+                  <span className="text-sm font-extrabold text-primary">info@sairammicrofinance.com</span>
                 </div>
               </div>
             </div>
@@ -312,7 +312,7 @@ export const Contact: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
             {/* List */}
             <div className="lg:col-span-5 space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-              {mockDb.getBranches().map(b => (
+              {mockDb.getBranches().slice(0, 2).map((b) => (
                 <div key={b.id} className="bg-slate-50 border p-4 rounded-xl space-y-2 text-left">
                   <div className="flex justify-between items-start">
                     <h4 className="font-display font-bold text-sm text-primary leading-snug">{b.name}</h4>
@@ -338,14 +338,14 @@ export const Contact: React.FC = () => {
                 {/* Pins */}
                 <div className="absolute top-1/3 left-1/3 text-center animate-bounce">
                   <Landmark className="w-8 h-8 text-primary fill-secondary" />
-                  <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded mt-1 block">Chennai Corporate</span>
+                  <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded mt-1 block">Bengaluru Main</span>
                 </div>
                 <div className="absolute top-2/3 left-2/3 text-center opacity-75">
                   <Landmark className="w-6 h-6 text-primary fill-secondary" />
-                  <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded mt-1 block">Bengaluru Regional</span>
+                  <span className="bg-primary text-white text-[9px] font-bold py-0.5 px-2 rounded mt-1 block">Tiruchengodu Regional</span>
                 </div>
               </div>
-              <div className="mt-auto relative z-10 bg-white/90 backdrop-blur-sm border border-slate-200 p-4 rounded-xl max-w-sm ml-4 mb-4 text-left shadow">
+              <div className="absolute bottom-6 left-6 z-10 bg-white/90 backdrop-blur-sm border border-slate-200 p-4 rounded-xl max-w-sm text-left shadow">
                 <h5 className="font-bold text-xs text-primary mb-1">Central Core Banking Integrated</h5>
                 <p className="text-[10px] text-slate-500 leading-normal">
                   All branches are fully synced with central servers. Drop by for physical documentation verify audits.

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -285,21 +285,35 @@ const ChatPopup = ({ onClose }: { onClose: () => void }) => {
   const [typing, setTyping] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  const suggestions = useMemo(() => {
+    const trimmed = input.trim().toLowerCase();
+    if (!trimmed) return [];
+    const matched = new Set<string>();
+    for (const qa of QA) {
+      for (const kw of qa.keywords) {
+        if (kw.includes(trimmed) && kw !== trimmed) {
+          matched.add(kw);
+        }
+      }
+    }
+    return Array.from(matched).slice(0, 4);
+  }, [input]);
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, typing]);
 
-  const sendMessage = () => {
+  const sendMessage = (text?: string) => {
     const trimmed = input.trim();
-    if (!trimmed) return;
+    if (!trimmed && !text) return;
 
-    const userMsg: Message = { id: Date.now(), from: 'user', text: trimmed };
+    const userMsg: Message = { id: Date.now(), from: 'user', text: text || trimmed };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
     setTyping(true);
 
     setTimeout(() => {
-      const botMsg: Message = { id: Date.now() + 1, from: 'bot', text: getBotReply(trimmed) };
+      const botMsg: Message = { id: Date.now() + 1, from: 'bot', text: getBotReply(text || trimmed) };
       setMessages(prev => [...prev, botMsg]);
       setTyping(false);
     }, 1000 + Math.random() * 600);
@@ -376,6 +390,28 @@ const ChatPopup = ({ onClose }: { onClose: () => void }) => {
         <div ref={bottomRef} />
       </div>
 
+      {/* Suggestions */}
+      <AnimatePresence>
+        {suggestions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="px-4 py-2 bg-slate-50 border-t border-slate-100 flex flex-wrap gap-2"
+          >
+            {suggestions.map((suggestion, idx) => (
+              <button
+                key={idx}
+                onClick={() => sendMessage(suggestion)}
+                className="text-[11px] bg-white border border-slate-200 text-slate-600 px-3 py-1.5 rounded-full hover:border-primary/40 hover:text-primary transition-colors text-left"
+              >
+                {suggestion}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Input */}
       <div className="px-4 py-3 bg-white border-t border-slate-100 flex items-center gap-2 shrink-0">
         <input
@@ -387,7 +423,7 @@ const ChatPopup = ({ onClose }: { onClose: () => void }) => {
           className="flex-1 bg-slate-100 rounded-full px-4 py-2 text-[12px] text-slate-700 outline-none focus:ring-2 focus:ring-primary/30 placeholder:text-slate-400"
         />
         <button
-          onClick={sendMessage}
+          onClick={() => sendMessage()}
           disabled={!input.trim()}
           className="w-8 h-8 rounded-full bg-primary hover:bg-primary/80 disabled:opacity-40 flex items-center justify-center transition-all cursor-pointer shrink-0"
         >
