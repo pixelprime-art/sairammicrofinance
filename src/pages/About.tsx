@@ -73,7 +73,7 @@ export const About: React.FC = () => {
                 <p className="text-[10px] text-slate-400 font-bold uppercase">Active Borrowers</p>
               </div>
               <div>
-                <h4 className="font-display font-extrabold text-2xl text-primary">₹25lakhs+</h4>
+                <h4 className="font-display font-extrabold text-2xl text-primary">₹25L+</h4>
                 <p className="text-[10px] text-slate-400 font-bold uppercase">Disbursed Funds</p>
               </div>
               <div>
@@ -130,16 +130,7 @@ export const About: React.FC = () => {
                     <span className="text-[10px] text-secondary font-bold uppercase tracking-wider block mt-0.5">{leader.role}</span>
                   </div>
                   <p className="text-slate-500 text-xs leading-relaxed">{leader.bio}</p>
-                  <div className="pt-2">
-                    <a 
-                      href="https://linkedin.com" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="text-[11px] font-bold text-primary hover:underline"
-                    >
-                      Connect on LinkedIn →
-                    </a>
-                  </div>
+                  
                 </div>
               </div>
             ))}

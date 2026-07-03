@@ -320,33 +320,104 @@ export const Home: React.FC = () => {
         <div className="absolute inset-0 bg-slate-950/50 z-0" />
         <div className="max-w-7xl mx-auto w-full relative z-10 text-left">
           <div className="space-y-6 max-w-2xl mt-8">
+
+            {/* Badge */}
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0, y: -24, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
               className="inline-flex items-center gap-2 bg-secondary/20 border border-secondary/40 text-secondary text-xs font-bold px-3.5 py-1.5 rounded-full backdrop-blur-sm"
             >
               <Award className="w-4 h-4" /> Trusted Banking Partner Since 2015
             </motion.div>
 
+            {/* Heading - word by word animation */}
             <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.1] text-white"
+              className="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl leading-[1.2] text-white"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } }
+              }}
             >
-              Empowering Dreams <br />
-              Through <span className="text-secondary">Smart Financial</span> Solutions
+              {/* Line 1: Empowering Dreams */}
+              <span className="block">
+                {['Empowering', 'Dreams'].map((word, i) => (
+                  <motion.span
+                    key={`l1-${i}`}
+                    className="inline-block mr-[0.25em]"
+                    variants={{
+                      hidden: { opacity: 0, y: 40, rotateX: -30 },
+                      visible: { opacity: 1, y: 0, rotateX: 0, transition: { type: 'spring', stiffness: 180, damping: 18 } }
+                    }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </span>
+
+              {/* Line 2: Through Smart */}
+              <span className="block">
+                <motion.span
+                  className="inline-block mr-[0.25em]"
+                  variants={{
+                    hidden: { opacity: 0, y: 40, rotateX: -30 },
+                    visible: { opacity: 1, y: 0, rotateX: 0, transition: { type: 'spring', stiffness: 180, damping: 18 } }
+                  }}
+                >
+                  Through
+                </motion.span>
+                <motion.span
+                  className="text-secondary inline-block mr-[0.25em]"
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.8, filter: 'blur(8px)' },
+                    visible: {
+                      opacity: 1, scale: 1, filter: 'blur(0px)',
+                      transition: { type: 'spring', stiffness: 150, damping: 16 }
+                    }
+                  }}
+                >
+                  Smart
+                </motion.span>
+              </span>
+
+              {/* Line 3: Financial Solutions */}
+              <span className="block">
+                <motion.span
+                  className="text-secondary inline-block mr-[0.25em]"
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.8, filter: 'blur(8px)' },
+                    visible: {
+                      opacity: 1, scale: 1, filter: 'blur(0px)',
+                      transition: { type: 'spring', stiffness: 150, damping: 16 }
+                    }
+                  }}
+                >
+                  Financial
+                </motion.span>
+                <motion.span
+                  className="inline-block mr-[0.25em]"
+                  variants={{
+                    hidden: { opacity: 0, y: 40, rotateX: -30 },
+                    visible: { opacity: 1, y: 0, rotateX: 0, transition: { type: 'spring', stiffness: 180, damping: 18 } }
+                  }}
+                >
+                  Solutions
+                </motion.span>
+              </span>
             </motion.h1>
 
+            {/* Subtitle - blur to sharp */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.7, delay: 0.7, ease: 'easeOut' }}
               className="text-slate-100 text-base sm:text-lg leading-relaxed"
             >
               Providing affordable loans and investment opportunities to help individuals, families, entrepreneurs, and farmers achieve financial growth.
             </motion.p>
+
           </div>
         </div>
       </section>
@@ -483,11 +554,14 @@ export const Home: React.FC = () => {
                           setCurrentSolutionCard(idx);
                         }
                       }}
+                      initial={{ opacity: 0, y: 80 }}
+                      whileInView={{ opacity: isCenter ? 1 : 0.55, y: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
                       animate={{
                         scale: isCenter ? 1.0 : 0.9,
                         opacity: isCenter ? 1.0 : 0.55,
                       }}
-                      transition={{ type: 'spring', stiffness: 220, damping: 28 }}
+                      transition={{ type: 'spring', stiffness: 220, damping: 28, delay: (idx % 7) * 0.06 }}
                       className={`relative rounded-2xl overflow-hidden cursor-pointer select-none transition-shadow duration-300 ${isCenter
                         ? isBlueCard
                           ? 'shadow-[0_25px_60px_rgba(92,168,255,0.35)] border border-blue-300/40'
