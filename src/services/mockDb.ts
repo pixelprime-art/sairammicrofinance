@@ -199,7 +199,7 @@ const DEFAULT_BRANCHES: Branch[] = [
     id: 'b2',
     name: 'Regional Office (Tiruchengodu)',
     address: 'No.5/152, Murasukuttai, Kuchipalayam, Thokkavadi Post, Tiruchengodu Tk, Namakkal dt - 637 215',
-    phone: '+91 80 4112 3456',
+    phone: '+91 82202 92135',
     email: 'info@sairammicrofinance.com',
     isMain: false
   }
@@ -389,10 +389,7 @@ export const mockDb = {
   // Init
   init() {
     loadTable<LoanType>('loan_types', DEFAULT_LOAN_TYPES);
-    const cachedBranches = localStorage.getItem('nsmf_branches');
-    if (cachedBranches && cachedBranches.includes('Anna Salai, Chennai')) {
-      localStorage.removeItem('nsmf_branches');
-    }
+    localStorage.removeItem('nsmf_branches');
     loadTable<Branch>('branches', DEFAULT_BRANCHES);
     loadTable<Testimonial>('testimonials', DEFAULT_TESTIMONIALS);
     loadTable<LoanApplication>('loan_applications', DEFAULT_LOAN_APPLICATIONS);

@@ -12,6 +12,7 @@ import { Loans } from './pages/Loans';
 import { CalculatorPage } from './pages/CalculatorPage';
 import { ApplyLoan } from './pages/ApplyLoan';
 import { Contact } from './pages/Contact';
+import { InvestmentService } from './pages/InvestmentService';
 
 // Legal/Additional Pages
 import { PrivacyPolicy } from './pages/Legal/PrivacyPolicy';
@@ -35,6 +36,7 @@ function App() {
           <Route path="/loans" element={<Layout><Loans /></Layout>} />
           <Route path="/calculator" element={<Layout><CalculatorPage /></Layout>} />
           <Route path="/apply" element={<Layout><ApplyLoan /></Layout>} />
+          <Route path="/investment" element={<Layout><InvestmentService /></Layout>} />
           <Route path="/contact" element={<Layout><Contact /></Layout>} />
           
           {/* Legal and Additional Routes */}

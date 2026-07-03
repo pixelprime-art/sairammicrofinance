@@ -316,7 +316,7 @@ export const Home: React.FC = () => {
   return (
     <div className="w-full flex flex-col">
       {/* 2. HERO SECTION */}
-      <section className="relative w-full min-h-[75vh] flex items-center justify-start bg-[url('/herobanner.png')] bg-cover bg-center bg-no-repeat overflow-hidden py-16 px-4 sm:px-8">
+      <section className="relative w-full min-h-[75vh] flex items-center justify-start bg-[url('/herobanner.png')] bg-cover bg-position-[80%_center] bg-no-repeat overflow-hidden py-16 px-4 sm:px-8">
         <div className="absolute inset-0 bg-slate-950/50 z-0" />
         <div className="max-w-7xl mx-auto w-full relative z-10 text-left">
           <div className="space-y-6 max-w-2xl mt-8">
@@ -361,7 +361,7 @@ export const Home: React.FC = () => {
           </div>
 
           {/* Tabs header */}
-          <div className="flex justify-center border-b border-slate-200 overflow-x-auto scrollbar-none max-w-4xl mx-auto">
+          <div className="flex justify-start md:justify-center border-b border-slate-200 overflow-x-auto scrollbar-none max-w-4xl mx-auto">
             <div className="flex space-x-2 sm:space-x-4 md:space-x-6 px-2">
               {tabs.map((tab) => {
                 const isActive = activeSolutionTab === tab.id;
@@ -406,6 +406,17 @@ export const Home: React.FC = () => {
                 style={{
                   gap: `${gap}px`,
                   width: 'max-content',
+                }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={(e, info) => {
+                  const swipeThreshold = 50;
+                  if (info.offset.x < -swipeThreshold) {
+                    setCurrentSolutionCard(prev => prev + 1);
+                  } else if (info.offset.x > swipeThreshold) {
+                    setCurrentSolutionCard(prev => prev - 1);
+                  }
                 }}
                 animate={{
                   x: -(currentSolutionCard - 10) * (cardWidth + gap)

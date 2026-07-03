@@ -106,7 +106,7 @@ export const Navbar: React.FC = () => {
       { label: 'Terms & Conditions', path: '/terms', desc: 'Rules & usage terms' },
       { label: 'Disclaimer', path: '/disclaimer', desc: 'Licensing and financial warnings' },
       { label: 'Client Testimonials', path: '/testimonials', desc: 'What our clients say about us' },
-      { label: 'FAQ', path: '/contact#faq', desc: 'General queries answered' },
+    
       { label: 'Contact Us', path: '/contact', desc: 'Office phone, email and WhatsApp' },
       { label: 'About Sairam Micro Finance', path: '/about', desc: 'Company vision, mission and values' }
     ];
@@ -295,11 +295,11 @@ export const Navbar: React.FC = () => {
                     className="absolute left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50"
                   >
                     <Link to="/loans" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary">Loan Services</Link>
-                    <Link to="/about#investment" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary">Investment Services</Link>
+
                     <Link to="/privacy-policy" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary">Privacy Policy</Link>
                     <Link to="/terms" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary">Terms & Conditions</Link>
                     <Link to="/disclaimer" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary">Disclaimer</Link>
-                    <Link to="/contact#faq" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary">FAQ</Link>
+                    
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -332,7 +332,7 @@ export const Navbar: React.FC = () => {
                     className="absolute left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50"
                   >
                     <Link to="/apply" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary">Apply for Loan</Link>
-                    <Link to="/about#investment-form" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary">Investment Form</Link>
+                    <Link to="/investment" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary">Investment Service</Link>
                     <Link to="/loans" className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-primary">Loan Types</Link>
                   </motion.div>
                 )}
@@ -548,11 +548,11 @@ export const Navbar: React.FC = () => {
                   <div className="font-bold text-xs uppercase text-slate-400 tracking-wider mb-2">Need Help</div>
                   <div className="flex flex-col gap-3 pl-3 border-l border-slate-200">
                     <Link to="/loans" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 hover:text-primary">Loan Services</Link>
-                    <Link to="/about#investment" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 hover:text-primary">Investment Services</Link>
+          
                     <Link to="/privacy-policy" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 hover:text-primary">Privacy Policy</Link>
                     <Link to="/terms" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 hover:text-primary">Terms & Conditions</Link>
                     <Link to="/disclaimer" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 hover:text-primary">Disclaimer</Link>
-                    <Link to="/contact#faq" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 hover:text-primary">FAQ</Link>
+                   
                   </div>
                 </div>
 
@@ -563,7 +563,7 @@ export const Navbar: React.FC = () => {
                   <div className="font-bold text-xs uppercase text-slate-400 tracking-wider mb-2">Discover Services</div>
                   <div className="flex flex-col gap-3 pl-3 border-l border-slate-200">
                     <Link to="/apply" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 hover:text-primary">Apply for Loan</Link>
-                    <Link to="/about#investment-form" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 hover:text-primary">Investment Form</Link>
+                    <Link to="/investment" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 hover:text-primary">Investment Service</Link>
                     <Link to="/loans" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 hover:text-primary">Loan Types</Link>
                   </div>
                 </div>

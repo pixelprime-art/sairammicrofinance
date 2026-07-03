@@ -6,28 +6,6 @@ import {
 } from 'lucide-react';
 
 export const About: React.FC = () => {
-  // Investment Form State
-  const [invName, setInvName] = useState('');
-  const [invEmail, setInvEmail] = useState('');
-  const [invPhone, setInvPhone] = useState('');
-  const [invAmount, setInvAmount] = useState(50000);
-  const [invScheme, setInvScheme] = useState('Fixed Deposit Plan');
-  const [invDuration, setInvDuration] = useState(3);
-  const [invSubmitted, setInvSubmitted] = useState(false);
-
-  const handleInvestmentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!invName || !invEmail || !invPhone) return;
-    mockDb.createInvestment(invName, invEmail, invPhone, invAmount, invScheme, invDuration);
-    setInvSubmitted(true);
-    setTimeout(() => {
-      setInvName('');
-      setInvEmail('');
-      setInvPhone('');
-      setInvSubmitted(false);
-    }, 3000);
-  };
-
   const values = [
     { title: 'Integrity', desc: 'Operating with absolute honesty and compliance in all microfinance audits.', icon: ShieldCheck, color: 'text-blue-600 bg-blue-50' },
     { title: 'Transparency', desc: 'Zero hidden charges, clear interest calculations, and straightforward repayment terms.', icon: Landmark, color: 'text-green-600 bg-green-50' },

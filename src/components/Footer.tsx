@@ -4,6 +4,8 @@ import {
   MapPin, Phone, Mail, ArrowRight, ShieldCheck 
 } from 'lucide-react';
 
+const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
 export const Footer: React.FC = () => {
   return (
     <footer className="bg-navy-dark text-white border-t border-navy-light pt-16 pb-8 font-sans">
@@ -87,19 +89,19 @@ export const Footer: React.FC = () => {
           </h4>
           <ul className="space-y-2.5 text-sm">
             <li>
-              <Link to="/about" className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
+              <Link to="/about" onClick={scrollToTop} className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
                 <ArrowRight className="w-3 h-3 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                 About Us
               </Link>
             </li>
             <li>
-              <Link to="/about#careers" className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
+              <Link to="/about#careers" onClick={scrollToTop} className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
                 <ArrowRight className="w-3 h-3 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                 Careers
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
+              <Link to="/contact" onClick={scrollToTop} className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
                 <ArrowRight className="w-3 h-3 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                 Contact
               </Link>
@@ -114,25 +116,25 @@ export const Footer: React.FC = () => {
           </h4>
           <ul className="space-y-2.5 text-sm">
             <li>
-              <Link to="/apply?type=personal" className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
+              <Link to="/apply?type=personal" onClick={scrollToTop} className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
                 <ArrowRight className="w-3 h-3 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                 Personal Loan
               </Link>
             </li>
             <li>
-              <Link to="/apply?type=business" className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
+              <Link to="/apply?type=business" onClick={scrollToTop} className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
                 <ArrowRight className="w-3 h-3 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                 Business Loan
               </Link>
             </li>
             <li>
-              <Link to="/apply?type=gold" className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
+              <Link to="/apply?type=gold" onClick={scrollToTop} className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
                 <ArrowRight className="w-3 h-3 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                 Gold Loan
               </Link>
             </li>
             <li>
-              <Link to="/apply?type=education" className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
+              <Link to="/apply?type=education" onClick={scrollToTop} className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
                 <ArrowRight className="w-3 h-3 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                 Education Loan
               </Link>
@@ -147,25 +149,25 @@ export const Footer: React.FC = () => {
           </h4>
           <ul className="space-y-2.5 text-sm">
             <li>
-              <Link to="/contact#faq" className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
+              <Link to="/contact#faq" onClick={scrollToTop} className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
                 <ArrowRight className="w-3 h-3 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                 FAQ
               </Link>
             </li>
             <li>
-              <Link to="/privacy-policy" className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
+              <Link to="/privacy-policy" onClick={scrollToTop} className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
                 <ArrowRight className="w-3 h-3 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                 Privacy Policy
               </Link>
             </li>
             <li>
-              <Link to="/terms" className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
+              <Link to="/terms" onClick={scrollToTop} className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
                 <ArrowRight className="w-3 h-3 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                 Terms & Conditions
               </Link>
             </li>
             <li>
-              <Link to="/disclaimer" className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
+              <Link to="/disclaimer" onClick={scrollToTop} className="text-slate-300 hover:text-secondary flex items-center gap-1.5 transition-colors group">
                 <ArrowRight className="w-3 h-3 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
                 Disclaimer
               </Link>
