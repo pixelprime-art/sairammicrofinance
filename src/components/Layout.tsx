@@ -331,7 +331,7 @@ const ChatPopup = ({ onClose }: { onClose: () => void }) => {
       {/* Header */}
       <div className="bg-primary px-5 py-4 flex items-center gap-3 shrink-0">
         <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 shrink-0">
-          <img src="/chatbot.png" alt="Bot" className="w-full h-full object-cover" />
+          <img src="/chatbot.webp" alt="Bot" className="w-full h-full object-cover" />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-white font-bold text-sm leading-tight">Sairam Assistant</p>
@@ -357,7 +357,7 @@ const ChatPopup = ({ onClose }: { onClose: () => void }) => {
           >
             {msg.from === 'bot' && (
               <div className="w-6 h-6 rounded-full overflow-hidden mr-2 shrink-0 self-end">
-                <img src="/chatbot.png" alt="Bot" className="w-full h-full object-cover" />
+                <img src="/chatbot.webp" alt="Bot" className="w-full h-full object-cover" />
               </div>
             )}
             <div
@@ -378,7 +378,7 @@ const ChatPopup = ({ onClose }: { onClose: () => void }) => {
         {typing && (
           <div className="flex justify-start items-end gap-2">
             <div className="w-6 h-6 rounded-full overflow-hidden shrink-0">
-              <img src="/chatbot.png" alt="Bot" className="w-full h-full object-cover" />
+              <img src="/chatbot.webp" alt="Bot" className="w-full h-full object-cover" />
             </div>
             <div className="bg-white border border-slate-200 px-4 py-2.5 rounded-2xl rounded-bl-sm shadow-sm flex items-center gap-1">
               <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
@@ -471,7 +471,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           className="w-20 h-20 bg-transparent rounded-full flex items-center justify-center overflow-hidden cursor-pointer"
           aria-label="Open Chat"
         >
-          <img src="/chatbot.png" alt="Chatbot" className="w-full h-full object-cover" loading="lazy" />
+          <img src="/chatbot.webp" alt="Chatbot" className="w-full h-full object-cover" loading="lazy" />
         </button>
 
         {/* Typewriter bubble (hide when chat is open) */}

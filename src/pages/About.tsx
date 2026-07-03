@@ -15,7 +15,7 @@ export const About: React.FC = () => {
   ];
 
   const leaders = [
-    { name: 'Muthu Ram A', role: 'Founder', bio: 'Experienced founder focused on building a trusted microfinance institution through ethical lending, financial inclusion, and customer-first solutions.', image: '/muthuram.png' },
+    { name: 'Muthu Ram A', role: 'Founder', bio: 'Experienced founder focused on building a trusted microfinance institution through ethical lending, financial inclusion, and customer-first solutions.', image: '/muthuram.webp' },
     { name: 'Sakthivel M', role: 'Managing Director', bio: 'Managing Director driving business growth through strategic leadership, financial expertise, and digital innovation.', image: '/sakthivel.jpeg' },
     { name: 'Dr. Mohanraj M', role: 'Chief Executive Officer', bio: 'Visionary CEO committed to financial inclusion, responsible lending, and empowering communities through innovative microfinance solutions.', image: '/mohan.jpeg' }
   ];
@@ -33,7 +33,7 @@ export const About: React.FC = () => {
       <section 
         className="bg-primary text-white py-20 px-4 sm:px-8 text-center relative overflow-hidden"
         style={{
-          backgroundImage: "url('/aboutbanner.png')",
+          backgroundImage: "url('/aboutbanner.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

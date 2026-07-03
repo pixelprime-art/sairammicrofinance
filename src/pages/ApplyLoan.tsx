@@ -166,7 +166,7 @@ export const ApplyLoan: React.FC = () => {
       <section 
         className="bg-primary text-white py-12 px-4 sm:px-8 text-center relative overflow-hidden"
         style={{
-          backgroundImage: "url('/applyloanbanner.png')",
+          backgroundImage: "url('/applyloanbanner.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

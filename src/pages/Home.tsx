@@ -39,7 +39,7 @@ const solutionsData: SolutionCard[] = [
     tagline: "Collateral-free personal loans up to ₹5 Lakhs in just 10 seconds. 100% paperless digital approval and instant account disbursal.",
     primaryBtn: { text: "Apply Online", link: "/apply?type=personal" },
     secondaryBtn: { text: "EMI Calculator", link: "/calculator" },
-    image: "/Personal_loan.png",
+    image: "/Personal_loan.webp",
     bgClass: "bg-[#5CA8FF] text-white border border-[#4fa0ff]",
   },
   {
@@ -48,7 +48,7 @@ const solutionsData: SolutionCard[] = [
     tagline: "Grow your enterprise with quick working capital and expansion loans up to ₹25 Lakhs. Flexible repayment tenures and fast processing.",
     primaryBtn: { text: "Apply Online", link: "/apply?type=business" },
     secondaryBtn: { text: "Check Eligibility", link: "/loans" },
-    image: "/Business_loan.png",
+    image: "/Business_loan.webp",
     bgClass: "bg-[#0D9488] text-white border border-[#23a598]",
     featured: true
   },
@@ -58,7 +58,7 @@ const solutionsData: SolutionCard[] = [
     tagline: "Unlock the value of your gold with instant cash in just 45 minutes. Safe vault storage, zero processing fees, and rates starting at 8.99% p.a.",
     primaryBtn: { text: "Apply Online", link: "/apply?type=gold" },
     secondaryBtn: { text: "Check Rates", link: "/loans" },
-    image: "/Gold_loan.png",
+    image: "/Gold_loan.webp",
     bgClass: "bg-[#F59E0B] text-white border border-[#d97706]",
   },
   {
@@ -67,7 +67,7 @@ const solutionsData: SolutionCard[] = [
     tagline: "Empower your academic dreams with higher education loans. Covers 100% of fees, travel, and accommodation with flexible repayment terms.",
     primaryBtn: { text: "Apply Online", link: "/apply?type=education" },
     secondaryBtn: { text: "EMI Calculator", link: "/calculator" },
-    image: "/Educaiton_loan.png",
+    image: "/Educaiton_loan.webp",
     bgClass: "bg-[#E8EDF5] text-[#002C54] border border-[#cbd5e1]",
   },
   {
@@ -76,7 +76,7 @@ const solutionsData: SolutionCard[] = [
     tagline: "Support your farming needs with low-interest agricultural loans for crops, tractors, and farm machinery. Flexible repayment aligned with crop cycles.",
     primaryBtn: { text: "Apply Online", link: "/apply?type=agricultural" },
     secondaryBtn: { text: "Check Schemes", link: "/loans" },
-    image: "/Agriculture_loan.png",
+    image: "/Agriculture_loan.webp",
     bgClass: "bg-[#15803D] text-white border border-[#22c55e]",
     featured: true
   },
@@ -86,7 +86,7 @@ const solutionsData: SolutionCard[] = [
     tagline: "Collateral-free micro loans to empower women entrepreneurs, self-help groups, and rural cottage industries with dedicated skill support.",
     primaryBtn: { text: "Apply Online", link: "/apply?type=womens-empowerment" },
     secondaryBtn: { text: "Success Stories", link: "/about" },
-    image: "/Women_loan.png",
+    image: "/Women_loan.webp",
     bgClass: "bg-[#FFD6DB] text-[#5C0617] border border-[#ffb3bc]",
   },
   {
@@ -95,7 +95,7 @@ const solutionsData: SolutionCard[] = [
     tagline: "Get quick cash in under 4 hours for unexpected medical needs, salary advances, or house repairs. Minimal checks and zero processing fees.",
     primaryBtn: { text: "Apply Online", link: "/apply?type=emergency" },
     secondaryBtn: { text: "Help Center", link: "/about" },
-    image: "/Emergency_Loan.png",
+    image: "/Emergency_Loan.webp",
     bgClass: "bg-[#1E40AF] text-white border border-[#3b82f6]",
   }
 ];
@@ -316,7 +316,7 @@ export const Home: React.FC = () => {
   return (
     <div className="w-full flex flex-col">
       {/* 2. HERO SECTION */}
-      <section className="relative w-full min-h-[75vh] flex items-center justify-start bg-[url('/herobanner.png')] bg-cover bg-position-[80%_center] bg-no-repeat overflow-hidden py-16 px-4 sm:px-8">
+      <section className="relative w-full min-h-[75vh] flex items-center justify-start bg-[url('/herobanner.webp')] bg-cover bg-position-[80%_center] bg-no-repeat overflow-hidden py-16 px-4 sm:px-8">
         <div className="absolute inset-0 bg-slate-950/50 z-0" />
         <div className="max-w-7xl mx-auto w-full relative z-10 text-left">
           <div className="space-y-6 max-w-2xl mt-8">
@@ -1187,12 +1187,12 @@ export const Home: React.FC = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             {[
-              { label: 'Fast Approval', desc: 'Audited in 2 hours', image: '/benefit_approval_new.png' },
-              { label: 'Minimal Docs', desc: 'Only 4 KYC papers', image: '/benefit_docs_new.png' },
-              { label: 'Flexible Tenure', desc: 'Up to 60 Months', image: '/benefit_tenure_new.png' },
-              { label: 'Low Rates', desc: 'Starting 10.99%', image: '/benefit_rates_new.png' },
-              { label: '100% Digital', desc: 'No paper queues', image: '/benefit_digital_new.png' },
-              { label: 'No Hidden Fees', desc: 'Transparent terms', image: '/benefit_no_fees_new.png' }
+              { label: 'Fast Approval', desc: 'Audited in 2 hours', image: '/benefit_approval_new.webp' },
+              { label: 'Minimal Docs', desc: 'Only 4 KYC papers', image: '/benefit_docs_new.webp' },
+              { label: 'Flexible Tenure', desc: 'Up to 60 Months', image: '/benefit_tenure_new.webp' },
+              { label: 'Low Rates', desc: 'Starting 10.99%', image: '/benefit_rates_new.webp' },
+              { label: '100% Digital', desc: 'No paper queues', image: '/benefit_digital_new.webp' },
+              { label: 'No Hidden Fees', desc: 'Transparent terms', image: '/benefit_no_fees_new.webp' }
             ].map((benefit, idx) => (
               <div
                 key={idx}
@@ -1247,7 +1247,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col items-center text-center space-y-4 group transition-all duration-300 lg:translate-y-8 lg:-translate-x-30">
               {/* Circular Avatar */}
               <div className="w-36 h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-50 shrink-0 transform hover:scale-105 transition-transform duration-300">
-                <img src="/testimonial_ramesh.png" alt="Ramesh K. Kumar" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                <img src="/testimonial_ramesh.webp" alt="Ramesh K. Kumar" className="w-full h-full object-cover" loading="lazy" decoding="async" />
               </div>
 
               {/* Testimonial Quote */}
@@ -1276,7 +1276,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col items-center text-center space-y-4 group transition-all duration-300 lg:translate-y-25 lg:-translate-x-15">
               {/* Circular Avatar */}
               <div className="w-44 h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-50 shrink-0 transform hover:scale-105 transition-transform duration-300">
-                <img src="/testimonial_priyanka.png" alt="Priyanka Sen" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                <img src="/testimonial_priyanka.webp" alt="Priyanka Sen" className="w-full h-full object-cover" loading="lazy" decoding="async" />
               </div>
 
               {/* Testimonial Quote */}
@@ -1305,7 +1305,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col items-center text-center space-y-4 group transition-all duration-300 lg:translate-y-24 lg:translate-x-15">
               {/* Circular Avatar */}
               <div className="w-44 h-44 md:w-48 md:h-48 lg:w-52 lg:h-52 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-50 shrink-0 transform hover:scale-105 transition-transform duration-300">
-                <img src="/testimonial_arun.png" alt="Arun Deshmukh" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                <img src="/testimonial_arun.webp" alt="Arun Deshmukh" className="w-full h-full object-cover" loading="lazy" decoding="async" />
               </div>
 
               {/* Testimonial Quote */}
@@ -1334,7 +1334,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col items-center text-center space-y-4 group transition-all duration-300 lg:translate-y-8 lg:translate-x-30">
               {/* Circular Avatar */}
               <div className="w-36 h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-50 shrink-0 transform hover:scale-105 transition-transform duration-300">
-                <img src="/testimonial_meenakshi.png" alt="Meenakshi Iyer" className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                <img src="/testimonial_meenakshi.webp" alt="Meenakshi Iyer" className="w-full h-full object-cover" loading="lazy" decoding="async" />
               </div>
 
               {/* Testimonial Quote */}

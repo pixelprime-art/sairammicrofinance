@@ -102,7 +102,7 @@ export const CalculatorPage: React.FC = () => {
       <section 
         className="bg-primary text-white py-16 px-4 sm:px-8 text-center relative overflow-hidden"
         style={{
-          backgroundImage: "url('/emibanner.png')",
+          backgroundImage: "url('/emibanner.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
