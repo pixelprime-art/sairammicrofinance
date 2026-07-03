@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { mockDb } from '../services/mockDb';
@@ -397,6 +397,14 @@ export const Home: React.FC = () => {
           className="relative w-full overflow-hidden py-4"
           onMouseEnter={() => setIsSolutionCarouselHovered(true)}
           onMouseLeave={() => setIsSolutionCarouselHovered(false)}
+          onWheel={(e) => {
+            e.preventDefault();
+            if (e.deltaX > 30 || e.deltaY > 30) {
+              setCurrentSolutionCard(prev => prev + 1);
+            } else if (e.deltaX < -30 || e.deltaY < -30) {
+              setCurrentSolutionCard(prev => prev - 1);
+            }
+          }}
         >
           {/* Carousel viewport */}
           <div className="flex justify-center items-center relative overflow-hidden" style={{ height: `${cardHeight + 40}px` }}>
@@ -406,12 +414,14 @@ export const Home: React.FC = () => {
                 style={{
                   gap: `${gap}px`,
                   width: 'max-content',
+                  touchAction: 'pan-y',
                 }}
                 drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.2}
+                dragConstraints={{ left: -(cardWidth * 3), right: cardWidth * 3 }}
+                dragElastic={0.05}
+                dragMomentum={false}
                 onDragEnd={(e, info) => {
-                  const swipeThreshold = 50;
+                  const swipeThreshold = 40;
                   if (info.offset.x < -swipeThreshold) {
                     setCurrentSolutionCard(prev => prev + 1);
                   } else if (info.offset.x > swipeThreshold) {
