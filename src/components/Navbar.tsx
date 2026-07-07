@@ -167,7 +167,7 @@ export const Navbar: React.FC = () => {
         <div className="bg-primary text-white py-3 px-4 sm:px-8 flex justify-between items-center border-b border-navy-light text-sm">
           {/* Left: Brand Logo & Name */}
           <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 bg-white rounded-xl p-1 flex items-center justify-center shadow-md border border-secondary border-l-4 group-hover:scale-105 transition-transform duration-300">    <img
+          <div className="w-10 h-10 bg-white rounded-xl p-1 flex items-center justify-center shadow-md border border-gray  group-hover:scale-105 transition-transform duration-300">    <img
                 src="/logo.png"
                 alt="SAIRAM MICROFINANCE Logo"
                 className="w-full h-full object-contain"

@@ -18,8 +18,8 @@ export const Footer: React.FC = () => {
               <img src="/logo.png" alt="" className="w-full h-full object-contain" />
             </div>
             <div>
-              <h3 className="font-display font-extrabold tracking-wide text-lg text-white leading-none">
-                SAIRAM MICROFINANCE
+              <h3 className="font-display font-bold tracking-[0.28em] text-[20px] leading-none text-white block">
+                SAIRAM 
               </h3>
               <span className="text-[10px] tracking-[0.15em] text-secondary font-bold uppercase leading-none mt-1 block">
                 Micro Finance

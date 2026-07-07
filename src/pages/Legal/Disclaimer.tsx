@@ -25,27 +25,27 @@ export const Disclaimer: React.FC = () => {
         </div>
 
         <div className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
-          <p>
+          <p  className="text-justify">
             The details and calculators hosted on <strong>Sairam Microfinance</strong> website serve general informational and credit planning purposes. They do not constitute formal commercial loan commitments.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">1. Regulatory Registrations</h3>
-          <p>
+          <p className="text-justify">
             Sairam Microfinance is registered as a Category-B Microfinance Institution under the Reserve Bank of India (RBI) guidelines. All credit schemes, subsidy structures, and group JLG loans strictly adhere to the operational guidelines issued by regulatory authorities.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">2. Calculator Outputs</h3>
-          <p>
+          <p   className="text-justify">
             Outputs from our EMI calculators (including Principal ratios, monthly payments, and interest values) are mathematical approximations. The final EMI and payment schedule is determined after manual KYC checks and is verified inside the signed loan agreement.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">3. Investment Placement Risks</h3>
-          <p>
+          <p className="text-justify">
             Micro-investment deposits and fixed/recurring placements are governed by the terms of the specific investment prospectus. Investors are requested to read the product brochures and terms of agreement carefully before executing placements.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">4. No Administrative Charges Alert</h3>
-          <p>
+          <p className="text-justify">
             Sairam Microfinance does not demand cash handouts, commissions, or advanced deposits to secure loan files or trigger document verification checks. Borrowers are warned to ignore fraudulent entities demanding money in the company's name.
           </p>
         </div>

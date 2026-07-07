@@ -134,7 +134,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
     <div className="min-h-screen bg-slate-50 flex font-sans">
       
       {/* SIDEBAR - DESKTOP */}
-      <aside className="hidden lg:flex flex-col w-64 bg-[#001F42] text-white border-r border-slate-800 flex-shrink-0 h-screen sticky top-0">
+      <aside className="hidden lg:flex flex-col w-64 bg-navy-dark text-white border-r border-slate-800 shrink-0 h-screen sticky top-0">
         {/* Header */}
         <div className="p-6 border-b border-slate-800 flex items-center gap-3">
           <div className="w-8 h-8 bg-white rounded-lg p-1 flex items-center justify-center">
@@ -151,7 +151,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
         </div>
 
         {/* Links */}
-        <nav className="flex-grow p-4 space-y-1.5">
+        <nav className="grow p-4 space-y-1.5">
           {sidebarLinks.map((link) => {
             const Icon = link.icon;
             const active = location.pathname === link.path;
@@ -208,7 +208,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
-              className="relative w-64 bg-[#001F42] text-white h-full flex flex-col p-6 shadow-2xl"
+              className="relative w-64 bg-navy-dark text-white h-full flex flex-col p-6 shadow-2xl"
             >
               <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-800">
                 <div className="flex items-center gap-2">
@@ -225,7 +225,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
                 </button>
               </div>
 
-              <nav className="flex-grow space-y-2">
+              <nav className="grow space-y-2">
                 {sidebarLinks.map((link) => {
                   const Icon = link.icon;
                   const active = location.pathname === link.path;
@@ -269,7 +269,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
       </AnimatePresence>
 
       {/* CONTENT AREA */}
-      <div className="flex-grow flex flex-col min-h-screen overflow-x-hidden">
+      <div className="grow flex flex-col min-h-screen overflow-x-hidden">
         
         {/* Top Header Bar */}
         <header className="bg-white border-b border-slate-200 h-16 px-6 flex justify-between items-center shadow-sm">
@@ -309,7 +309,7 @@ export const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children 
         </header>
 
         {/* Dashboard Main Content */}
-        <main className="flex-grow p-6 md:p-8 max-w-7xl w-full mx-auto">
+        <main className="grow p-6 md:p-8 max-w-7xl w-full mx-auto">
           {children}
         </main>
       </div>

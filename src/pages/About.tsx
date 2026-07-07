@@ -41,10 +41,10 @@ export const About: React.FC = () => {
         <div className="absolute inset-0 bg-slate-950/60 z-0" />
         <div className="max-w-4xl mx-auto space-y-4 relative z-10">
           <span className="text-secondary text-xs font-bold uppercase tracking-widest bg-white/10 px-4 py-1.5 rounded-full">
-            Institutional Legacy
+            Financial Excellence
           </span>
           <h1 className="font-display font-extrabold text-3xl sm:text-5xl text-white">
-            Empowering Communities Since 2015
+            Empowering Communities Since 2026
           </h1>
           <p className="text-slate-300 text-sm max-w-xl mx-auto leading-relaxed">
             Sairam Microfinance is committed to empowering individuals, entrepreneurs, women, and farmers through accessible, ethical, and affordable financial services.

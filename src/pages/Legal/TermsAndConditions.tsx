@@ -25,27 +25,27 @@ export const TermsAndConditions: React.FC = () => {
         </div>
 
         <div className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
-          <p>
+          <p className="text-justify">
             Welcome to the online application portals of <strong>Sairam Microfinance</strong>. By applying for loans or using our EMI calculators, you agree to comply with the terms, conditions, and credit rules outlined below.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">1. Credit Application Rules</h3>
-          <p>
+          <p className="text-justify">
             Applicants must guarantee that all details filled in the multi-step form (including employment records and salary numbers) are complete and accurate. Submitting fake Aadhaar or PAN files constitutes a penal fraud under banking guidelines.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">2. Interest Rate Locks</h3>
-          <p>
+          <p className="text-justify">
             Calculated interest rates (starting at 10.99% p.a. for personal loans and 7.99% p.a. for farmers) represent estimates. The final interest rate is officially locked after credit scoring audits and document checks, and is recorded inside the loan sanction letter.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">3. Repayment & Auto-Debit</h3>
-          <p>
+          <p className="text-justify">
             Borrowers agree to repay monthly EMI installments on or before the designated debit dates. Standard late fees may apply on delayed payments. Borrowers can activate National Automated Clearing House (NACH) mandates for easy automated monthly debits.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">4. Prepayment / Early Closure</h3>
-          <p>
+          <p className="text-justify">
             Borrowers reserve the right to close outstanding loans early after six successful EMI payments. Standard foreclosure guidelines apply as stated in the sanction letter. SAIRAM MICROFINANCE does not charge pre-payment penalties on selected subsidized schemes.
           </p>
         </div>

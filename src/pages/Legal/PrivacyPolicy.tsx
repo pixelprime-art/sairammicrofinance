@@ -25,9 +25,9 @@ export const PrivacyPolicy: React.FC = () => {
         </div>
 
         <div className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
-          <p>
-            At <strong>Sairam Microfinance</strong>, we prioritize the confidentiality and safety of your personal credentials and financial records. This Privacy Policy details our operational rules on collection, usage, and safeguarding of customer profiles.
-          </p>
+          <p className="text-justify">
+  At <strong>Sairam Microfinance</strong>, we are committed to protecting the privacy, confidentiality, and security of your personal and financial information. This Privacy Policy explains how we collect, use, store, and safeguard your data when you access our website, products, or services. We implement appropriate security measures to ensure your information remains protected and is handled in accordance with applicable laws and industry standards.
+</p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">1. Information We Collect</h3>
           <p>
@@ -52,12 +52,12 @@ export const PrivacyPolicy: React.FC = () => {
           </ul>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">3. Data Security</h3>
-          <p>
+          <p className="text-justify">
             All file uploads (including Aadhaar and PAN documents encoded to Base64) are stored in encrypted local storage/server databases. We do not distribute, sell, or lend customer details to third-party marketing networks.
           </p>
 
           <h3 className="font-display font-bold text-base text-primary pt-4">4. RBI Guidelines Compliance</h3>
-          <p>
+          <p className="text-justify">
             Our governance structure aligns strictly with the Fair Practices Code issued by the Reserve Bank of India (RBI). Customers reserve the right to review their credit ledger files and request updates to inaccurate contact records.
           </p>
         </div>

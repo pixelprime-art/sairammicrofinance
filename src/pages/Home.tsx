@@ -326,9 +326,9 @@ export const Home: React.FC = () => {
               initial={{ opacity: 0, y: -24, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.5, type: 'spring', stiffness: 200, damping: 20 }}
-              className="inline-flex items-center gap-2 bg-secondary/20 border border-secondary/40 text-secondary text-xs font-bold px-3.5 py-1.5 rounded-full backdrop-blur-sm"
+              className="inline-flex items-center gap-2 bg-secondary/30 border border-secondary/40 text-secondary text-xs font-bold px-3.5 py-1.5 rounded-full backdrop-blur-sm"
             >
-              <Award className="w-4 h-4" /> Trusted Banking Partner Since 2015
+              <Award className="w-4 h-4" /> Trusted Banking Partner Since 2026
             </motion.div>
 
             {/* Heading - word by word animation */}
@@ -933,8 +933,8 @@ export const Home: React.FC = () => {
       </section>
 
       {/* 7. EMI CALCULATOR SECTION */}
-      <section className="py-24 px-4 sm:px-8 bg-white text-slate-800 scroll-mt-20" id="emi-calculator">
-        <div className="max-w-7xl mx-auto space-y-4 bg-[#f0f0f0] rounded-2xl p-8 shadow-lg">
+      <section className="py-12 sm:py-24 px-3 sm:px-8 bg-white text-slate-800 scroll-mt-20" id="emi-calculator">
+        <div className="max-w-7xl mx-auto space-y-4 bg-[#f0f0f0] rounded-2xl p-4 sm:p-8 shadow-lg">
 
           <div className="space-y-4 text-center max-w-2xl mx-auto ">
             <span className="text-xs font-bold uppercase tracking-widest text-black bg-primary/5 px-3 py-1 rounded-full ">
@@ -975,10 +975,10 @@ export const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
 
             {/* Sliders Input Panel */}
-            <div className="lg:col-span-7  p-8 space-y-6">
+            <div className="lg:col-span-7 p-2 sm:p-8 space-y-5 sm:space-y-6">
 
               {/* Slider 1: Loan Amount / Deposit Amount */}
               <div className="space-y-2 text-left">
@@ -1120,7 +1120,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Calculations Result Panel */}
-            <div className="lg:col-span-5 bg-linear-to-br from-white to-[#F3F8FF] border border-blue-100/70 p-6 sm:p-8 rounded-[32px] shadow-[0_4px_30px_rgba(0,51,102,0.015)] flex flex-col justify-between min-h-[400px] text-left relative overflow-hidden">
+            <div className="lg:col-span-5 bg-linear-to-br from-white to-[#F3F8FF] border border-blue-100/70 p-5 sm:p-8 rounded-[28px] sm:rounded-[32px] shadow-[0_4px_30px_rgba(0,51,102,0.015)] flex flex-col justify-between min-h-[360px] sm:min-h-[400px] text-left relative overflow-hidden">
 
               {/* EMI Banner (Top Box) */}
               <div className="bg-linear-to-r from-[#DCEEFE]/70 to-[#EBF5FF]/50 border border-blue-100/50 p-6 rounded-2xl text-center space-y-1.5 shadow-[inset_0_1px_2px_rgba(255,255,255,0.6)]">
@@ -1152,16 +1152,16 @@ export const Home: React.FC = () => {
               </div>
 
               {/* Action Buttons (Bottom) */}
-              <div className="flex flex-col sm:flex-row gap-3 mt-2">
+              <div className="flex flex-col gap-3 mt-4">
                 <Link
                   to="/apply"
-                  className="flex-1 bg-primary hover:bg-navy-dark text-white font-bold text-md py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full bg-primary hover:bg-navy-dark text-white font-bold text-sm sm:text-md py-4 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   Apply Now <ChevronRight className="w-3.5 h-3.5 text-secondary" />
                 </Link>
                 <Link
                   to="/loans"
-                  className="flex-1 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-md py-3.5 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-sm sm:text-md py-4 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   Know More <ChevronRight className="w-3.5 h-3.5 text-[#4c4b4b]" />
                 </Link>
@@ -1584,7 +1584,7 @@ export const Home: React.FC = () => {
                 </div>
                 <h4 className="font-bold text-green-800">Message Submitted!</h4>
                 <p className="text-xs text-green-600">
-                  Thank you. A representative from Sairam Micro Finance will call you back within 2 hours.
+                  Thank you. A representative from Sairam Microfinance will call you back within 2 hours.
                 </p>
               </div>
             ) : (
