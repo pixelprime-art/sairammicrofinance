@@ -22,7 +22,7 @@ export const Footer: React.FC = () => {
                 SAIRAM 
               </h3>
               <span className="text-[10px] tracking-[0.15em] text-secondary font-bold uppercase leading-none mt-1 block">
-                Micro Finance
+                MicroFinance
               </span>
             </div>
           </Link>
