@@ -183,8 +183,8 @@ export const Navbar: React.FC = () => {
               <span className="font-display font-bold tracking-[0.28em] text-[20px] leading-none text-white block">
                 SAIRAM
               </span>
-              <span className="text-[15px] tracking-[0.06em] text-secondary font-medium leading-none mt-1 block">
-                Microfinance
+              <span className="text-[13px] tracking-[0.06em] text-secondary font-medium leading-none mt-1 block">
+                MICROFINANCE
               </span>
             </div>
           </Link>
